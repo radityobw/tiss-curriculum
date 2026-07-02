@@ -1,0 +1,244 @@
+# 🔨 Week 11 · Day 5: Lab & Weekly Mission To-Do List
+
+> **Rank**: FORGE | **Minggu ke-11**, Hari 5/5 | **Durasi**: ~60–90 menit
+
+---
+
+## 📊 Progress Tracker
+
+### Rank Progress
+[▓▓▓▓░░░░░░] 40% — FORGE Rank (Minggu 2 dari 5)
+
+### Overall Journey
+[▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░] 45% — Hari 55 dari 120
+
+### Rank Map
+✅ VOID → ✅ CIPHER → ✅ PACKET → 🔄 FORGE → ⬜ BREACH → ⬜ SENTINEL
+
+---
+
+## 📝 Rekap Minggu Ini
+
+Minggu ini kamu telah mempelajari dasar-dasar pemrograman logika interaksi JavaScript dari nol:
+
+| Hari | Topik | Key Takeaway |
+|------|-------|-------------|
+| Day 1 | Variabel & Tipe Data | Deklarasi penyimpan data: `let`, `const`, `string`, `number`. |
+| Day 2 | Fungsi & Scope | Pembungkusan blok logika (`Function`), `Arrow Function`, serta ruang lingkup variabel lokal vs global. |
+| Day 3 | DOM Manipulation | Konsep hierarki struktur elemen HTML dan penggunaan fungsi pencarian `querySelector`. |
+| Day 4 | Event Handling | Menangkap interaksi dengan mendengarkan pemicu (*Event Listener*), serta mencegah perilaku pembaruan rute otomatis dari metode pengiriman halaman HTML. |
+
+---
+
+## 🧪 Hands-On Lab
+
+### Prerequisites
+- Editor VS Code
+- Peramban web modern (Chrome/Firefox) dengan panggungan tab panel peranti pengembang (*Console Tools*) beroperasi.
+
+### Misi Hari Ini: "Sistem Manajemen To-Do List Sederhana"
+
+Hari ini, kamu tidak hanya memanipulasi rentetan logik kecil. Kita akan menyatukan konsep-konsep tersebut untuk menelurkan struktur *Web App* pertamamu: **To-Do List**. 
+
+Program ini akan dirancang agar mampu menampung penambahan teks input daftar tugas harian dan menampilkan daftar item (elemen *list*) tersebut pada tampilan HTML secara dinamis. Untuk menjadikan perangkat ini lebih canggih, kita juga akan menyenggol penerapan pelestarian berkas berbasis `localStorage`—semacam *database* internal penyedia memori pada *browser*—sehingga rekaman berkasmu tidak musnah lenyap begitu saja kendatipun perangkat peramban *web* sempat ditutup penuh atau menekan perintah muat ulang halaman.
+
+### Step 1: Merakit Kerangka Visual (HTML & CSS)
+
+1. Buat file `index.html`. Ketikkan barisan blok kerangka kode pemodelan HTML berikut ini. (Kita akan menyisipkan format ringkas gaya *CSS Internal* untuk menyelaraskan komposisi estetikanya).
+
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+ <meta charset="UTF-8">
+ <title>Sistem Catatan TISS</title>
+ <style>
+ body { font-family: 'Courier New', monospace; background: #222; color: #0f0; padding: 20px; }
+.container { max-width: 500px; margin: auto; background: #111; padding: 20px; border: 1px solid #0f0; }
+ input, button { padding: 10px; border: 1px solid #0f0; background: #000; color: #0f0; }
+ ul { list-style: none; padding: 0; }
+ li { background: #333; margin: 5px 0; padding: 10px; display: flex; justify-content: space-between; }
+.btn-hapus { color: red; cursor: pointer; font-weight: bold; }
+ </style>
+</head>
+<body>
+ <div class="container">
+ <h2>[+] MANAJEMEN TUGAS TISS</h2>
+ 
+ <!-- Formulir Input -->
+ <form id="form-tugas">
+ <input type="text" id="input-tugas" placeholder="Tambahkan daftar baru..." required>
+ <button type="submit">Tambahkan</button>
+ </form>
+
+ <!-- Daftar Output -->
+ <ul id="daftar-tugas">
+ <!-- Tugas baru (tag li) akan dirender secara dinamis oleh skrip JS ke blok ini -->
+ </ul>
+ </div>
+ 
+ <!-- Penempatan relasi rute perantara dokumen kode skrip JS -->
+ <script src="app.js"></script>
+</body>
+</html>
+```
+
+### Step 2: Menambahkan Logika (JavaScript)
+
+1. Buat berkas baru bertitel `app.js` yang posisinya persis setara di direktori yang serupa sejalan dengan *file* laman kerangka susunan panggungan (HTML)-mu.
+2. Langkah pertama, deklarasikan objek-objek penangkapan selektor sasaran operasi (*DOM Selection*):
+
+```javascript
+const formTugas = document.querySelector('#form-tugas');
+const inputTugas = document.querySelector('#input-tugas');
+const daftarTugas = document.querySelector('#daftar-tugas');
+```
+
+3. Pasangkan modul pelacak interaksi (pengikatan *Event Listener*) atas kejadian ketika dokumen pengiriman form (`submit`) dilancarkan pengguna. Saat pemicu tersebut dipanggil, perintahkan kerangka peladen logik (*script*) untuk menciptakan objek elemen baru (yakni tag daftar cetakan `<li>`) secara dinamis, untuk menampung teks, kemudian merendernya disisipkan berdampingan ke wadah dalam format struktur panggung DOM *HTML* secara *real-time*.
+
+```javascript
+formTugas.addEventListener('submit', (e) => {
+ // 1. Nonaktifkan fungsionalitas refresh siklus bawaan halaman peramban
+ e.preventDefault();
+ 
+ // 2. Akses serta alokasikan input data spesifik apa pun yang baru saja diketik pengguna
+ const tugasBaru = inputTugas.value;
+ 
+ // 3. Modifikasi memori dengan menginstruksikan JavaScript mencipta komponen kerangka blok <li> baru di RAM
+ const li = document.createElement('li');
+ 
+ // 4. Suntikkan (injeksi) rentetan konten teks dan modul tombol hapus sederhana ke perut tag elemen <li> ini
+ li.innerHTML = `
+ <span>${tugasBaru}</span> 
+ <span class="btn-hapus">X</span>
+ `;
+ 
+ // 5. Perintahkan implementasi insersi, sematkan elemen bentukan <li> tersebut (appendChild) menyatu ke DOM elemen Induk
+ daftarTugas.appendChild(li);
+ 
+ // 6. Eksekusi pengosongan ulang rentang kotak field perantara isian agar kembali bersih menanti masukan tugas anyar
+ inputTugas.value = '';
+});
+```
+
+### Step 3: Fitur Menghapus Catatan (Event Delegation)
+
+Lantas bagaimana skema algoritma kita bekerja menghapus (mematikan/menghilangkan baris item elemen target) apabila tombol dengan logo silang 'X' terpancing sinyal klik? Karena komponen 'X' peretas elemen (`.btn-hapus`) tidak mendiami ekosistem statis peramban laman *HTML* pada prosesi pramuat sistem pemunculan perdana (ia dibangun di rentang *runtime* melalui JavaScript), kita harus menggunakan metode *Event Delegation*. Metode ini berarti, kita membebankan delegasi penyisipan fungsi *Event Listener* penyimak sinyal langsung ke entitas panggung abadi wadah induknya (`daftarTugas`).
+
+4. Lengkapi kerangka instruksi *app.js* dengan koding deteksi penghapusan berbasis perantara *delegasi* di bawah:
+
+```javascript
+daftarTugas.addEventListener('click', (e) => {
+ // Sistem menganalisis: Apakah rentang titik penunjuk area klik yang dipicu mendarat akurat pada class 'btn-hapus'?
+ if(e.target.classList.contains('btn-hapus')) {
+ // Jika kondisional pemicuan divalidasi tepat menyentuh target, matikan serta lenyapkan utuh hierarki elemen wadah induk penampungnya (yaitu bongkahan <li> utuh bersangkutan)
+ e.target.parentElement.remove();
+ }
+});
+```
+
+5. Selamat! Simpan paripurna hasil skrip kodemu dan jalankan di *browser*. Uji coba menyisipkan serentetan 5 atau lebih pencatatan, lantas hapus silanglah satu per satu rentang data eksperimen tersebut melalui fungsi "X" barusan.
+
+### 🔧 Troubleshooting
+
+| Masalah | Solusi |
+|---------|--------|
+| Halaman situs masih otomatis memuat ulang (*Refresh URL*) sesaat aku klik enter di input form? | Validasi secara persis pemanggilan koding `e.preventDefault()`. Adakah kesalahan tipografi pada fungsi ini atau kelupaan penyematan referensi pengiriman variabel log `(e)`? |
+| Baris elemen tugas `<li>` yang diketik tak kunjung tampil di bawah (Tidak ada pesan error)? | Pastikan untuk mengecek kesesuaian eksekusi penambahan *DOM* `appendChild()`, dan cermati kecocokan korelasi target blok variabel penampungan sasarannya. |
+
+---
+
+## 🎯 Weekly Mission
+
+### Misi: "Penyimpanan Lokal Persisten (LocalStorage)"
+
+**Deskripsi:** Aplikasi menakjubkan sistem penulisan *To-Do List* interaktif JavaScript (JS) hasil usahamu menyisakan sebuah kekurangan desain arsitektur konvensional: Apabila pengguna iseng menekan opsi memuat ulang laman (*F5 / Refresh*), memori variabel penyimpanan dinamis JS mereset dirinya ke setelan usang (*default* awal) dan data pencatatan lenyap sepenuhnya!
+
+Sistem mesin *JavaScript* menyediakan fitur (*offline API memory state*) di kompartemen kapasitas *disk browser client-side* dengan nama `localStorage`.
+
+**Tugas Mandiri:** Jelajahi ekosistem dokumentasi tentang integrasi basis lokal di situs web edukasi sekelas referensi *MDN* (Mozilla Developer Network). Temukan implementasi modul bagaimana menyalin parameter ketikan *array* data daftar log ke brankas fungsi penugasan statis eksternal (`localStorage.setItem()`) sewaktu komponen berhasil dirender masuk daftar target (*input*). Serta merancang eksekusi rutin inisialisasi pada langkah sinkronisasi ekstraksi (*rendering* awal *refresh*) guna memerintahkan mencetak ulang segala rekaman tumpukan penahanan data *history* (`localStorage.getItem()`).
+
+**Deliverables:**
+1. Tambahan alur baris skrip *logic storage local* pelengkap (`localStorage`) pada file `app.js`.
+
+**Kriteria Sukses:**
+- [ ] Berkas masukan rekaman catatan sanggup memelihara ketahanan datanya tanpa degradasi kelenyapan, sekalipun peramban *web* dialihkan navigasinya atau ditutup paksa perjalanannya lalu di-refresh ulang dari awal.
+
+---
+
+## 💡 Knowledge Check
+
+<details>
+<summary>❓ [MUDAH] Variabel penganut sintaks tipe spesifikasi pembuka (deklarasi) `const` bermakna bahwasanya?</summary>
+
+**Jawaban:** Variabel tersebut menampung referensi nilai pengikatan yang konsisten statis pasca pendefinisian mulanya; tidak akan dan terblokir secara permanen oleh sistem (*error*) bila di kemudian rute eksekusi coba dikenakan penetapan pengubahan perombakan atau modifikasi operasional referensi tipe *re-assignment*.
+</details>
+
+<details>
+<summary>❓ [MUDAH] Sebutkan peranti fungsi bawaan penelusur interaksi objek global (`console`) yang umum didesikasikan sebagai alat bantu inspeksi log data atau variabel keluaran hasil program di lingkungan tatapan panel hitam pengujian khusus pengembang (F12 *Browser Developer Tools*)?</summary>
+
+**Jawaban:** Pemanggilan metode spesifik inspektur penelusuran `console.log()`.
+</details>
+
+<details>
+<summary>❓ [SEDANG] Rantai properti eksekusi pembentuk formasi sintaks *DOM Manipulation* manakah yang diproses buat merangkai dan membangun konstruksi sebuah penciptaan elemen *HTML* secara murni maya dinamis di RAM lokal (namun sebelum komponen tersebut dicangkok merapat melampir ke hierarki sejati DOM penampil halaman)?</summary>
+
+**Jawaban:** Metode kreasi perangkaian `document.createElement('namaTagHTML')` (misal implementasi *scripting* kita merakit objek embrio struktur daftar blok fungsi parameter `li`).
+</details>
+
+<details>
+<summary>❓ [SEDANG] Saat memerintahkan pendeteksi pemindai bidikan pelacak atribut target `document.querySelector`, tanda pelengkap notasi operasional prasyarat spesifik apa yang harus mencakup huruf paling awal teks target jika atribut penentu *HTML*-nya direferensikan dalam format klasifikasi selektor kustom berafiliasi `id` (contoh pada kode HTML: `id="sandi"`)?</summary>
+
+**Jawaban:** Harus dibubuhi pelengkap identifikasi awal menggunakan karakter pembuka tag pagar/simbol *hash* `#` (Sehingga sintaks penulisannya utuh laksana `#sandi`).
+</details>
+
+<details>
+<summary>❓ [SULIT] Dalam terminologi privasi manajemen batasan lingkup pengikatan referensi (*Scope*), jabarkan klasifikasi fundamental dan jurang spesifikasi pembeda utama fungsi letak antara format variabel *Global Scope* versus pendefinisian hierarki alokasi spesifik ruang pengikat tipe *Local Scope*?</summary>
+
+**Jawaban:** Mengacu klasifikasi pada pembatas parameter eksistensi wilayah deklarasi; klasifikasi area alokasi *Local Scope* mengacu pada rentang variabel yang penataannya diapit statis merinci di dalam isolasi ruang penjara blok kurung kurawal pembatasan suatu spesifik (*Function* atau blok *loop* dsb.). Status pelacakan ini menjadikannya tidak terekspos serta ditolak operasional pemanggilannya oleh *script* di batas luar kurungan fungsi. Berbanding drastis dengan variabel beraliran *Global Scope* (kategori penataan bebas operasional lepas rute di tingkat lapis terluar *Script* akar skrip dasar HTML tanpa terikat penjara blok apa pun) yang leluasa secara universal dikelola dan diintervensi penanggilannya dari blok kompartemen eksekusi program di belahan bagian file manapun tanpa restriksi pembatasan wilayah.
+</details>
+
+---
+
+## 📋 Weekly Checklist
+
+- [ ] Saya telah memahami ekosistem pondasi interaksi pemograman web JavaScript.
+- [ ] Saya memahami logika operasional serta ruang wilayah pembatas referensi penyusunan *Functions*.
+- [ ] Saya memiliki pemahaman alur kerja dan mampu memperalat jembatan manipulasi antarmuka struktur dokumen (DOM).
+- [ ] Saya sukses menjalankan pengerjaan tugas praktik (Misi Hands-On) implementasi penyusunan logika operasional memori peladen sistem (To-Do List).
+- [ ] Saya (opsional sebagai tantangan ekstra berkelanjutan) berhasil merampungkan arsitektur penerapan daya ingat persistensi pengamanan sesi basis memori peranti (`LocalStorage`).
+
+---
+
+## 💬 Diskusi Minggu Ini
+
+1. Sesudah mengarungi peliknya konsep implementasi bahasa skrip eksekusi *JavaScript* (*Logic Tier*), bagaimana penilaian tantangan kurva pembelajarannya jika dikomparasikan ketika sekadar menyusun lapisan kaku deklaratif *HTML* (*Structure Tier*) sepekan yang silam?
+2. Andaikan sistem eksekutor JS mutlak dapat didelegasikan bebas via ketikan konsol (tanpa perantara otorisasi *server* asal), menurut pertimbangan analisis *Security*-mu, mungkinkah properti rentan peretasan struktur skrip dinamis *DOM* dimanfaatkan penyerang (peretas ) untuk menduplikasi serta membajak data lalu lintas atau token sandi sesi *session user* ketika pelaku mampu menyuntikkannya menyelinap pada barisan kodingan peramban pengunjung yang dirugikan?
+
+---
+
+## 🏆 Achievement Unlocked!
+
+```
+┌─────────────────────────────────────┐
+│ │
+│ 🎖️ FRONTEND LOGICIAN │
+│ Week 11 Complete │
+│ "Your website now has a brain." │
+│ │
+└─────────────────────────────────────┘
+```
+
+---
+
+## ➡️ Preview Minggu Depan
+
+**Minggu 12: Backend Basics — Node.js & Express**
+
+Selama sekian minggu peluncuran kurikulum ini, kamu telah intens berkutat menggarap spesifikasi *antarmuka* di sisi *Client* (*Frontend*). Skrip dan aplikasi kecil laman web-mu hidup, namun tidak menyimpan integrasi pertukaran otentik (interaksi *Database*/pemrosesan API terpusat). Minggu depan, kita akan berekspansi! Mengusut celah arsitektur operasional struktur lapis dimensi di belakang layar (*Backend*). Kamu bakal mempraktikkan bagaimana peladen *Node.js* memungkinkan bahasamu dieksekusi memfasilitasi pembangunan aplikasi terpusat untuk mendirikan kerajaan inti operasi di lapis singgasana penyaji utama (*Server-Side Architecture*)!
+
+> 🚀 *"The client asks. The server dictates."*
+
+---
+
+*📅 TISS Null Teaming · Week 11 · Day 5 · FORGE Rank*

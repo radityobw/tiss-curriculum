@@ -1,0 +1,104 @@
+# 💀 Week 18 · Day 2: Burp Suite Repeater & Intruder
+
+> **Rank**: BREACH | **Minggu ke-18**, Hari 2/5 | **Durasi**: ~45 menit
+
+📊 **Progress**: Week 18 · Day 2/5 | BREACH Rank (Minggu 4 dari 5) | Overall: 87/120 hari (72%)
+
+---
+
+## 🎯 Tujuan Hari Ini
+
+Setelah menyelesaikan materi hari ini, kamu akan mampu:
+
+1. **Mengeksploitasi** utilitas fungsional pangkalan navigasi fungsional secara manual pendaftaran luring berulang-ulang fungsional luaran luring tanpa memuat luaran rendering luaran fungsional *Browser* pendaftaran luring (*Repeater*).
+2. **Merakit** pendaftaran luaran instrumen luaran fungsional utilitas komputasi pendaftaran otomatis luaran siber penembak luaran pendaftaran tebakan fungsional luaran sandi utilitas luring (*Intruder* luaran fungsional).
+3. **Mendemonstrasikan** pemasangan pendaftaran fungsional penetapan koordinat sasaran tebak pendaftaran luaran peluru (*Payload Positions*).
+
+---
+
+## 📖 Materi Inti
+
+### Repeater: Sang Eksekutor Fungsional Manual
+
+Tatkala Anda pendaftaran fungsional mencegat pendaftaran luaran (*Intercept*) kueri pendaftaran formulir luaran *Login* luaran luring siber komputasi fungsional dan ingin mengetes pendaftaran fungsional 10 variasi kutip luaran pendaftaran injeksi fungsional *SQL Injection* luaran, apakah Anda harus mencegat luaran rujukan luring -> forward fungsional -> reload luaran browser -> ketik ulang form luaran pendaftaran -> cegat lagi luaran fungsional pendaftaran komputasi?
+Siklus fungsional pendaftaran luring tersebut membuang fungsional luaran umur operasional pendaftaran komputasi!
+
+Di pendaftaran fungsional arsitektur *Burp Suite* luaran komputasi, Anda cukup mencegat fungsional luaran pendaftaran kueri SATU KALI fungsional luaran luring, lalu klik kanan fungsional lantas pilih rujukan fungsional luaran komputasi pendaftaran **"Send to Repeater (Ctrl+R)"** luaran fungsional luring siber.
+Di dalam luaran fungsional tab pendaftaran utilitas **Repeater**, Anda bebas mengubah-ubah luaran pendaftaran kueri luaran fungsional sesuka hati pendaftaran luaran fungsional pendaftaran luring, lalu mengeklik navigasi tombol fungsional *Send* luaran pendaftaran, dan seketika fungsional pangkalan Server membalas luaran di layar sebelah kanan fungsional luaran (*Response* pendaftaran) tanpa kamu perlu luaran fungsional pendaftaran menyentuh antarmuka fungsional *Browser* luaran fungsional sama sekali luaran fungsional komputasi pendaftaran!
+
+Repeater pendaftaran luaran fungsional adalah surga luaran fungsional bagi penganalisis peretas yang ingin luaran fungsional mendelegasikan bereksperimen mencoba luaran fungsional eksploitasi luaran *XSS, luaran IDOR, fungsional luaran pendaftaran SQLi* pendaftaran luaran fungsional baris pendaftaran fungsional demi baris pendaftaran luaran secara meraba, lantas mengamati luaran pendaftaran ralat respons fungsional dengan ketelitian pendaftaran fungsional presisi fungsional luaran.
+
+### Intruder: Instrumen Otomasi Eksploitasi
+
+Bila pendaftaran luaran fungsional *Repeater* luaran pendaftaran adalah fungsional instrumen luaran siber manual fungsional pendaftaran, maka fungsional pendaftaran **Burp Intruder** luaran fungsional (Ctrl+I fungsional) adalah arsitektur luaran fungsional instrumen pelontar luaran utilitas siber komputasi otomatis *Brute Force* yang fungsional mendelegasikan luaran pendaftaran fungsional penembakan jutaan pendaftaran luaran amunisi peluru secara luaran buta otomatis luaran fungsional pendaftaran!
+
+Digunakan luaran pendaftaran fungsional untuk pendaftaran fungsional: *Brute Force fungsional luaran Sandi fungsional, Meraba luaran pendaftaran pendaftaran iteratif fungsional IDOR fungsional pendaftaran luaran (dari rentang luaran fungsional ID 1 sampai pendaftaran 10.000 luaran), Pencarian fungsional luaran iterasi fungsional Fuzzing fungsional pendaftaran luring URL luaran*.
+
+**Anatomi Arsitektural fungsional luaran Instrumen pendaftaran Intruder:**
+1. **Positions fungsional (Sasaran pendaftaran luaran Koordinat Tembak):** Anda luaran mencegat paket fungsional kueri pendaftaran luaran `password=admin`. Anda memblok luaran pendaftaran parameter fungsional luaran kata "admin", lalu fungsional luaran menandai pendaftaran rujukan fungsional *Add §*. Jadinya fungsional luaran pendaftaran `password=§admin§` luaran. Tanda luaran pendaftaran fungsional luaran `§` adalah penanda fungsional luaran pendaftaran titik lokasi luaran fungsional pendaftaran penembakan luring fungsional kamus peluru pendaftaran luring!
+2. **Payloads fungsional luaran pendaftaran (Amunisi rujukan):** Di sinilah fungsional luaran pendaftaran Anda luaran menuangkan pendaftaran luring seember luaran luaran fungsional daftar fungsional luaran pendaftaran kata luaran sandi luaran fungsional bocor pendaftaran fungsional luaran (*Wordlists* luaran pendaftaran) semacam luaran pendaftaran fungsional arsip fungsional luaran *rockyou.txt* pendaftaran fungsional. 
+3. Tekan pendaftaran fungsional luaran navigasi **Start Attack!** luaran fungsional pendaftaran Burp akan fungsional luaran menembakkan kata pertama pendaftaran, mencatat pendaftaran respon fungsional luaran, menembakkan fungsional luaran kata kedua luaran, dst pendaftaran! Peretas penganalisis tinggal fungsional luaran mendelegasikan pencarian luaran fungsional pendaftaran luring siber serangan peluru luaran mana yang fungsional menghasilkan luaran pendaftaran status luaran pendaftaran *302 Redirect* atau fungsional pendaftaran luaran memiliki fungsional luaran ukuran panjang luaran pendaftaran (*Length* fungsional) yang paling fungsional luaran pendaftaran berbeda dari luaran rincian fungsional peluru lainnya luaran pendaftaran fungsional luring siber komputasi.
+
+---
+
+## 🧪 Mini Lab
+
+**Durasi**: ~15 menit
+
+Ayo rakit laras luaran pendaftaran instrumen bidikan gempuran fungsional luaran pendaftaran komputasi siber *Burp Intruder* fungsional luaran pendaftaran luring siber!
+
+1. Nyalakan luaran tab pendaftaran *Proxy*, lantas fungsional *Intercept* luaran sembarang fungsional pendaftaran formulir laman fungsional luaran pendaftaran *Login* luaran di mesin uji fungsional luaran siber pendaftaran. (Atau luaran fungsional luaran *Login* luaran pendaftaran fungsional TryHackMe luaran).
+2. Temukan bodi luaran pendaftaran luaran fungsional fungsional `username=hacker&password=123`.
+3. Klik kanan luaran fungsional pendaftaran -> **Send to Intruder** luaran pendaftaran. Buka tab luaran pendaftaran fungsional *Intruder*.
+4. Di pendaftaran tab luaran fungsional pendaftaran fungsional *Positions* pendaftaran, bersihkan fungsional sasaran (tombol Clear luaran fungsional pendaftaran §), lalu luaran pendaftaran blok parameter fungsional luaran pendaftaran luaran luaran angka pendaftaran `123`, dan luaran fungsional klik pendaftaran luaran navigasi fungsional **Add §** pendaftaran. Laras luaran fungsional pendaftaran tembakanmu terpusat fungsional luaran pendaftaran fungsional di pendaftaran sandi!
+5. Pindah luaran fungsional luaran pendaftaran ke luaran tab *Payloads* luaran pendaftaran fungsional luring. Ketikkan manual 5 pendaftaran luaran fungsional sandi pendaftaran fungsional peluru siber luaran fungsional `rahasia` luaran pendaftaran luaran, fungsional `qwerty` luaran, luaran `password` pendaftaran, fungsional `123` luaran fungsional, pendaftaran `admin` luaran fungsional.
+6. Klik luaran pendaftaran navigasi tombol fungsional luaran fungsional **Start Attack** luaran. Layar jendela fungsional pengujian luaran muncul fungsional pendaftaran luaran fungsional membombardir 5 luaran pendaftaran tembakan pendaftaran fungsional luaran beruntun luaran fungsional luring pendaftaran.
+7. Tatap luaran luaran fungsional pendaftaran kolom fungsional pendaftaran *Length* luaran fungsional (Ukuran Balasan pendaftaran luaran luring). Amati luaran fungsional luaran fungsional apakah ada pendaftaran luaran 1 fungsional luaran kargo peluru luaran yang fungsional pendaftaran ukurannya fungsional luaran membesar atau fungsional pendaftaran luaran luaran fungsional statusnya fungsional pendaftaran melesat pendaftaran menjadi pendaftaran fungsional luaran `302`? pendaftaran luaran fungsional Jika luaran fungsional iya luaran pendaftaran fungsional, luaran fungsional pendaftaran itu sandi yang valid luaran pendaftaran fungsional luring fungsional sukses luaran fungsional pendaftaran luaran menembus luaran fungsional pendaftaran siber komputasi!
+
+---
+
+## 💡 Quiz Kilat
+
+<details>
+<summary>❓ Menguak fungsional luaran instrumen pendaftaran pelatuk manual siber luaran, apakah luaran fungsional julukan pendaftaran tab pendaftaran luaran fungsional di Burp Suite fungsional yang pendaftaran luaran memampukan pendaftaran agen peretas memanipulasi luaran pendaftaran seraya fungsional menembakkan luaran pendaftaran satu fungsional <i>Request</i> luaran berulang-ulang luaran fungsional pendaftaran luring tanpa pendaftaran henti fungsional luaran pendaftaran komputasi luring siber (tanpa butuh fungsional luaran pendaftaran pemanggilan <i>Browser</i> fungsional)?</summary>
+
+**Jawaban:** Tab *Repeater* luaran fungsional pendaftaran luring siber komputasi.
+</details>
+
+<details>
+<summary>❓ Tatkala meluncurkan fungsional luaran serbuan pendaftaran eksploitasi luaran instrumen otomasi <i>Burp Intruder</i> luaran fungsional pendaftaran, sepasang luaran fungsional simbol apakah pendaftaran luaran fungsional (`§...§` fungsional pendaftaran) yang pendaftaran digunakan fungsional sang luaran fungsional sensor pendaftaran siber demi menandai luaran pendaftaran luaran menetapkan luaran letak titik pendaftaran fungsional sasaran luaran pendaftaran fungsional peluru Payload luaran pendaftaran fungsional?</summary>
+
+**Jawaban:** Simbol penanda fungsional luaran luaran (Section Sign) fungsional `§` luaran (digunakan fungsional pendaftaran membalut parameter luaran `§target§` pendaftaran fungsional luaran).
+</details>
+
+<details>
+<summary>❓ Manakala pendaftaran fungsional sang luaran fungsional luaran penganalisis menembakkan luaran serangan fungsional peluru ribuan pendaftaran kamus luaran fungsional pendaftaran <i>Intruder</i> ke pendaftaran luaran pendaftaran pintu fungsional pendaftaran luaran gerbang fungsional *Login*, indikator visual parameter fungsional luaran pendaftaran apakah (di luaran tabel hasil pendaftaran *Intruder* luaran fungsional) yang pendaftaran lumrah dilirik fungsional peretas luaran pendaftaran demi luaran fungsional pendaftaran meraba fungsional hantaman peluru pendaftaran mana fungsional luaran yang luaran fungsional pendaftaran fungsional terbukti fungsional valid/berhasil luaran fungsional masuk luaran pendaftaran?</summary>
+
+**Jawaban:** Memilah dan fungsional menatap pendaftaran fungsional luaran pendaftaran perbedaan luaran angka fungsional pada kolom pendaftaran luaran *Length* (panjang luaran pendaftaran fungsional luring siber response fungsional) atau pendaftaran fungsional kolom luaran fungsional *Status* (misal fungsional luaran serangan luaran fungsional kode status HTTP pendaftaran fungsional dari luaran pendaftaran 200 berubah menjadi pendaftaran luaran luaran 302). Peluru pendaftaran luaran fungsional pendaftaran luaran yang berhasil luaran fungsional lumrahnya luaran mencetak *Length* luaran fungsional yang jauh fungsional berbeda fungsional luaran pendaftaran wujudnya pendaftaran fungsional luaran.
+</details>
+
+---
+
+## 📋 Checklist Hari Ini
+
+- [ ] Saya menyerap pendaftaran fungsional dominasi pendaftaran tembakan fungsional luaran pendaftaran luaran luaran presisi manual luaran *Repeater*
+- [ ] Saya fasih luaran pendaftaran merangkai luaran pendaftaran letak fungsional laras luaran bidikan fungsional pendaftaran luaran `§` luaran di markas fungsional pendaftaran luaran *Intruder*
+- [ ] Saya cakap menuangkan luaran fungsional pendaftaran pendaftaran kargo pendaftaran amunisi daftar fungsional luaran pendaftaran *Payloads*
+- [ ] Saya paham memilah luaran pendaftaran luaran fungsional rentetan fungsional serangan pendaftaran luaran peluru hasil pendaftaran luaran fungsional *Brute Force*
+- [ ] Saya telah luaran pendaftaran fungsional menjawab seluruh pendaftaran ulasan luaran fungsional fungsional *quiz kilat* luaran
+
+---
+
+## 🔗 Resources
+
+- [PortSwigger Burp Intruder Docs](https://portswigger.net/burp/documentation/desktop/tools/intruder) — Lumbung pendaftaran fungsional referensi taktik pendaftaran luaran pendaftaran luaran fungsional menyasar pendaftaran IP fungsional amunisi fungsional pendaftaran sandi *Intruder* pendaftaran luaran siber komputasi luaran fungsional.
+
+---
+
+## ➡️ Besok
+
+**Day 3: Burp Suite Scanner & Extensions** — Lelah fungsional menatap luaran pendaftaran layar fungsional *Repeater* pendaftaran luaran luaran fungsional fungsional luring menembak fungsional eksploitasi luaran *XSS* fungsional pendaftaran manual luaran? Esok pendaftaran fungsional harinya luaran, rasakan luaran fungsional pendaftaran fungsional kemewahan pendaftaran luaran versi fungsional korporat fungsional luaran! Kenalkan pelacak pendaftaran fungsional luaran otomatis fungsional **Burp Scanner** luaran, yang fungsional mampu membabat pendaftaran luaran fungsional luaran pendaftaran fungsional seluruh kerentanan pendaftaran situs luaran fungsional sambil pendaftaran luaran luaran pendaftaran kamu pendaftaran tidur! Serta pendaftaran luaran fungsional fungsional pelajari pemasangan pendaftaran fungsional luaran *Extensions / BApp Store* luaran (Plugin luaran pendaftaran fungsional) untuk mengubah fungsional luaran pendaftaran fungsional Burp-mu menjadi pendaftaran fungsional luaran pisau Swiss Army pendaftaran instrumen insiden pendaftaran sejati fungsional luaran pendaftaran komputasi fungsional luaran siber!
+
+---
+
+*📅 TISS Null Teaming · Week 18 · Day 2 · BREACH Rank*

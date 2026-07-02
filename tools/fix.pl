@@ -1,0 +1,27 @@
+#!/usr/bin/perl -p
+s/(?<!\bkeamanan )(?<!\bancaman )(?<!\binsiden )\bsiber\b\s*//gi;
+s/\brujukan\b\s*//gi;
+s/\bsang\b\s*//gi;
+s/\btatkala\b/ketika/gi;
+s/\bmanakala\b/ketika/gi;
+s/\bserbuan\b/serangan/gi;
+s/\bgempuran\b/serangan/gi;
+s/\bhantaman\b/percobaan/gi;
+s/\bpelatuk\b/pemicu/gi;
+s/\bamunisi\b/payload/gi;
+s/\bkargo\b/payload/gi;
+s/\blaras bidikan\b/target/gi;
+s/\blaras tembakanmu\b/targetmu/gi;
+s/\blaras\b/target/gi;
+s/\bmembombardir\b/mengirimkan/gi;
+s/\bmenembakkan\b/mengirimkan/gi;
+s/\bpenembakan\b/pengiriman/gi;
+s/\btembakan\b/serangan/gi;
+s/\bmenembus\b/masuk/gi;
+s/\bmarkas\b/fitur/gi;
+s/\bpintu gerbang\b/halaman/gi;
+s/\bmenguak\b/membuka/gi;
+s/\blumbung\b/kumpulan/gi;
+s/\bpelontar\b/alat/gi;
+s/\bagen peretas\b/pentester/gi;
+s/\bperetas penganalisis\b/pentester/gi;
