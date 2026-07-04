@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Jika sebuah direktori diatur hak aksesnya menggunakan parameter oktal `777`, apa implikasi keamanan fatal dari hal tersebut?
+**Question:** Jika sebuah direktori diatur hak aksesnya menggunakan parameter oktal `777`, apa bahayanya dari segi keamanan?
 - [ ] A. File di dalam direktori akan otomatis disembunyikan selama 7 hari kalender.
 - [ ] B. Terminal akan memblokir semua perintah dan sistem akan terkunci (*brick*).
 - [x] C. Ia memberikan hak penuh (Baca, Tulis, dan Eksekusi) kepada semua pengguna sistem (*Others* / *Everyone*), memungkinkan siapa saja untuk memodifikasi, mengeksekusi, atau menghapus file tanpa ada pembatasan keamanan.
@@ -27,7 +27,7 @@ total_questions: 5
 ### Q4
 **Type:** Short Answer
 **Question:** Dalam representasi *string* perizinan seperti `-rwxr-xr--`, sistem membaginya menjadi 3 kategori pengguna (*entities*). Sebutkan ketiga kategori tersebut secara berurutan dari kiri ke kanan!
-**Answer:** User (Pemilik file), Group (Anggota grup afiliasi), dan Others (Pengguna lain di sistem).
+**Answer:** User (Pemilik file), Group (Anggota grup), dan Others (Pengguna lain di sistem).
 
 ### Q5
 **Type:** Short Answer

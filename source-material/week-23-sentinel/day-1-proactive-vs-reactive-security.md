@@ -10,36 +10,37 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membedakan** antara paradigma keamanan reaktif dan keamanan proaktif (Threat Hunting).
-2. **Memahami** pendekatan berbasis hipotesis (*Hypothesis-Driven Approach*).
-3. **Mengidentifikasi** pentingnya kapabilitas analitik manusia (*Human Element*) dalam berburu ancaman.
+1. **Membedakan** antara paradigma keamanan pasif (*Reactive Security*) dan keamanan aktif (*Proactive Security / Threat Hunting*).
+2. **Memahami** konsep berburu ancaman menggunakan pendekatan hipotesis (*Hypothesis-Driven Approach*).
+3. **Mengenali** peran penting insting analitis analis (elemen manusia) dalam mendeteksi anomali.
 
 ---
 
 ## 📖 Materi Inti
 
-### Keterbatasan Sistem Otomatis: Paradigma Reaktif vs Proaktif
+### Keterbatasan Keamanan Reaktif
 
-Selama beberapa minggu terakhir, kamu telah mempelajari konstruksi sistem keamanan terpusat. Kamu mengonfigurasi *Splunk*, menetapkan parameter *Alerts*, dan mendelegasikan *Suricata* sebagai sensor pencegahan. Pendekatan ini diklasifikasikan sebagai **Reactive Security (Keamanan Reaktif)**. Analis dalam mode ini cenderung menunggu hingga sistem menghasilkan peringatan, barulah kemudian merespons anomali tersebut.
+Pada modul-modul sebelumnya, kamu telah mengonfigurasi *Splunk* untuk membunyikan *Alerts* dan memasang *Suricata* untuk memblokir serangan secara otomatis. Model pertahanan yang sepenuhnya bergantung pada sensor keamanan untuk memberitahu jika ada bahaya disebut sebagai **Reactive Security (Keamanan Reaktif)**. Analis di sini bertindak pasif menunggu peringatan muncul.
 
-Namun, dalam skenario operasional yang nyata, kelompok peretas tingkat lanjut *(Advanced Persistent Threats / APT)* dirancang untuk menghindari sensor peringatan tersebut. Mereka kerap mengeksploitasi fungsi bawaan sistem operasi yang sah (*Living off the Land*), yang sangat sulit dibedakan oleh algoritma SIEM dari aktivitas administrator normal.
+Masalahnya, kelompok peretas tingkat tinggi (*Advanced Persistent Threats* / APT) sering menggunakan teknik mutakhir yang tidak memicu sensor standar. Mereka seringkali membajak alat atau perintah sistem administrator yang sah (*Living off the Land*). Akibatnya, SIEM akan menganggap lalu lintas tersebut normal dan tidak membunyikan peringatan.
 
-Untuk mengantisipasi celah tersebut, industri keamanan informasi menerapkan **Proactive Security (Keamanan Proaktif)** melalui disiplin ilmu **Threat Hunting (Perburuan Ancaman)**.
+Oleh karena itu, organisasi tingkat lanjut beralih mengadopsi **Proactive Security (Keamanan Proaktif)** melalui praktik **Threat Hunting**.
 
 ### Apa itu Threat Hunting?
 
-**Threat Hunting** adalah proses investigasi aktif dan berulang (Iteratif) yang dilakukan oleh analis keamanan menyusuri jaringan infrastruktur untuk mendeteksi serta mengisolasi ancaman siber persisten yang sukses menghindari pengamanan otomatis (*SIEM/IDS*).
-Di dalam proses ini, *Human Element* (kapabilitas naluri, pengalaman, dan intuisi logis analis) tidak bisa sepenuhnya digantikan oleh otomasi kecerdasan buatan (AI). Algoritma andal dalam memproses jutaan pola data, namun spesialis manusia lebih andal dalam merangkai skenario taktis eksploitasi.
+**Threat Hunting (Perburuan Ancaman)** adalah kegiatan investigasi secara proaktif dan iteratif mencari jejak serangan siber yang berhasil menyusup lolos dari sistem keamanan otomatis.
+
+Di sinilah letak kelemahan Kecerdasan Buatan (AI) dan otomasi. Otomasi sistem itu kaku; mereka mendeteksi berdasarkan pola *Rules* lama. Sebaliknya, analis manusia memiliki insting deduktif dan analisis kontekstual untuk merasakan ada "sesuatu yang salah" meskipun sistem tidak membunyikan alarm.
 
 ### Hypothesis-Driven Approach (Pendekatan Berbasis Hipotesis)
 
-Seorang *Threat Hunter* tidak melakukan penelusuran data log secara acak. Mereka bekerja menggunakan metodologi terstruktur: **Pendekatan Berbasis Hipotesis (Hypothesis-Driven Approach)**.
+Seorang *Threat Hunter* tidak akan melakukan pencarian data log secara membabi-buta (*blind search*). Mereka menggunakan kerangka metodologi yang disebut **Pendekatan Berbasis Hipotesis (*Hypothesis-Driven Approach*)**.
 
-Tahapan implementasi investigasi perburuan:
-1. **Perumusan Hipotesis:** Menyusun kerangka dugaan analitik. Misal: *"Terdapat publikasi kerentanan baru pada layanan RDP Windows (CVE-2026-XYZ). Hipotesis saya adalah kelompok APT mungkin telah mengeksploitasi celah ini pada server segmen Finance kita minggu ini."*
-2. **Proses Investigasi:** Berbekal hipotesis, analis mengekstraksi data *Splunk* secara spesifik pada log *Server Finance*, memfilter pencarian ke rutinitas *Event ID 4624 (Logon RDP)* yang terjadi di luar jam kerja operasional dalam periode satu minggu terakhir.
-3. **Membongkar Pola (Uncovering Patterns):** Proses pengujian hipotesis untuk menemukan korelasi anomali, seperti deteksi alamat IP eksternal yang mencurigakan.
-4. **Tahap Respons (Triage & Analytics):** Jika valid, analis segera memprakarsai protokol eskalasi tanggap insiden dan memperbarui parameter *Rule SIEM* operasional agar di masa mendatang, skenario tersebut dapat terdeteksi secara otomatis (Mentransformasi temuan *Proaktif* menjadi pertahanan *Reaktif*).
+Tahapannya meliputi:
+1. **Membuat Hipotesis:** Analis menyusun dugaan logis berdasarkan ancaman terkini. Misal: *"Ada laporan serangan Ransomware terbaru (Jenis X) yang memanfaatkan layanan Remote Desktop (RDP). Hipotesis saya, sistem RDP di server Keuangan kita mungkin telah diuji coba ditembus pada akhir pekan lalu."*
+2. **Investigasi & Berburu:** Berbekal dugaan spesifik, analis mencari log *Splunk* khusus pada *Event ID 4624 (Logon Success)* untuk protokol RDP pada server Keuangan, spesifik di hari Sabtu dan Minggu malam.
+3. **Menemukan Pola:** Analis mengevaluasi log dan mencari korelasi anomali, contohnya IP asing yang sering terhubung.
+4. **Triage & Respons:** Jika dugaan tersebut terbukti benar dan terjadi serangan, analis menjalankan tanggap insiden dan segera membuatkan *Rule SIEM* baru untuk IP/Taktik tersebut (Mengubah metode perlindungan dari *Proaktif* menjadi otomatis *Reaktif*).
 
 ---
 
@@ -47,58 +48,57 @@ Tahapan implementasi investigasi perburuan:
 
 **Durasi**: ~10 menit
 
-Mari menyusun rancangan Hipotesis Perburuan (Threat Hunting)!
+Mari merancang sebuah hipotesis perburuan ancaman (*Threat Hunting Hypothesis*)!
 
-1. Siapkan aplikasi pengolah teks (Notepad).
-2. Asumsikan Anda menerima laporan intelijen : *"Grup peretas 'DarkBear' baru-baru ini menyerang institusi finansial regional melalui metode lampiran email PDF berformat khusus. Ketika file tersebut dibuka, secara rahasia ia akan mengeksekusi terminal `powershell.exe` di latar belakang sistem Windows untuk memuat malware."*
-3. **Misi Operasional:** Rumuskan satu arsitektur Hipotesis Perburuan untuk mengamankan institusi perusahaan Anda!
-4. **Perumusan Hipotesis Taktis:**
- *"Berdasarkan tren serangan terkini, hipotesis awal saya menyatakan bahwa grup DarkBear kemungkinan sedang menguji coba vektor serangan yang sama ke jaringan perusahaan. Saya akan memburu log penciptaan proses (Event ID 4688) untuk menginspeksi kejadian di mana aplikasi pembaca PDF (Acrobat.exe) bertindak sebagai proses induk (Parent Process) yang secara anomali melahirkan proses `powershell.exe` pada infrastruktur Endpoint pegawai (User)."*
-5. Implementasi selesai! Kini Anda telah bertransisi dari fase pasif menunggu peringatan ke fase proaktif dalam merumuskan penyaringan ancaman keamanan secara mandiri.
+1. **Skenario Laporan Intelijen:** Sebuah grup peretas 'DarkBear' diketahui mengirimkan email (*phishing*) berisi *file* PDF jebakan. Ketika PDF itu dibuka oleh pegawai, *file* itu diam-diam akan mengeksekusi terminal `powershell.exe` di latar belakang (tanpa disadari pengguna) untuk mengunduh *malware*.
+2. **Rencana Operasional:** Rumuskan hipotesis taktis untuk memburu ancaman ini di jaringan Anda!
+3. **Hipotesis yang Dihasilkan Analis:**
+   *"Berdasarkan intelijen grup DarkBear, hipotesis saya adalah pegawai kita mungkin telah membuka PDF jahat tersebut. Saya akan mencari log aktivitas pembuatan proses Windows (Event ID 4688). Saya akan memfilter secara spesifik kejadian anomali di mana aplikasi pembaca PDF (`Acrobat.exe` atau `Foxit.exe`) bertindak sebagai proses induk (Parent Process) yang anehnya melahirkan anak proses berbentuk terminal `powershell.exe`."*
+4. Anda baru saja melakukan *Threat Hunting* pola pikir! Anda mendeteksi potensi ancaman logis jauh sebelum SIEM mengetahui *malware* tersebut adalah ancaman.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membahas filosofi operasional keamanan siber, apa diferensiasi antara implementasi <i>Reactive Security</i> dengan <i>Proactive Security (Threat Hunting)</i>?</summary>
+<summary>❓ Apa perbedaan mendasar dalam alur kerja antara <i>Reactive Security</i> dengan <i>Proactive Security (Threat Hunting)</i>?</summary>
 
-**Jawaban:** *Reactive Security* bertindak secara pasif, bergantung penuh pada mesin sensor (SIEM/IDS) untuk membangkitkan peringatan (*Alert*) sebelum tim keamanan mengambil tindakan mitigasi. Sebaliknya, *Proactive Security* berpusat pada spesialis manusia yang secara aktif, berkala, dan iteratif menyusuri data operasional jaringan (tanpa pemicu peringatan otomatis) guna melacak ancaman siber canggih yang berhasil lolos dari sensor pengawasan standar.
+**Jawaban:** Keamanan Reaktif bersifat pasif, Analis menunggu peringatan (*Alert*) dari SIEM/IDS sebelum melakukan investigasi. Keamanan Proaktif bersifat proaktif, Analis secara aktif "berburu" melalui data log secara mandiri menggunakan asumsi dugaan serangan, tanpa menunggu sistem membunyikan alarm.
 </details>
 
 <details>
-<summary>❓ Dalam disiplin ilmu perburuan ancaman keamanan, mengapa peran dominan kapabilitas manusia (Human Element) dipandang belum dapat sepenuhnya disubstitusi oleh otomatisasi sistem atau kecerdasan buatan (AI)?</summary>
+<summary>❓ Mengapa peran insting dan logika manusia (<i>Human Element</i>) sangat krusial dalam praktik <i>Threat Hunting</i> dibandingkan sekadar mengandalkan mesin SIEM/AI?</summary>
 
-**Jawaban:** sistem keamanan (termasuk AI) dirancang untuk merespons parameter dan pola perilaku yang telah diprogramkan sebelumnya, sehingga efektif namun relatif kaku. Di sisi lain, peretas tingkat lanjut (*Advanced Persistent Threats/APT*) secara konstan meracik skenario modifikasi serangan (Misal: eksploitasi *Zero-day*). Mengatasi inovasi penyerangan ini membutuhkan intuisi kritis, analisis kontekstual, dan insting logis deduktif dari seorang analis (*Threat Hunter*).
+**Jawaban:** Mesin pengaman otomatis dan AI beroperasi secara kaku menggunakan pola serangan (*Rules* / *Signatures*) yang sudah diketahui sebelumnya. Peretas APT menggunakan taktik baru atau taktik "normal" yang disalahgunakan untuk mengelabui deteksi otomatis. Analis manusia dapat menggunakan intuisi analitis, pemahaman konteks bisnis, dan pemikiran lateral untuk mendeteksi anomali perilaku sistem yang tidak terdeteksi mesin.
 </details>
 
 <details>
-<summary>❓ Pada perancangan teknikal metodologi perburuan, terminologi apakah yang merujuk kepada prosedur di mana analis tidak melakukan inspeksi data secara acak, melainkan berpedoman pada rumusan skenario dugaan terarah (misal: "Mengasumsikan peretas mengeksploitasi rute VPN selama masa pemeliharaan sistem")?</summary>
+<summary>❓ Jika Analis SOC mulai mencari log secara terarah berdasarkan asumsi: "Saya curiga *hacker* mengeksploitasi akses VPN di luar jam kerja minggu lalu", pendekatan metodologi pencarian apa yang sedang diterapkannya?</summary>
 
-**Jawaban:** Pendekatan Berbasis Hipotesis (Hypothesis-Driven Approach).
+**Jawaban:** Pendekatan Berbasis Hipotesis (*Hypothesis-Driven Approach*).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami keterbatasan solusi *Reactive Security*.
-- [ ] Saya fasih merumuskan kerangka *Hypothesis-Driven Approach*.
-- [ ] Saya menguasai pemahaman dasar penelusuran ancaman *APT*.
-- [ ] Saya mengerti fungsi krusial insting logis *Human Element*.
+- [ ] Saya memahami keterbatasan solusi otomasi pasif (*Reactive Security*).
+- [ ] Saya mengetahui alur kerja perburuan ancaman proaktif (*Proactive Security / Threat Hunting*).
+- [ ] Saya dapat merumuskan skenario metodologi pencarian berbasis hipotesis (*Hypothesis-Driven Approach*).
+- [ ] Saya memahami mengapa keunggulan intuisi manusia diperlukan dalam menemukan peretas mahir.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [CrowdStrike: What is Threat Hunting?](https://www.crowdstrike.com/cybersecurity-101/threat-hunting/) — Referensi komprehensif mengenai konsep fundamental dan filosofi praktik operasional perlindungan *Threat Hunting*.
+- [CrowdStrike: What is Threat Hunting?](https://www.crowdstrike.com/cybersecurity-101/threat-hunting/) — Referensi komprehensif mengenai konsep fundamental dan filosofi praktik operasional *Threat Hunting*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 2: MITRE ATT&CK Framework** — Menyusun hipotesis operasional yang relevan tidak dapat dilakukan tanpa merujuk pada standar data taktik intrusi keamanan komprehensif. Esok hari, operasional pelatihan akan beralih pada taksonomi basis pengetahuan intelijen ancaman global: **MITRE ATT&CK Framework**. Materi tersebut akan mendemonstrasikan perancangan pemetaan anatomi perilaku (Tactics, Techniques, Procedures / TTPs) serta peracikan matriks skenario pertahanan melalui platform *ATT&CK Navigator*.
+**Day 2: MITRE ATT&CK Framework** — Menyusun hipotesis perburuan yang akurat membutuhkan acuan taktik peretas standar global. Besok, kita akan membedah salah satu dokumen intelijen terpenting di industri keamanan siber: **MITRE ATT&CK Framework**. Anda akan belajar mengenali tahapan taktis manuver penyerang (*Tactics, Techniques, and Procedures* - TTPs) dan bagaimana memetakannya di *ATT&CK Navigator*.
 
 ---
 

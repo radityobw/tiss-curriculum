@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Terkait implementasi penanganan insiden korporasi, apa fungsi utama dari taktik mitigasi *Triage (Pemilahan)* saat analis SOC dihadapkan dengan ribuan peringatan *SIEM Splunk*?
-- [x] A. Karena tim SOC memiliki keterbatasan waktu investigasi, *Triage* difungsikan untuk memilah dan menetapkan tingkat keparahan (*Severity*) guna memprioritaskan penyaringan peringatan (*Alerts*) mana yang paling kritis (Misalnya deteksi pergerakan *Lateral Movement*) untuk diselidiki terlebih dahulu.
-- [ ] B. *Triage* difungsikan untuk mengeksekusi penghapusan log secara otomatis agar batas ambang kapasitas penyimpanan data *SIEM* tidak melampaui limit.
-- [ ] C. *Triage* dikhususkan semata-mata untuk merancang mitigasi isolasi infeksi penyebaran *Ransomware*.
-- [ ] D. Tidak terdapat kegunaan khusus; fungsi *Triage* serupa identik secara dengan *Forensic Imaging*.
+**Question:** Terkait penanganan insiden, apa fungsi utama dari aktivitas *Triage (Pemilahan)* saat analis dihadapkan dengan ribuan peringatan (*Alerts*) dari Splunk?
+- [x] A. Karena waktu investigasi terbatas, *Triage* berfungsi untuk memilah dan menentukan tingkat ancaman (*Severity*) agar analis memprioritaskan peringatan yang paling kritis (misal: pergerakan *Lateral Movement*) untuk diselidiki terlebih dahulu.
+- [ ] B. *Triage* berfungsi untuk menghapus log secara otomatis agar kapasitas *SIEM* tidak penuh.
+- [ ] C. *Triage* dikhususkan semata-mata untuk mengisolasi penyebaran *Ransomware*.
+- [ ] D. Tidak ada; fungsi *Triage* sama persis dengan *Forensic Imaging*.
 
 ### Q2
 **Type:** True/False
-**Question:** Di ekosistem *Incident Response*, penetapan *Scope (Ruang Lingkup)* sejak awal insiden merupakan hal fundamental dikarenakan parameter ini mendefinisikan batasan jumlah sistem yang terekspos. Dengan demikian, tim keamanan tak perlu memutuskan akses internet di seluruh struktur jaringan instalasi bisnis, melainkan eksklusif pada segmen IP perangkat yang berstatus termuat dalam *Scope*.
+**Question:** Dalam *Incident Response*, penetapan *Scope (Ruang Lingkup)* sejak awal insiden sangat penting karena menentukan batas area infeksi. Dengan demikian, tim keamanan tidak perlu memutus internet di seluruh perusahaan, melainkan cukup mengisolasi jaringan server yang termasuk di dalam *Scope* tersebut saja.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Mengacu pada kerangka penanggulangan, fase apakah (Berawalan huruf I) dalam struktur *PICERL* yang bertugas memvalidasi *Incident Briefing* (Laporan awal) dan memulai *Triage*?
-**Answer:** Fase Identification (Tahap Identifikasi).
+**Question:** Mengacu pada kerangka penanganan insiden PICERL, fase apakah yang bertugas menerima laporan awal (*Incident Briefing*) dan memvalidasi kebenaran sebuah anomali?
+**Answer:** Fase Identification (Identifikasi).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Saat analis keamanan menerima laporan eskalasi darurat (Contoh : "Server data utama instansi tak responsif"), mengapa instruksi isolasi mutlak pencabutan kabel tenaga dilarang dilakukan sebelum validasi?
-**Answer:** Karena prosedur penanganan insiden mewajibkan eksekusi validasi fungsi *Identification (Validasi Insiden/Scope)* dan *Triage* secara untuk memvalidasi konfirmasi insiden (*True Positive*) ataukah itu hanya malfungsi jaringan standar (Indikasi fungsi *False Positive*).
+**Question:** Saat analis keamanan menerima laporan darurat awal (contoh: "Server tiba-tiba mati"), mengapa analis dilarang untuk langsung mencabut kabel daya *server* sebelum melakukan validasi log?
+**Answer:** Karena analis harus melakukan *Triage* dan *Identification* untuk memastikan apakah itu murni insiden serangan siber (*True Positive*) atau hanya kegagalan teknis perangkat keras/jaringan (*False Positive*). Mencabut daya secara acak dapat merusak barang bukti di memori (RAM).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Dalam laporan investigasi kerentanan keamanan siber, terminologi teknis apa (Berawalan huruf E) yang mendefinisikan vektor akses sistem atau rute spesifik tempat aktor peretas pertama kali berhasil meretas perlindungan korporat?
-**Answer:** Entry Point (Atau Titik Masuk infiltrasi fungsi).
+**Question:** Dalam laporan investigasi, apa istilah teknis (berawalan huruf E) yang mendeskripsikan titik atau pintu masuk pertama kali peretas berhasil menyusup ke dalam jaringan?
+**Answer:** Entry Point.

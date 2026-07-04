@@ -10,36 +10,39 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membedakan** antara klasifikasi penelusuran bukti *(Artifacts)* pada sistem Memori *(RAM)* berbanding infrastruktur Media Penyimpanan Disk *(Non-Volatile)*.
-2. **Memahami** batasan ketersediaan waktu ekstraksi berdasarkan tingkat stabilitas penyimpanan *Order of Volatility*.
-3. **Mengenali** pengoperasian *Volatility Framework* dalam pembedahan *Memory Forensics* infrastruktur peladen.
+1. **Membedakan** antara investigasi bukti pada memori sementara (*RAM*) dan media penyimpanan permanen (*Disk/Non-Volatile*).
+2. **Memahami** prinsip *Order of Volatility* dalam memprioritaskan ekstraksi bukti.
+3. **Mengenali** penggunaan *Volatility Framework* untuk menganalisis temuan *Memory Forensics*.
 
 ---
 
 ## 📖 Materi Inti
 
-### Segmentasi Ruang Analisis: RAM vs HDD
+### Segmentasi Investigasi: Disk vs RAM
 
-Ketika penganalisis tim penyidik menjalankan operasi bedah digital pasca insiden peretasan peladen perusahaan, sumber ekstraksi material penelusuran bukti terklasifikasi menurut retensi data:
-1. **Disk Forensics (Forensik Penyimpanan Jangka Panjang Non-Volatile):**
- Operasi investigasi penelusuran arsitektur penyimpanan (Hard Disk Drive / SSD). Di sinilah bertempatnya informasi log yang merekam *Event Viewer* OS peladen, daftar penjelajahan ekosistem *Browser History*, dan direktori file unduhan peretas eksternal. Ketika operasi aplikasi diinisiasi, dan pelaku sistem menekan hapusan sistem (Shift+Delete), secara fundamental klaster file tidak sepenuhnya dihilangkan seketika, dan umumnya spesialis bisa mendayagunakan fitur *Data Recovery* operasi OS pengarsipan untuk memperoleh bukti ini.
-2. **Memory Forensics (Forensik Penyimpanan Dinamis Volatile / RAM):**
- Klasifikasi penyelidikan kelas lanjut infrastruktur ini berpusat di arsitektur *Random Access Memory (RAM)* peladen korporat tempat pemrosesan perintah terdistribusi. *RAM* merupakan kumpulan informasi mutlak yang pengoperasiannya memelihara indikator skrip penyusup *Malware Fileless* (virus tingkat lanjut peretas APT canggih yang dioperasikan untuk tak menjejak di ruang *Hard Disk* sistem), arsip fungsi keamanan entri parameter kata sandi tipe otentikasi *Clear-text*, serta memelihara ekstraksi referensi instruksi penanaman penahan enkripsi taktis kelompok *Ransomware* korporat saat itu juga.
+Saat spesialis forensik menangani insiden siber, ekstraksi bukti dilakukan pada dua area utama berdasarkan sifat penyimpanan datanya:
 
-### Hierarki Kehilangan Bukti Sesaat (Order of Volatility)
+1. **Disk Forensics (Penyimpanan Permanen / Non-Volatile):**
+   Investigasi pada media penyimpanan seperti Hard Disk Drive (HDD) atau SSD. Di sinilah tersimpan *Event Logs* sistem operasi, riwayat *Browser*, dan *file* yang diunduh peretas. Perlu diketahui, ketika pengguna menghapus file (bahkan dengan Shift+Delete), *file* tersebut tidak benar-benar terhapus dari piringan *Hard Disk* seketika. Analis seringkali dapat memulihkan (*Data Recovery*) bukti tersebut menggunakan *software* forensik.
+2. **Memory Forensics (Penyimpanan Sementara / Volatile):**
+   Investigasi pada memori sementara atau RAM (Random Access Memory). RAM merekam aktivitas sistem yang sedang berjalan (*live*). RAM sangat krusial karena seringkali menyimpan *Malware Fileless* (Malware yang hanya berjalan di RAM tanpa menyentuh *Hard disk*), kunci enkripsi (*Decryption Key*) dari serangan *Ransomware* yang sedang aktif, serta *password* pengguna yang sedang *login* (terkadang dalam bentuk teks terang/ *Clear-text*).
 
-Kaidah primer akuisisi pengamanan insiden adalah penanganan pemrioritasan ekstraksi alat bukti berpedoman pada kaidah kelangsungan hidup data atau *Order of Volatility*.
-Data residu memori OS di blok infrastruktur *RAM* mempunyai karakteristik tingkat pelaporan **Volatile (Sangat Rentan Kehilangan Parameter)**. Ketika perangkat komputer didaur ulang siklus daya boot atau kabel sumber kelistrikan dicabut, struktur alokasi ruang register jutaan *Bit* data di peramban perangkat lunak sistem di *RAM* peladen akan menghilang terhapus dari log seketika!
+### Hierarki Prioritas Bukti (Order of Volatility)
 
-Karena parameter sistem inilah, seumpamanya Analis *SOC* atau instruktur penyidik tim insiden IT memantau sistem perusahaan sedang terinfeksi serangan peladen aktif serangan eksploitasi berbahaya, prosedur prioritas instruksi pengamanan adalah BUKAN menginstruksikan staf untuk sekadar mencabut sumber operasi tenaga suplai listrik sistem kelistrikan, namun hanya sebatas memotong jalur rute kabel komunikasi jaringan, disusul segera melakukan pengerahan "perekaman pembekuan data kloning citra salinan arsitektur ruang data memori aktif *Live Memory Capture*" perangkat peladen OS tersebut!
+Kaidah utama dalam akuisisi bukti digital adalah memprioritaskan data berdasarkan tingkat kerentanannya untuk hilang, atau dikenal sebagai **Order of Volatility**.
 
-### Bedah RAM dengan Volatility Framework
+Data yang ada di dalam RAM sangat rentan (*Volatile*). Jika komputer di-*restart* atau kabel listriknya dicabut, seluruh data yang ada di RAM akan terhapus dan hilang secara permanen seketika!
 
-Begitu sistem peramban spesialis analis SOC operasi penyidikan mengekstrak fail log bayangan duplikat (*Memory Dump File*, yang memiliki susunan tipe nama ekstensi seperti `.raw` atau berkas pelaporan file `.mem`), tampilan mentah data blok hanya memperlihatkan rentetan pengkodean heksadesimal acak fungsi parameter mesin. Maka analis memanggil perangkat kerangka referensi analisis perintah perangkat spesialis yang diakui dan digunakan komunitas industri pelacak yakni: **Volatility Framework**.
+Karena alasan inilah, jika Analis menemukan komputer sedang diserang (misalnya oleh *Ransomware*), instruksi pertamanya BUKAN mematikan atau mencabut kabel listrik komputer tersebut! Tindakan yang benar adalah mencabut kabel jaringan (kabel LAN) untuk mengisolasi sistem, kemudian segera melakukan proses ekstraksi (penggandaan) data dari RAM yang sedang berjalan tersebut (*Live Memory Capture*).
 
-pelacakan platform CLI (Command Line Interface) Python operasi peramban ini memungkinkan tim penyidik mengeksekusi parameter analisis :
-- `vol.py -f memory_dump.raw windows.pslist` : Kueri ini dikonfigurasi guna instruksi ekstraksi pembongkaran struktur seluruh direktori informasi operasi perangkat proses *Application Process* sistem yang sedang diinisiasi hidup *(termasuk eksistensi sistem parameter persembunyian skrip peretas Malware rahasia di log memori sistem RAM aktif)*.
-- `vol.py -f memory_dump.raw windows.hashdump` : Operasi ini akan mengeluarkan fungsi ekstrasi arsip identitas (autentikasi Password Hashes korporasi pengawasan sistem akses hak) yang mengendap pada parameter ruang peladen memori sistem OS.
+### Analisis RAM dengan Volatility Framework
+
+Setelah analis berhasil mengekstrak salinan dari isi RAM (*Memory Dump File*, biasanya berekstensi `.raw` atau `.mem`), isi *file* tersebut hanyalah kumpulan kode heksadesimal acak yang tidak bisa dibaca manusia.
+Untuk membongkarnya, analis menggunakan alat CLI (*Command Line Interface*) standar industri berbasis Python yang bernama **Volatility Framework**.
+
+Beberapa perintah dasar *Volatility* untuk mencari bukti di memori:
+- `vol.py -f memory_dump.raw windows.pslist`: Memerintahkan Volatility untuk menampilkan seluruh daftar proses aplikasi yang sedang berjalan pada saat *RAM* disalin (Sangat berguna untuk mencari proses *malware* yang bersembunyi di memori).
+- `vol.py -f memory_dump.raw windows.hashdump`: Mengekstrak daftar otentikasi (Password Hashes) pengguna Windows yang tersisa atau tersangkut di dalam memori OS.
 
 ---
 
@@ -47,56 +50,56 @@ pelacakan platform CLI (Command Line Interface) Python operasi peramban ini memu
 
 **Durasi**: ~10 menit
 
-Mari merancang simulasi konseptual penanganan insiden penyedotan memori!
+Mari merancang simulasi penanganan insiden *Ransomware*!
 
-1. Anda sedang bersiaga sebagai penganalisis utama *SOC* di operasi korporasi. Karyawan divisi SDM melaporkan insiden darurat setelah membuka lampiran surel palsu; layar peladen kerja stasiun kerjanya saat ini memproyeksikan instalasi perangkat tebusan *Ransomware* yang menampilkan pelaporan penuntutan kompensasi aset enkripsi.
-2. *Misi Mitigasi Parameter Cepat:* Staf melaporkan kepanikan dan memberitahukan niat teknis menekan fungsi operasi tombol tenaga untuk me-restart *peladen komputer stasiun SDM operasi IT * OS tersebut.
-3. **Instruksi Intervensi Analis SOC:** *"JANGAN MEMUTUS DAYA MESIN OS ATAU RESTART! Biarkan arsitektur komputernya terus menyala. Isolasi perangkat cukup diselenggarakan dengan sekadar prosedur memutus kabel rute akses komunikasi Ethernet jaringan"*
-4. *Konklusi :* Tindakan peretasan perangkat lunak instruksional *Ransomware* umumnya menghasilkan kunci sistem sandi parameter kriptografi (*Decryption Key parameter file*) di mana proses dekripsi arsip data korporasi arsitektur penyelesaian peretasan operasi sandi tersebut berdiam hidup di sistem blok alokasi struktur *RAM OS *. Jika parameter eksekusi instruksional stasiun *reboot* peladen dieksekusi di OS stasiun sistem perangkat kerja tersebut, data rentan volatile operasi memori RAM ini (*Volatile RAM*) otomatis memusnahkan ketersediaan memori sandi operasi peretasan *Decryption Key*, yang kegagalan mutlak fungsi akses perbaikan parameter dekripsi dokumen selamanya.
+1. **Skenario:** Anda adalah *Incident Responder*. Seorang karyawan melaporkan bahwa setelah ia membuka lampiran email, layarnya terkunci oleh peringatan *Ransomware* yang meminta tebusan.
+2. **Kepanikan:** Karyawan tersebut panik dan berniat menekan tombol *Power* untuk mematikan dan me-`restart` komputernya.
+3. **Intervensi Analis:** Anda harus segera berteriak: *"JANGAN DIMATIKAN ATAU DI-RESTART! Biarkan menyala. Cukup cabut kabel LAN/Wi-Fi saja!"*
+4. **Analisis Keputusan:** *Ransomware* sedang bekerja mengenkripsi *file*. Kunci untuk membuka enkripsi (*Decryption Key*) tersebut saat ini sedang aktif berada di dalam memori RAM komputer. Jika karyawan melakukan *restart*, RAM akan terhapus. Kunci dekripsi tersebut akan hilang selamanya, dan data yang terkunci mungkin tidak akan pernah bisa diselamatkan lagi.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Dalam terminologi forensik digital sistem informasi arsitektur, apakah klasifikasi parameter letak diferensiasi fisik struktur <i>Disk Forensics</i> bila diperhadapkan pada penelusuran arsitektur perangkat <i>Memory Forensics</i> (OS RAM) peladen data?</summary>
+<summary>❓ Apa perbedaan mendasar antara cakupan <i>Disk Forensics</i> dengan <i>Memory Forensics</i>?</summary>
 
-**Jawaban:** *Disk Forensics* digunakan untuk mengevaluasi data perangkat keras non-volatile untuk rentang waktu jangka pelaporan jangka panjang *(Hard Disk/SSD)* OS. Parameter klasifikasi arsitektur *Memory Forensics* memusatkan ekstraksi analisis log data sistem OS dinamis *(Volatile Memory RAM OS)* yang pengawasan operasinya diproses langsung pada instansi aktif saat eksekusi berlangsung.
+**Jawaban:** *Disk Forensics* menganalisis data pada penyimpanan permanen (*Hard disk/SSD*) yang datanya tetap ada meski komputer dimatikan. *Memory Forensics* menganalisis data sementara pada RAM (seperti *password* atau *malware* aktif) yang datanya akan langsung hilang jika komputer dimatikan.
 </details>
 
 <details>
-<summary>❓ Membahas standar mitigasi perlindungan darurat penanganan tanggap krisis <i>Incident Response</i> korporat jaringan, mengapa ekstraksi parameter penyitaan log data RAM diposisikan prioritas hierarki akuisisi perlindungan sistem bukti awal OS di atas pengamanan komponen perlindungan perangkat *Hard Disk OS* peladen korporat ?</summary>
+<summary>❓ Mengapa mengamankan data dari memori RAM harus menjadi prioritas utama (<i>Order of Volatility</i>) dibandingkan mengamankan data dari Hard Disk?</summary>
 
-**Jawaban:** Prosedur diprioritaskan mengacu aturan *Order of Volatility*. Perangkat memori (RAM) OS terstruktur sebagai parameter penyimpanan dinamis *(Volatile)* di mana arsitektur OS peladen tak akan merestorasi status keberadaan memori apabila struktur sistem arsitektur tersebut didaur ulang instruksi (*Restart*) atau sumber kelistrikan diputus secara pasif perangkat peladen, mengakibatkan hilangnya jejak instruksi aktivitas malware atau instruksional sandi *decryption key*.
+**Jawaban:** Karena RAM bersifat *Volatile* (sangat rentan hilang). Data di dalam RAM akan hilang secara permanen jika komputer di-`restart` atau dimatikan, sedangkan data di *Hard Disk* akan tetap bertahan.
 </details>
 
 <details>
-<summary>❓ Di ekosistem analitik investigasi perangkat pendeteksian peretasan RAM peladen forensik korporat, apa perangkat fungsi alat aplikasi parameter sistem ekosistem perangkat lunak baris komando spesifik sistem (Python) yang kapabilitas penelusuran identitas pembelahan log *Memory Dumps* peladen?</summary>
+<summary>❓ *Software* penganalisis memori (berbasis *Command Line Python*) apa yang paling banyak digunakan oleh spesialis forensik untuk mengekstrak informasi seperti <i>password hashes</i> dan daftar proses yang berjalan dari file <i>Memory Dump</i>?</summary>
 
-**Jawaban:** perangkat pelacak Volatility Framework.
+**Jawaban:** Volatility Framework.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya mengetahui parameter urgensi perbedaan klasifikasi *Disk* dan parameter memori *RAM*.
-- [ ] Saya menguasai metodologi *Order of Volatility* sistem peladen.
-- [ ] Saya meresapi teknikal rasional pelarangan pelaporan aktivasi instruksi eksekusi sistem peladen *reboot* arsitektur di insiden *Malware/Ransomware*.
-- [ ] Saya paham tata letak pengoperasian mesin instruksi perangkat arsitektur *Volatility Framework*.
+- [ ] Saya mengetahui perbedaan antara *Disk Forensics* dan *Memory Forensics*.
+- [ ] Saya memahami prinsip *Order of Volatility*.
+- [ ] Saya mengetahui alasan tidak boleh me-`restart` komputer yang sedang terinfeksi *Ransomware*.
+- [ ] Saya mengetahui fungsi dari alat *Volatility Framework*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [Volatility Foundation: Volatility 3](https://www.volatilityfoundation.org/) — Sumber dokumentasi komunitas sistem keamanan operasi arsitektur Volatility sistem bedah memori OS.
+- [Volatility Foundation: Volatility 3](https://www.volatilityfoundation.org/) — Dokumentasi resmi kerangka kerja forensik *Volatility* versi 3 (Berbasis Python 3).
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Threat Hunting Exercise** — Setelah penguraian parameter arsitektur instruksional penelusuran metode ekosistem fungsi log Sentinel *MITRE ATT&CK Framework*, penataan rantai dokumentasi prosedur *Chain of Custody* forensik korporasi, serta pelaporan taktis operasi identifikasi parameter *Volatility Memory Extraction*. Laboratorium pelatihan kualifikasi kasta SENTINEL esok harinya menuntut spesialis memformulasikan aplikasi praktik penyusunan buku modul penyidikan **Threat Hunting Playbook**. Latihan implementasi operasi ini akan menyeleksi arsitektur kecerdasan spesialis forensik korporasi TISS Null Teaming!
+**Day 5: Lab & Mission: Threat Hunting Exercise** — Setelah mempelajari kerangka intelijen *MITRE ATT&CK Framework*, manajemen barang bukti *Chain of Custody*, serta konsep isolasi *Digital Forensics*, besok kita akan melaksanakan laboratorium terpadu. Anda akan berlatih menjadi spesialis keamanan proaktif dengan menyusun **Threat Hunting Playbook** (Buku Panduan Perburuan Ancaman) berdasarkan taktik dari MITRE ATT&CK.
 
 ---
 

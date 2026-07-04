@@ -50,7 +50,7 @@ Saat kamu butuh jawaban spesifik. Contoh: *"Command apa yang dipakai untuk mengi
 1. Tentukan **kata kunci (keyword)** yang dicari sebelum mulai (misal: mencari angka IP, mencari kata `CVSS`, mencari format file `.txt`).
 2. Jangan membaca kalimat; biarkan matamu bergerak zigzag atau membentuk huruf 'Z' dari atas ke bawah halaman.
 3. Gunakan bantuan visual: cari huruf kapital, angka, simbol (seperti tanda kutip atau kode `$`).
-4. Kalau di browser, tentu saja gunakan sakti mandraguna: `Ctrl + F` / `Cmd + F`.
+4. Kalau di browser, manfaatkan pintasan pencarian bawaan: `Ctrl + F` / `Cmd + F`.
 
 > 💡 **Analogi**: 
 > **Skimming** = Kamu melihat peta keseluruhan kota untuk tahu di mana letak pusat perbelanjaan, taman, dan perumahan.

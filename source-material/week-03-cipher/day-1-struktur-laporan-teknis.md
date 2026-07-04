@@ -20,7 +20,7 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Mengapa Laporan Itu Penting?
 
-Di dunia cybersecurity, **kemampuan menetas (hacking) tidak akan berguna jika kamu tidak bisa menjelaskannya**. 
+Di dunia cybersecurity, **kemampuan meretas (hacking) tidak akan berguna jika kamu tidak bisa menjelaskannya**. 
 
 - Jika kamu seorang **Penetration Tester**, klien membayarmu untuk laporannya, bukan untuk aksimu meretas server mereka. 
 - Jika kamu seorang **Bug Bounty Hunter**, perusahaan (seperti Google atau Facebook) hanya akan membayarmu jika mereka bisa mengerti dan meniru langkah-langkah eksploitasimu dari laporanmu.

@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Dalam penyajian pelaporan keamanan siber, mengapa analis SOC harus menerjemahkan rentetan parameter kueri *SPL* ke dalam format representasi antarmuka *Dashboard* (seperti <i>Pie Chart</i> atau grafik garis)?
-- [x] A. Karena pemangku kepentingan tingkat manajemen menuntut pelaporan identifikasi krisis secara instan dan komprehensif untuk dicerna, ketimbang disajikan layar hasil kueri pencarian baris teks mentah yang kompleks secara teknis.
-- [ ] B. Agar eksekusi kueri SPL tersebut secara teknis tidak menghabiskan penggunaan alokasi RAM.
-- [ ] C. Karena parameter *Dashboards* adalah standar prasyarat untuk aktivasi mesin perlindungan *Suricata*.
-- [ ] D. Lantaran dasbor grafis mampu menahan parameter serangan eksfiltrasi secara otomatis tanpa mitigasi.
+**Question:** Mengapa Analis SOC harus menerjemahkan hasil pencarian SPL ke dalam bentuk *Dashboard* (seperti *Pie Chart* atau grafik batang)?
+- [x] A. Karena pihak manajemen atau eksekutif (seperti CISO) membutuhkan ringkasan laporan keamanan secara visual yang mudah dan cepat dipahami secara *Real-Time*, tanpa perlu membaca baris kueri log yang kompleks secara teknis.
+- [ ] B. Agar eksekusi kueri SPL tersebut tidak menghabiskan terlalu banyak memori (RAM) pada *server*.
+- [ ] C. Karena *Dashboards* adalah syarat wajib untuk bisa mengaktifkan *IPS Suricata*.
+- [ ] D. Karena dasbor grafis mampu memblokir serangan secara otomatis.
 
 ### Q2
 **Type:** True/False
-**Question:** Saat Analis SOC melakukan pengawasan berkelanjutan, fitur <i>Alert (Peringatan Terotomatisasi)</i> Splunk dikonfigurasi guna mendelegasikan pemantauan. Secara terjadwal sistem ini menyaring kueri SPL dan membangkitkan notifikasi operasional (alarm/email) HANYA apabila memenuhi kondisi yang ditentukan melebihi angka <i>Trigger Condition</i> (Ambang batas).
+**Question:** Fitur *Alert* (Peringatan Otomatis) di Splunk bekerja dengan cara menjalankan kueri SPL secara terjadwal, dan hanya membunyikan alarm/notifikasi jika hasil pencarian tersebut melampaui kondisi *Threshold* (*Trigger Condition*) yang telah ditentukan.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Pada analisis laporan log *Splunk*, istilah baku apakah yang mengelompokkan koleksi panel metrik visual (berbentuk grafik atau angka) yang diselaraskan dan diekstrak berkelanjutan secara *Real-Time* dari kueri parameter SPL?
+**Question:** Dalam platform SIEM, istilah apa yang digunakan untuk menyebut kumpulan panel grafik visual yang merangkum hasil kueri SPL secara berkelanjutan dan *Real-Time*?
 **Answer:** Dashboards (Dasbor GUI).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Saat seorang teknisi merumuskan konfigurasi peringatan *(Alert)*, dan menentukan kriteria parameter logis: "Aktifkan notifikasi apabila jumlah gagal login *count* > 50", terminologi apakah yang disematkan untuk merujuk pada standar numerik pembatas " > 50" tersebut?
-**Answer:** Trigger Condition (atau Threshold / Ambang Batas Logis).
+**Question:** Saat membuat peringatan keamanan otomatis di SIEM dan Analis menetapkan aturan: "Aktifkan notifikasi HANYA JIKA jumlah gagal login > 50", istilah teknis apa yang merujuk pada standar batas " > 50 " tersebut?
+**Answer:** Trigger Condition (atau Threshold / Ambang Batas).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Dalam parameter eksekusi respon peringatan insiden, kapabilitas <i>Action</i> (Tindakan Eksekusi) pada komponen pengaturan peringatan *Splunk* dikonfigurasikan guna menghasilkan efek teknis apa setelah insiden tervalidasi?
-**Answer:** Eksekusi otomasi respons taktis seperti transmisi pengiriman peringatan *Notifikasi/Email* ke analis terkait, hingga rutinitas penciptaan tiket mitigasi pada manajemen pelaporan tiket.
+**Question:** Dalam konfigurasi *Alert* di Splunk, apa fungsi dari komponen pengaturan *Trigger Action*?
+**Answer:** Menentukan tindakan otomatis setelah insiden terdeteksi (Misalnya: mengirim email notifikasi ke tim SOC, atau otomatis membuat tiket insiden).

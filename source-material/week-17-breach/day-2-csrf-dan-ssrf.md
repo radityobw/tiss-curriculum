@@ -11,23 +11,23 @@
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 1. **Membedakan** konsep serangan antara *Cross-Site Request Forgery (CSRF)* dan *Server-Side Request Forgery (SSRF)*.
-2. **Mensimulasikan** eksploitasi pemalsuan permintaan dari sisi klien (*CSRF*).
-3. **Mengeksekusi** pengintaian infrastruktur internal dengan memanipulasi peladen backend (*SSRF*).
+2. **Mensimulasikan** eksploitasi pemalsuan permintaan dari sisi pengguna (*CSRF*).
+3. **Mengeksekusi** pengintaian infrastruktur internal dengan memanipulasi *server backend* (*SSRF*).
 
 ---
 
 ## 📖 Materi Inti
 
-### CSRF: Menyetir Peramban Pengguna Jarak Jauh
+### CSRF: Menyetir Browser Korban Jarak Jauh
 
-Bayangkan Anda menemukan kerentanan pada sebuah platform, tetapi peladen tersebut telah mengimplementasikan proteksi *HttpOnly* pada *Cookie* otentikasi. Akibatnya, eksploitasi *XSS* tidak lagi mampu mencuri *Cookie* pengguna. Kendala ini tidak menghentikan serangan! Seorang pentester tidak wajib mencuri sesi (cookie) untuk mengeksploitasi sistem; ia cukup memaksa **peramban korban untuk mengeksekusi perintah** tepat saat korban sedang masuk (*login*) di situs tersebut.
+Bayangkan kamu menemukan celah keamanan pada sebuah situs, tetapi *server* situs tersebut telah melindungi *Session Cookie* menggunakan *flag HttpOnly*. Akibatnya, skrip pencurian *Cookie* menggunakan *XSS* tidak akan berfungsi. Jangan khawatir, serangan tidak berhenti di sini! Kamu tidak perlu mencuri *Cookie* korban untuk meretas akunnya; kamu cukup **memaksa browser korban untuk mengeksekusi perintah (seperti transfer uang atau ganti password)** selagi korban masih *login* di situs tersebut.
 
-Taktik eksploitasi ini dikenal sebagai **CSRF (Cross-Site Request Forgery)**. Kerentanan ini terjadi ketika server hanya mengecek *"Apakah pengguna ini sudah login?"*, tetapi gagal memvalidasi *"Apakah permintaan (request) ini BENAR-BENAR dilakukan dengan sengaja oleh pengguna tersebut?"*.
+Taktik ini dikenal sebagai **CSRF (Cross-Site Request Forgery)**. Celah ini terjadi karena *server* hanya mengecek *"Apakah pengguna ini sudah login?"*, tetapi lupa memastikan *"Apakah permintaan ini BENAR-BENAR dilakukan secara sadar oleh pengguna tersebut?"*.
 
-**Skenario Eksploitasi CSRF:**
-1. Korban sedang dalam kondisi otentikasi aktif (*Login*) di `bank.com`.
-2. Melalui rekayasa sosial, korban dibujuk untuk mengeklik tautan dari pentester: `http://hacker.com/kucing-lucu.html`.
-3. Di dalam dokumen *HTML* "kucing lucu" tersebut, pentester telah menyisipkan skrip tersembunyi:
+**Skenario Serangan CSRF:**
+1. Korban sedang aktif *login* di situs `bank.com`.
+2. Melalui rekayasa sosial, penyerang membujuk korban untuk mengeklik tautan miliknya: `http://hacker.com/kucing-lucu.html`.
+3. Di dalam *file HTML* "kucing lucu" tersebut, penyerang telah menyisipkan skrip tersembunyi:
    ```html
    <form action="http://bank.com/transfer" method="POST">
     <input type="hidden" name="tujuan" value="rekening-hacker">
@@ -35,22 +35,22 @@ Taktik eksploitasi ini dikenal sebagai **CSRF (Cross-Site Request Forgery)**. Ke
    </form>
    <script> document.forms[0].submit(); </script>
    ```
-4. Karena peramban korban secara otomatis mengirimkan *Request* form tersebut sementara *Cookie* otentikasinya masih menempel (aktif), peladen `bank.com` mengira bahwa permintaan tersebut sah. Dana berhasil ditransfer tanpa izin hanya dengan satu klik pada tautan jebakan!
+4. Karena *browser* korban secara otomatis mengirimkan permintaan formulir tersebut sambil melampirkan *Cookie Login* yang masih aktif, *server* `bank.com` mengira permintaan itu sah. Uang berhasil ditransfer tanpa izin hanya dengan satu klik!
 
-*Mitigasi (Blue Team)*: Pengembang web wajib mengimplementasikan proteksi **CSRF Token** (sandi acak sekali-pakai) di setiap formulir web yang mengubah data.
+*Mitigasi*: Pengembang web wajib mengimplementasikan **CSRF Token** (kode acak sekali-pakai) di setiap formulir web yang mengubah data.
 
-### SSRF: Menipu Peladen Menyerang Lingkungannya Sendiri
+### SSRF: Menipu Server Menyerang Dirinya Sendiri
 
-Bila *CSRF* berfokus menipu *Browser* pengguna untuk menyerang peladen...
-Maka **SSRF (Server-Side Request Forgery)** berfokus menipu *Server Backend* target agar server tersebut secara otomatis menyerang server lain di jaringan internalnya sendiri (yang seharusnya tidak dapat diakses dari luar)!
+Bila *CSRF* berfokus menipu *Browser* pengguna (*Client-Side*)...
+Maka **SSRF (Server-Side Request Forgery)** berfokus menipu *Server Backend* aplikasi agar *server* tersebut menyerang *server* lain di dalam jaringan internalnya sendiri (yang biasanya tertutup dari internet publik)!
 
-Seringkali, server *Backend* memiliki fitur untuk mengunduh gambar atau data dari peladen luar, misal:
+Seringkali, *server* aplikasi memiliki fitur untuk mengunduh gambar atau data dari *URL* luar, contohnya:
 `http://target.com/unduh?url=https://github.com/logo.png`
 
-Pentester dapat memodifikasi parameter URL tersebut untuk merujuk ke alamat IP internal peladen tertutup (seperti localhost):
-`http://target.com/unduh?url=http://127.0.0.1/admin-rahasia`
+Penyerang dapat memodifikasi *parameter URL* tersebut dan menggantinya dengan alamat IP *server internal* (seperti `localhost`):
+`http://target.com/unduh?url=http://127.0.0.1/admin-panel`
 
-*Seketika!* Server aplikasi `target.com` dengan polosnya akan mengeksekusi kueri pemanggilan ke antarmuka admin lokalnya sendiri (yang diblokir dari interaksi internet luar), lalu secara sukarela menyerahkan seluruh respons halaman rahasia itu kepada pentester! (Kerentanan SSRF sangat terkenal digunakan untuk merampas kredensial *AWS Metadata* dengan merujuk alamat IP `169.254.169.254`).
+Hasilnya? *Server* aplikasi `target.com` akan mengeksekusi kueri ke panel admin internalnya sendiri, lalu memberikan isi halaman rahasia tersebut kepada penyerang! Celah SSRF sangat populer digunakan untuk mencuri kredensial *AWS Metadata* dengan menyuruh *server* mengakses IP khusus `169.254.169.254`.
 
 ---
 
@@ -58,64 +58,64 @@ Pentester dapat memodifikasi parameter URL tersebut untuk merujuk ke alamat IP i
 
 **Durasi**: ~10 menit
 
-Mari merakit skrip pemaksaan permintaan (*CSRF Payload*)!
+Mari merakit skrip eksploitasi CSRF (*CSRF Payload*)!
 
-1. Kunjungi fasilitas eksperimen web rentan (seperti lab *PortSwigger CSRF*).
-2. Temukan fitur formulir ganti *email* yang teridentifikasi tidak dilindungi oleh *CSRF Token*.
-3. Fitur web tersebut mengeksekusi perubahan email via rute: `/my-account/change-email` dengan metode HTTP *POST*.
-4. Racik dokumen *HTML* fiktif di sisi Anda:
+1. Kunjungi lab ekosistem *PortSwigger: CSRF vulnerability with no defenses*.
+2. Temukan fitur "Ganti Email" (*Change Email*) yang ternyata tidak dilindungi oleh *CSRF Token*.
+3. Fitur tersebut bekerja dengan mengirimkan *request HTTP POST* ke `/my-account/change-email`.
+4. Rakitlah *file HTML* palsu di komputermu:
    ```html
-   <form id="bajak" action="https://vulnerable.com/my-account/change-email" method="POST">
+   <form id="bajak" action="https://vulnerable-lab.net/my-account/change-email" method="POST">
     <input type="hidden" name="email" value="hacker@tiss.or.id">
    </form>
    <script> document.getElementById('bajak').submit(); </script>
    ```
-5. Saat korban (yang sedang login) mengeklik file *HTML*-mu tersebut, data email miliknya di server web otomatis tertimpa menjadi alamat `hacker@tiss.or.id`. Anda sukses mengambil alih akunnya!
+5. Saat korban (yang masih *login*) mengeklik *file HTML* buatanmu, email miliknya di *server* target akan otomatis diganti menjadi `hacker@tiss.or.id`. Kamu berhasil mengambil alih akun korban!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Apa perbedaan mendasar antara eksploitasi CSRF dan SSRF?</summary>
+<summary>❓ Apa perbedaan mendasar antara serangan CSRF dan SSRF?</summary>
 
-**Jawaban:** Serangan *CSRF* menargetkan *Browser Pengguna/Klien* (memaksa peramban korban memicu aksi tanpa disadari menggunakan cookie otentikasi korban). Sebaliknya, *SSRF* menargetkan *Server Backend* aplikasi (memaksa server target untuk melakukan kueri ke server internalnya sendiri yang tertutup dari luar).
+**Jawaban:** *CSRF* menyerang *Browser Korban / Client-Side* (memaksa *browser* korban melakukan aksi menggunakan *cookie* yang masih aktif tanpa disadari). Sebaliknya, *SSRF* menyerang *Server Backend* (memaksa *server* target untuk mengakses layanan di dalam jaringan internalnya sendiri).
 </details>
 
 <details>
-<summary>❓ Ketika pentester sukses meluncurkan serangan eksploitasi CSRF, perlindungan keamanan apa yang dipastikan tidak diimplementasikan oleh pembuat web?</summary>
+<summary>❓ Ketika penyerang berhasil melakukan eksploitasi CSRF (seperti mengganti email korban secara diam-diam), fitur keamanan apa yang luput ditambahkan oleh pengembang web?</summary>
 
-**Jawaban:** Nihilnya implementasi validasi *CSRF Token* (token acak sekali-pakai) atau atribut Cookie *SameSite*.
+**Jawaban:** Tidak adanya perlindungan *CSRF Token* (token acak khusus untuk memvalidasi formulir) atau atribut *Cookie SameSite*.
 </details>
 
 <details>
-<summary>❓ Dalam ranah pembajakan SSRF pada infrastruktur Cloud AWS, alamat IP spesifik apakah yang paling sering dibidik oleh hacker untuk merampas kunci Metadata AWS peladen tersebut?</summary>
+<summary>❓ Dalam serangan SSRF pada infrastruktur Cloud seperti AWS, alamat IP spesifik apa yang sering dibidik oleh penyerang untuk mencuri kunci Metadata server?</summary>
 
-**Jawaban:** Alamat IP keramat `169.254.169.254` (IP kredensial Metadata AWS/Cloud).
+**Jawaban:** Alamat IP internal Cloud `169.254.169.254`.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami perbedaan taktis antara *CSRF* dan *SSRF*.
-- [ ] Saya memahami fungsi pelindung mitigasi *CSRF Token*.
-- [ ] Saya paham bahaya eksploitasi *SSRF* (membidik localhost `127.0.0.1`).
-- [ ] Saya mengerti cara menyusun skrip pemaksaan CSRF menggunakan tag `<form>` tersembunyi.
-- [ ] Saya telah menuntaskan menjawab kuis kilat.
+- [ ] Saya memahami perbedaan konsep antara *CSRF* dan *SSRF*.
+- [ ] Saya memahami pentingnya penggunaan *CSRF Token* pada formulir web.
+- [ ] Saya paham bahaya eksploitasi *SSRF* yang menargetkan akses internal (`127.0.0.1`).
+- [ ] Saya mengerti cara merakit *Payload CSRF* menggunakan tag `<form>` tersembunyi.
+- [ ] Saya telah menuntaskan evaluasi *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [PortSwigger CSRF](https://portswigger.net/web-security/csrf) — Laboratorium eksplorasi mengenai kerentanan dan mitigasi *CSRF*.
-- [PayloadsAllTheThings - SSRF](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery) — Kumpulan taktik menyasar AWS dan ekstraksi *Metadata* via SSRF.
+- [PortSwigger CSRF](https://portswigger.net/web-security/csrf) — Laboratorium praktik mengenai kerentanan dan mitigasi serangan *CSRF*.
+- [PayloadsAllTheThings - SSRF](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery) — Kumpulan referensi *payload SSRF* untuk berbagai layanan infrastruktur *Cloud*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: File Upload & IDOR** — Pengetahuan Anda sudah cukup solid untuk menangkis Injeksi *SQL*, *XSS*, hingga *CSRF/SSRF*. Esok hari, kita akan menyusup lewat celah keamanan yang paling sering dibiarkan terbuka: Kerentanan Unggah Berkas (*File Upload Vulnerability*). Kita akan menyimulasikan cara menginjeksi berkas foto palsu yang menyembunyikan skrip eksekutor jahat (*Webshell Backdoor*) PHP ke dalam server target!
+**Day 3: File Upload & IDOR** — Pengetahuanmu sudah cukup solid untuk memahami serangan *SQLi*, *XSS*, hingga *CSRF/SSRF*. Besok hari, kita akan membahas celah keamanan yang sangat fatal namun sering disepelekan: Kerentanan Unggah Berkas (*File Upload Vulnerability*). Kita akan menyimulasikan cara mengunggah file foto palsu yang ternyata berisi skrip peretas (*Webshell Backdoor*) ke dalam *server* target!
 
 ---
 

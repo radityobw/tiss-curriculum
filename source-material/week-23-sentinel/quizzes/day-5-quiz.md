@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Dalam perumusan dokumen pedoman analisis ancaman *(Threat Hunting Playbook)* korporat, mengapa eksistensi skenario perancangan dugaan, yakni formulasi parameter *Hipotesis (Hypothesis)*, dipandang krusial?
-- [x] A. Penyusunan Hipotesis memberikan gambaran skenario taktis (misalnya "Mendeteksi kemungkinan peretas menggunakan eksploitasi persistensi manipulasi *Scheduled Tasks* Windows"). Tanpa penyusunan parameter awal ini, rutinitas tim SOC sekadar mencari indikasi data tanpa kerangka yang terarah secara, menyebabkan efisiensi analisis berkurang secara dramatis.
-- [ ] B. Karena struktur Hipotesis adalah modul integrasi algoritma wajib untuk menyalakan mesin data terpusat *Splunk*.
-- [ ] C. Lantaran Hipotesis spesifik ditujukan sebagai format instalasi *file backup* ekosistem sistem berekstensi `.E01`.
-- [ ] D. Komponen Hipotesis sebatas difokuskan sebagai instruksi simulasi peretasan arsitektur ofensif (*Red Team Operations*).
+**Question:** Dalam pembuatan pedoman *Threat Hunting Playbook*, mengapa merumuskan dugaan atau *Hipotesis (Hypothesis)* di awal sangatlah krusial?
+- [x] A. Hipotesis memberikan gambaran skenario ancaman yang jelas (misal: "Mendeteksi peretas yang mempertahankan akses menggunakan *Scheduled Tasks*"). Tanpa hipotesis yang terarah, analis SOC hanya akan membuang waktu mencari log secara acak tanpa tujuan yang jelas.
+- [ ] B. Karena struktur Hipotesis diperlukan sebagai perintah wajib untuk menyalakan *server Splunk*.
+- [ ] C. Karena Hipotesis adalah format penyimpanan *file backup* forensik yang berekstensi `.E01`.
+- [ ] D. Komponen Hipotesis sebatas difokuskan sebagai instruksi simulasi peretasan sistem.
 
 ### Q2
 **Type:** True/False
-**Question:** Dalam mendayagunakan platform referensi analisis keamanan intelijen *Playbook*, filter kueri inspeksi perburuan sistem peladen Windows *EventCode 4698* diintegrasikan sebagai fungsi algoritma pendeteksi (Indikasi manipulasi tugas *Scheduled Task*) yang penataannya berkesesuaian pengujian skenario parameter arsitektur *MITRE ATT&CK* pada ID Taktik operasi T1053.
+**Question:** Dalam penyusunan pedoman *Threat Hunting Playbook* untuk skenario "Pembuatan tugas otomatis oleh peretas", pencarian log Windows spesifik pada *Event ID 4698* memiliki korelasi langsung dengan pemetaan taktik *MITRE ATT&CK* pada ID T1053 (Scheduled Task/Job).
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Saat mengeksekusi kueri SIEM Splunk, perintah `table _time, ComputerName, Task_Name` disisipkan pada kueri tersebut untuk menampilkan keluaran log dari format mentah menjadi format visual apa?
-**Answer:** Menampilkannya sebagai tabel terstruktur (dengan kolom: Waktu, Komputer, dan Nama Tugas).
+**Question:** Saat merangkai kueri pencarian di Splunk, tambahan perintah `table _time, ComputerName, Task_Name` digunakan untuk mengubah format data mentah (*raw log*) menjadi tampilan visual berbentuk apa?
+**Answer:** Menampilkannya dalam bentuk tabel terstruktur (yang berisi kolom: Waktu, Nama Komputer, dan Nama Tugas).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika staf *SOC* memformulasikan pedoman *Threat Hunting Playbook* untuk skenario *Scheduled Task*, standar referensi intelijen ancaman global apakah yang dirujuk guna memetakan klasifikasi taktik tersebut (Berawalan kata "MITRE")?
+**Question:** Saat Analis SOC menyusun taktik mitigasi di dalam *Threat Hunting Playbook*, standar ensiklopedia ancaman siber global manakah yang sering digunakan sebagai rujukan untuk mengidentifikasi perilaku serangan peretas (Berawalan kata "MITRE")?
 **Answer:** MITRE ATT&CK Framework.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Di modul dokumen *Playbook*, apabila tim keamanan merekomendasikan instruksi: "Jika indikasi insiden terkonfirmasi positif (*True Positive*), segera lakukan isolasi dengan mencabut kabel jaringan *Ethernet*", arahan teknis mitigasi ini merujuk pada fase apa dalam kerangka respons insiden PICERL?
-**Answer:** Fase Containment (Penahanan/Isolasi Jaringan).
+**Question:** Jika di dalam dokumen *Playbook* direkomendasikan tindakan: "Jika ancaman terbukti valid, segera lakukan isolasi dengan mencabut kabel jaringan *Ethernet*", tindakan mengisolasi komputer dari jaringan ini masuk ke dalam fase apa dalam standar penanganan insiden (*Incident Response*)?
+**Answer:** Fase Containment (Penahanan / Isolasi Jaringan).

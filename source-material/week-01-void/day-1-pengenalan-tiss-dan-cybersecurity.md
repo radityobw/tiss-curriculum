@@ -39,7 +39,7 @@ TISS bukan sekedar komunitas belajar biasa. Organisasi ini dirancang seperti eko
 └─────────────────────────────────────────────────┘
 ```
 
-> 💡 **Analogi**: Bayangkan TISS seperti akademi militer cyber. **L0** adalah *bootcamp* dasar — tempat semua rekrut memulai pelatihan. **L1** adalah *unit spesialisasi* — kamu memilih menjadi penyerang, bertahan, atau pembangun. **L2** adalah *komando pusat* — para veteran yang mengarahkan strategi.
+> 💡 **Analogi**: TISS dirancang menyerupai struktur operasional industri keamanan siber. **L0** adalah tahap fundamental untuk membangun fondasi teknis. **L1** adalah tahap operasional spesialisasi (Red/Blue/Yellow Team). **L2** adalah tahap manajerial dan kepemimpinan strategis organisasi.
 
 ### Apa itu Cyber Security?
 
@@ -47,12 +47,12 @@ TISS bukan sekedar komunitas belajar biasa. Organisasi ini dirancang seperti eko
 
 Mengapa penting? Lihat angka-angka ini:
 
-| Fakta | Data |
-|-------|------|
-| 🌐 Kerugian global akibat cybercrime (2025) | > $10.5 triliun/tahun |
-| 📈 Kebutuhan tenaga kerja cybersec global | 3.5 juta posisi kosong |
-| 🇮🇩 Serangan ke Indonesia (2024) | Ratusan juta anomali trafik/tahun |
-| 💰 Gaji rata-rata cybersec analyst (global) | $80,000–$130,000/tahun |
+| Fakta | Data | Sumber Referensi |
+|-------|------|------------------|
+| 🌐 Kerugian global akibat cybercrime (2025) | > $10.5 triliun/tahun | [*Cybersecurity Ventures*](https://cybersecurityventures.com/cybercrime-damage-costs-10-trillion-by-2025/) |
+| 📈 Kebutuhan tenaga kerja cybersec global | 3.5 juta posisi kosong | [*ISC2 Cybersecurity Workforce Study*](https://www.isc2.org/Research/Workforce-Study) |
+| 🇮🇩 Serangan ke Indonesia (2024) | Ratusan juta anomali trafik/tahun | [*Laporan Tahunan BSSN*](https://bssn.go.id/lanskap-keamanan-siber-indonesia/) |
+| 💰 Gaji rata-rata cybersec analyst (global) | $80,000–$130,000/tahun | [*ISC2 / Glassdoor*](https://www.glassdoor.com/Salaries/cyber-security-analyst-salary-SRCH_KO0,22.htm) |
 
 > 💡 **Fun Fact**: Indonesia termasuk negara dengan serangan tertinggi di Asia Tenggara. Ini berarti **peluang karier di bidang ini sangat besar** untuk kamu!
 

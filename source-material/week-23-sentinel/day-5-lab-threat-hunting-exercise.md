@@ -19,109 +19,111 @@
 
 ## 📝 Rekap Minggu Ini
 
-Modul pada minggu ini berfokus pada transisi kompetensi dari pengawasan keamanan otomatis ke investigasi manual secara proaktif.
+Modul pada minggu ini berfokus pada transisi kompetensi dari pemantauan keamanan otomatis ke investigasi manual secara proaktif (*Threat Hunting* & *Forensics*).
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
-| Day 1 | Proactive vs Reactive Security | Membedah filosofi perburuan ancaman (Threat Hunting) menggunakan *Hypothesis-Driven Approach*. |
-| Day 2 | MITRE ATT&CK Framework | Memetakan dan mengklasifikasi arsitektur perilaku serangan berdasarkan anatomi TTPs (*Tactics, Techniques, Procedures*). |
-| Day 3 | Digital Forensics Basics | Menjaga kepatuhan legalitas integritas hukum *Chain of Custody* dan pembuatan kloning *Forensic Imaging / Hashing*. |
-| Day 4 | Memory & Disk Forensics | Menelaah preservasi data *Volatile* (Order of Volatility) RAM serta analisis *Volatility Framework*. |
+| Day 1 | Proactive vs Reactive Security | Memahami konsep perburuan ancaman (*Threat Hunting*) menggunakan pendekatan hipotesis (*Hypothesis-Driven Approach*). |
+| Day 2 | MITRE ATT&CK Framework | Memetakan dan mengklasifikasi taktik dan teknik peretas menggunakan taksonomi TTPs (*Tactics, Techniques, Procedures*). |
+| Day 3 | Digital Forensics Basics | Memahami prosedur penanganan barang bukti elektronik (*Chain of Custody*) dan proses penyalinan (*Forensic Imaging / Hashing*). |
+| Day 4 | Memory & Disk Forensics | Mengetahui prioritas pengamanan data berdasarkan *Order of Volatility* dan analisis memori menggunakan *Volatility Framework*. |
 
 ---
 
 ## 🧪 Hands-On Lab
 
 ### Prerequisites
-- Komputer dengan aplikasi pengolah dokumen (*Notepad/Markdown*).
-- Koneksi internet untuk melakukan pemetaan referensi ekosistem data *MITRE ATT&CK Navigator*.
+- Aplikasi teks editor (*Notepad, VS Code, dll.*).
+- Koneksi internet untuk membuka referensi taktik di *MITRE ATT&CK Navigator* (opsional).
 
 ### Misi Hari Ini: "Membangun Pedoman Berburu (Hunting Playbook Engineering)"
 
-Spesialis SOC tingkat lanjut tidak beroperasi berdasarkan laporan alarm (Alerts) semata. Mereka wajib memformulasikan prosedur tanggap terstandarisasi untuk mendeteksi ancaman spesifik yang canggih (APT). Pada sesi kali ini, praktikum difokuskan pada pengembangan arsitektur *Threat Hunting Playbook*. Dokumen panduan ini menstandarkan instruksi inspeksi tim *SOC* untuk melacak metode peretasan APT tertentu di jaringan peladen instansi.
+Spesialis SOC tingkat lanjut (*Threat Hunter*) harus mampu mendokumentasikan prosedur pencarian ancaman secara sistematis. Pada sesi kali ini, praktikum difokuskan pada pembuatan *Threat Hunting Playbook*. Dokumen ini digunakan sebagai standar panduan tim *SOC* untuk melacak teknik spesifik dari kelompok peretas (APT).
 
-### Step 1: Memilih Skenario (Technique MITRE)
-1. Analisis tren keamanan mengindikasikan lonjakan penggunaan taktik pemeliharaan akses (*Persistence*), yakni upaya peretas menyusupkan skrip instalasi untuk menjaga agar akses tetap berjalan pasca sistem di-restart.
-2. Anda melakukan verifikasi dan memilih taksonomi identifikasi teknik dari referensi matriks MITRE ATT&CK: **T1053 - Scheduled Task/Job**. (Pendekatan di sistem Windows yang menyalahgunakan layanan *Task Scheduler* untuk mengeksekusi beban muatan ancaman peretas secara terjadwal).
+### Step 1: Memilih Skenario (Teknik MITRE)
+1. **Skenario:** Berdasarkan tren keamanan terbaru, diketahui peretas sering menggunakan teknik *Persistence* (Mempertahankan akses) agar *malware* mereka tetap berjalan setiap kali *server* dinyalakan ulang.
+2. Anda memilih salah satu teknik dari matriks MITRE ATT&CK: **T1053 - Scheduled Task/Job**. (Teknik ini menyalahgunakan fitur *Task Scheduler* di Windows agar beban muatan (*payload*) peretas dieksekusi secara otomatis dan berulang).
 
-### Step 2: Merumuskan Hipotesis (The Hunter's Hypothesis)
-1. Berdasarkan parameter klasifikasi matriks teknik (T1053) tersebut, rumuskan parameter asumsi awal atau hipotesis investigasi.
-2. *Contoh Formulasi Hipotesis:*
- "Terdapat probabilitas bahwa elemen peretas *Advanced Persistent Threat (APT)* sedang menjaga status persistensi sistem peladen korporat. Skenario hipotesis memperhitungkan kemungkinan afiliasi pelaku telah menyalahgunakan aplikasi sistem *Windows Scheduled Tasks* (T1053), yang dikonfigurasi guna eksekusi skrip koneksi belakang *(Backdoor)* secara repetitif pada periode jam non- sistem."
+### Step 2: Merumuskan Hipotesis (*The Hunter's Hypothesis*)
+1. Buatlah dugaan awal berdasarkan teknik T1053 tersebut.
+2. **Contoh Hipotesis:**
+   *"Berdasarkan intelijen, kelompok APT mungkin telah menyusup dan berusaha mempertahankan akses (Persistence) di dalam server kita. Hipotesis saya adalah mereka menyalahgunakan fitur Windows Scheduled Tasks (T1053) untuk mengeksekusi skrip backdoor secara otomatis setiap tengah malam di luar jam operasional."*
 
-### Step 3: Penetapan Parameter Sumber Log (Data Sources) dan Sintaks Kueri
-1. Anda wajib menentukan sumber pelaporan parameter penciptaan penjadwalan fungsi pada arsitektur Windows OS.
-2. Dokumentasi: parameter eksekusi pelaporan Windows Security Event (Beridentitas referensi Event ID **4698** - *A scheduled task was created*).
-3. *Rancangan Dasar Kueri Splunk (SIEM Hunting Syntax):*
- `index=windows_sec EventCode=4698 | table _time, ComputerName, Task_Name, Task_Content`
- *(Parameter eksekusi sintaks ini menugaskan filterisasi terhadap penciptaan penjadwalan tak wajar dan menyajikannya ke wujud tabel kolom waktu eksekusi, identitas sistem komputer, serta detail aplikasi instruksi eksekusi penjadwalan yang termuat).*
+### Step 3: Menentukan Sumber Log (*Data Sources*) dan Kueri Splunk
+1. Tentukan sumber log (dari sistem operasi Windows) yang mencatat aktivitas pembuatan *Scheduled Task* baru.
+2. **Sumber Log:** Anda mengidentifikasi bahwa kejadian ini dicatat pada **Windows Security Event ID 4698** (*A scheduled task was created*).
+3. **Kueri Splunk (SIEM Hunting Syntax):**
+   `index=windows_sec EventCode=4698 | table _time, ComputerName, Task_Name, Task_Content`
+   *(Penjelasan: Kueri ini akan menyaring seluruh log pembuatan task baru, lalu menampilkannya dalam tabel yang berisi waktu kejadian, nama komputer, nama task, dan isi perintah task tersebut untuk diperiksa lebih lanjut).*
 
 ---
 
 ## 🎯 Weekly Mission
 
-### Misi: "Buku Pedoman Perburuan (Threat Hunting Playbook)"
+### Misi: "Menyusun Buku Pedoman Perburuan (Threat Hunting Playbook)"
 
-**Deskripsi:** Aktivitas di atas merupakan metodologi penyajian dokumen panduan. *Threat Hunter* bertugas memberikan peta penelusuran arsitektur ancaman kepada analis keamanan lapis utama agar operasi pemindaian jaringan dapat berjalan terukur.
+**Deskripsi:**
+Seorang *Threat Hunter* bertugas memberikan instruksi penelusuran kepada tim SOC agar operasi pencarian ancaman di jaringan dapat berjalan terarah. Pada misi ini, Anda diminta untuk menyusun *Playbook* berdasarkan latihan di atas.
 
-**Tugas Mandiri:** Mengacu kepada wawasan dan alur pengerjaan pada rutinitas praktik (Step 1 hingga 3) di simulasi *Hands-On Lab*, transformasikan ketiga komponen arsitektur analisis tersebut ke dalam bentuk format pelaporan Buku Pedoman *(Hunting Playbook)*.
+**Tugas Mandiri:**
+Mengacu pada alur praktikum di atas (Step 1 hingga 3), ubah hasil analisis tersebut menjadi format pelaporan dokumen *Hunting Playbook*.
 
 **Deliverables:**
-1. Satu (1) buah artefak repositori dokumen penugasan berwujud berkas `THREAT_HUNTING_PLAYBOOK.md`.
-2. Struktur komponen pelaporan operasi yang terdiri dari empat (4) parameter spesifik:
- - **Taktik & Teknik MITRE:** Penyertaan parameter identifikasi klasifikasi ID taksonomi (Misal: *T1053 Scheduled Task*).
- - **Hipotesis (Hypothesis):** Penulisan parameter narasi deskriptif konseptual investigasi dugaan indikasi serangan.
- - **Sumber Data (Log Sources):** pendataan spesifik tipe sistem *Event ID* (Atau klasifikasi file log pengawasan jaringan).
- - **Tindakan Lanjut (Triage/Mitigation):** Penjelasan langkah teknikal instruksional forensik jika hipotesis terkonfirmasi (Contoh langkah operasi: Eksekusi perintah pengisolasian akses *Containment* sistem koneksi jaringan lalu instruksikan pengamanan integritas akuisisi pembekuan fungsi parameter klaster *Volatility RAM Image Extraction*).
+1. Buat *file* berekstensi *Markdown* bernama `THREAT_HUNTING_PLAYBOOK.md`.
+2. Di dalam dokumen tersebut, susun laporan yang memuat 4 parameter berikut:
+   - **Taktik & Teknik MITRE:** Sebutkan ID dan nama teknik dari MITRE ATT&CK (Misal: *T1053 Scheduled Task*).
+   - **Hipotesis (Hypothesis):** Tuliskan narasi dugaan ancaman (*Hypothesis*).
+   - **Sumber Data (Log Sources):** Sebutkan jenis log yang diperlukan (misal: *Event ID 4698*).
+   - **Tindakan Lanjut (Triage/Mitigation):** Jelaskan langkah respons yang harus dilakukan jika peretasan benar-benar ditemukan (Contoh: Isolasi komputer dengan mencabut kabel LAN, lalu instruksikan tim forensik untuk melakukan ekstraksi memori RAM menggunakan *Volatility*).
 
 **Kriteria Sukses:**
-- [ ] Tersedia pelaporan arsip instalasi korporasi `THREAT_HUNTING_PLAYBOOK.md`.
-- [ ] Mampu memaparkan pencantuman referensi kode identifikasi operasi taktik serangan standar kerangka taksonomi *MITRE ATT&CK* matriks secara komprehensif.
-- [ ] Mendemonstrasikan perumusan hipotesis sistem pengujian pendeteksian yang merujuk pada pengerahan data analisis pelaporan keamanan *(Log Analysis Event ID)*.
+- [ ] Tersedianya dokumen `THREAT_HUNTING_PLAYBOOK.md`.
+- [ ] Mencantumkan ID teknik standar *MITRE ATT&CK*.
+- [ ] Hipotesis logis dan merujuk pada sumber data log yang tepat (*Event ID*).
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Mengacu pada pedoman standar industri arsitektur pencarian ancaman (Threat Hunting), istilah spesifik apakah yang digunakan untuk merujuk pada metodologi analisis di mana analis membentuk argumen asumsi pengujian serangan ("Peretas menyisipkan eksploitasi skrip Powershell") terlebih dahulu sebelum melaksanakan validasi penyisiran berkas log?</summary>
+<summary>❓ [MUDAH] Apa sebutan metodologi di mana analis SOC secara proaktif menyusun dugaan/asumsi serangan (misal: "Saya curiga *hacker* mengeksploitasi *Powershell*") sebelum mulai mencari bukti log di SIEM?</summary>
 
-**Jawaban:** Pendekatan arsitektur Berbasis Hipotesis (Hypothesis-Driven Approach).
+**Jawaban:** Pendekatan Berbasis Hipotesis (*Hypothesis-Driven Approach*).
 </details>
 
 <details>
-<summary>❓ [MUDAH] Di klasifikasi referensi parameter arsitektur pengamanan pelaporan ensiklopedia *MITRE ATT&CK*, singkatan istilah hierarki <i>TTPs</i> mewakili klasifikasi perilaku eksploitasi peretas yang merupakan akronim terminologi apa?</summary>
+<summary>❓ [MUDAH] Dalam standar *MITRE ATT&CK*, singkatan dari apakah <i>TTPs</i> yang digunakan untuk memetakan perilaku peretas?</summary>
 
-**Jawaban:** Representasi pengelompokan tingkatan Tactics, Techniques, dan parameter operasi Procedures (TTPs).
+**Jawaban:** *Tactics, Techniques, and Procedures* (TTPs).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Berkaitan dengan kapabilitas prosedur forensik penegakan keamanan, mengapa penataan serta pengendalian tata tertib pembatasan dan perlindungan pelaporan riwayat parameter log dokumentasi *Chain of Custody* disyaratkan mutlak dalam proses akuisisi penyitaan barang elektronik kejahatan?</summary>
+<summary>❓ [SEDANG] Dalam prosedur forensik penegakan hukum, mengapa pencatatan dokumen riwayat perpindahan barang bukti (*Chain of Custody*) diwajibkan secara mutlak?</summary>
 
-**Jawaban:** Tanpa parameter riwayat kontrol pengawasan (Log kronologis yang memuat data personil dan stempel parameter perpindahan akses), maka parameter legitimasi integritas validasi keamanan bukti tak dapat dikonfirmasi dan status validasi barang digital akan didiskualifikasi keberlakuannya oleh entitas otoritas badan peradilan instansi (sebagai data parameter korup/data tampering kompromi sistem).
+**Jawaban:** Tanpa dokumen yang mencatat siapa, kapan, dan di mana barang bukti tersebut berpindah tangan (Riwayat kontrol), integritas barang bukti tidak bisa dipertanggungjawabkan dan otomatis akan didiskualifikasi di pengadilan karena rawan dimanipulasi (*Data Tampering*).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Dalam penyelesaian parameter perolehan aset sistem forensik berwujud <i>Forensic Imaging</i>, algoritma kapabilitas verifikasi matematis integritas kriptografi (seperti <i>SHA-256</i>) memiliki status klasifikasi penyegelan yang biasa diistilahkan menggunakan sebutan fungsi analitis apa?</summary>
+<summary>❓ [SEDANG] Algoritma kriptografi apa (seperti *SHA-256*) yang selalu digunakan untuk memastikan bahwa *file* salinan forensik (*Forensic Image*) 100% identik dengan media aslinya dan tidak mengalami perubahan?</summary>
 
-**Jawaban:** Implementasi fungsi kalkulasi arsitektur (Perhitungan *Hash* algoritma /Fungsi perlindungan fungsi Checksum).
+**Jawaban:** Hashing.
 </details>
 
 <details>
-<summary>❓ [SULIT] Dalam panduan perlindungan manajemen sistem insiden parameter prosedur penanganan sistem insiden taktis *Incident Response*, jika arsitektur sistem penyimpanan korporasi terinfeksi aplikasi ancaman *Ransomware*, prosedur pengerahan melarang operator keamanan memutus sumber daya instalasi kelistrikan (<i>Shutdown</i>) peladen; parameter rasional spesifik apa yang menyebabkan pembatasan akses mitigasi fungsi darurat tersebut?</summary>
+<summary>❓ [SULIT] Jika sebuah komputer terinfeksi <i>Ransomware</i>, mengapa tim <i>Incident Response</i> dilarang keras mematikan atau me-<i>restart</i> komputer tersebut?</summary>
 
-**Jawaban:** Kebijakan intervensi keamanan mengacu pada arsitektur penyusunan retensi penyebaran parameter blok *Order of Volatility*. Perangkat ruang memori arsitektur *RAM* operasi OS komputer (yang senantiasa menampung status fungsi *Decryption Key / Kunci Dekripsi* arsitektur kriptografi Malware Ransomware OS saat OS komputer berjalan pasif maupun aktif) memiliki karakteristik penyimpanan *Volatile* (Mudah hilang/Menguap lenyap dengan siklus parameter listrik statis). Segala intervensi operasi pemutusan tegangan sumber OS atau perintah perombakan parameter log instruksi restart akan secara menghapus seluruh nilai instruksi dekripsi ini, sehingga restorasi arsip spesifik OS tak dapat dikembalikan lagi secara fungsi keamanan korporasi selamanya.
+**Jawaban:** Hal ini merujuk pada prinsip *Order of Volatility*. Memori RAM pada komputer bersifat *Volatile* (sementara dan mudah hilang jika tidak dialiri listrik). *Ransomware* yang sedang aktif menyimpan Kunci Dekripsi (*Decryption Key*) di dalam RAM. Jika komputer dimatikan atau di-*restart*, RAM akan terhapus, kunci dekripsi tersebut akan hilang selamanya, dan file yang terkunci mungkin tidak akan pernah bisa dibuka lagi.
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya menguasai pendayagunaan konsep pengerahan referensi fungsi taktis matriks TTPs perlindungan *MITRE ATT&CK Framework*.
-- [ ] Saya memahami struktur prosedur hipotesis intelijen fungsi pengawasan *Threat Hunting Playbook*.
-- [ ] Saya mengetahui dan memahami standar kepatuhan regulasi pencatatan instalasi dokumen kronologis *Chain of Custody*.
-- [ ] Saya menguasai mekanisme perlindungan integritas sistem duplikasi pendataan parameter bayangan peladen *Forensic Imaging*.
-- [ ] Saya sanggup membuktikan implementasi fungsi arsitektur pengerahan operasi pengamanan perumusan modul dokumen penugasan log `THREAT_HUNTING_PLAYBOOK.md`.
+- [ ] Saya telah memahami metodologi *Threat Hunting* berbasis hipotesis.
+- [ ] Saya memahami cara menggunakan matriks TTPs dari *MITRE ATT&CK Framework*.
+- [ ] Saya mengetahui pentingnya dokumen kronologis penyitaan bukti (*Chain of Custody*).
+- [ ] Saya memahami prosedur forensik seperti *Order of Volatility*, *Forensic Imaging*, dan *Hashing*.
+- [ ] Saya telah menyelesaikan penyusunan `THREAT_HUNTING_PLAYBOOK.md`.
 
 ---
 
@@ -135,12 +137,12 @@ Spesialis SOC tingkat lanjut tidak beroperasi berdasarkan laporan alarm (Alerts)
 
 ```
 ┌─────────────────────────────────────┐
-│ │
-│ 🕵️ THE CYBER DETECTIVE │
-│ Week 23 Complete │
-│ "Machines catch noise. │
-│ Humans hunt the silence." │
-│ │
+│                                     │
+│      🕵️ THE CYBER DETECTIVE       │
+│          Week 23 Complete           │
+│      "Machines catch noise.         │
+│     Humans hunt the silence."       │
+│                                     │
 └─────────────────────────────────────┘
 ```
 
@@ -150,7 +152,9 @@ Spesialis SOC tingkat lanjut tidak beroperasi berdasarkan laporan alarm (Alerts)
 
 **Minggu 24: Capstone — Full Cycle Defense & Graduation**
 
-Kurikulum TISS Null Teaming telah mencapai kulminasi. Tidak ada lagi teori baru yang akan diperkenalkan. Esok hari, kamu akan dihadapkan pada ujian pamungkas : **Capstone Project & Graduation Ceremony**. Seluruh ilmu yang telah diserap—dari kriptografi, eksploitasi kerentanan aplikasi web (XSS/SQLi), pemindaian jaringan (*Nmap*), konfigurasi sensor dan pemantauan (*Splunk/Suricata*), hingga prosedur forensik dan *Threat Hunting*—akan diintegrasikan secara komprehensif. Kamu diwajibkan menyusun laporan teknis lengkap respons insiden (*Full Incident Response Triage Report*) sebagai syarat penyerahan kelulusan untuk menyandang gelar spesialis **SENTINEL**. Persiapkan dirimu untuk ujian simulasi akhir!
+Kurikulum TISS Null Teaming telah mencapai kulminasinya. Tidak ada lagi teori baru yang akan diperkenalkan. Minggu depan, kamu akan dihadapkan pada ujian pamungkas: **Capstone Project & Graduation Ceremony**.
+
+Seluruh ilmu yang telah kamu pelajari selama 6 bulan terakhir—dari Kriptografi, Kerentanan Aplikasi Web (XSS/SQLi), Nmap, konfigurasi *Splunk/Suricata*, hingga prosedur Forensik dan *Threat Hunting*—akan diuji secara komprehensif. Kamu diwajibkan untuk menyusun Laporan Triage Respons Insiden lengkap (*Full Incident Response Triage Report*) sebagai syarat kelulusan untuk resmi menyandang gelar rank **SENTINEL**. Persiapkan dirimu!
 
 ---
 

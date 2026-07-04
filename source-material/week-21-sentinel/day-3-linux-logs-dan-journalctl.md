@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mengeksplorasi** arsitektur hirarki penempatan penyimpanan standar rekam jejak (*Logs*) di OS Linux (`/var/log/`).
-2. **Menganalisis** struktur file otentikasi sentral (berkas `auth.log` atau `secure`).
-3. **Mengekstrak** serta memanipulasi rentetan data peringatan sistem menggunakan perintah modern `journalctl`.
+1. **Mengeksplorasi** arsitektur penyimpanan log standar di sistem operasi Linux (`/var/log/`).
+2. **Menganalisis** struktur *file* log autentikasi utama (`auth.log` atau `secure`).
+3. **Mengekstrak** dan menyaring data log sistem menggunakan perintah `journalctl`.
 
 ---
 
@@ -20,33 +20,33 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Arsitektur Penyimpanan Log Standar: Direktori `/var/log/`
 
-Sementara infrastruktur Windows mengelola catatannya dalam arsip *database* berbasis aplikasi GUI grafis, sistem operasi **Linux** (yang secara dominan menyokong ekosistem peladen Cloud dan infrastruktur perusahaan) menganut konsep di mana semua entitas diklasifikasikan sebagai *plain text* (berkas file teks biasa). 
+Jika infrastruktur Windows mengelola log menggunakan *Event Viewer* yang berbasis *database* biner, sistem operasi **Linux** (yang sangat dominan digunakan pada *server Cloud* dan infrastruktur perusahaan) menganut konsep teks datar (*plain text*).
 
-Keseluruhan arsip dan peringatan aktivitas jaringan di Linux bermuara secara terpusat pada partisi direktori: `/var/log/`.
-Di dalam kumpulan direktori tersebut, sistem mendokumentasikan bermacam klasifikasi catatan, di antaranya:
+Seluruh arsip log aktivitas sistem dan aplikasi di Linux dipusatkan pada direktori `/var/log/`.
+Di dalam direktori tersebut, sistem mengkategorikan log ke dalam beberapa *file* penting:
 
-1. **`syslog` (atau `messages` di distro turunan RedHat/CentOS):** Dokumentasi kronologi sistem secara umum (*Global System Log*). Merekam berbagai indikasi malfungsi sistem operasi tingkat dasar, aktivitas modul perangkat *hardware*, dan perangkat lunak yang tidak dialokasikan di fail log spesifik mereka sendiri.
-2. **`auth.log` (atau `secure` di distro turunan RedHat/CentOS):** Berkas log otentikasi utama. Merupakan destinasi investigasi (Triage) pertama Analis keamanan, sebab log ini merekam keberhasilan verifikasi login, penolakan kredensial (kegagalan otentikasi kata sandi), sesi protokol transfer enkripsi tinggi seperti *SSH (Secure Shell)*, serta pelacakan eskalasi perizinan hak tingkat administrator oleh instruksi terminal perintah `sudo`.
-3. **`dmesg`:** Merangkum peringatan perangkat keras spesifik selama sesi peladen dihidupkan (booting sequence) guna melacak diagnostik galat pada kernel peladen.
+1. **`syslog` (atau `messages` di distro RedHat/CentOS):** Catatan aktivitas sistem secara umum (*Global System Log*). Merekam berbagai informasi sistem operasi, aktivitas perangkat keras, dan peringatan layanan yang tidak memiliki *file* log tersendiri.
+2. **`auth.log` (atau `secure` di distro RedHat/CentOS):** Log autentikasi utama. Ini adalah target utama investigasi (*Triage*) bagi Analis Keamanan karena merekam semua aktivitas login yang berhasil maupun gagal, sesi *SSH (Secure Shell)*, serta penggunaan perintah hak akses administrator (`sudo`).
+3. **`dmesg`:** Merekam pesan diagnostik tingkat kernel (*kernel ring buffer*) sejak *server* pertama kali dihidupkan (*booting*), yang sering digunakan untuk melacak masalah perangkat keras.
 
-### Dekripsi Audit Metadata Log `auth.log`
+### Analisis Log Autentikasi (`auth.log`)
 
-Ketika spesialis *Blue Team* menganalisis `auth.log`, mereka menerapkan parameter pelacakan tekstual.
-Contoh baris dokumentasi indikasi aktivitas gagal (*Brute Force* login via protokol SSH):
+Ketika Analis SOC menginvestigasi `auth.log`, mereka mencari pola anomali berbasis teks.
+Contoh baris log yang mengindikasikan serangan *Brute Force* (kegagalan *login* via SSH):
 `Oct 22 14:30:15 server1 sshd[1234]: Failed password for invalid user admin from 10.5.5.5 port 45212 ssh2`
 
-Contoh baris dokumentasi bukti eskalasi privilese (Peretas berhasil mengklaim otoritas sistem dengan mengeksekusi komando *Sudo* tingkat administrator):
+Contoh baris log yang mengindikasikan eskalasi privilese (pengguna biasa beralih menjadi *administrator/root* menggunakan `sudo`):
 `Oct 22 14:35:10 server1 sudo: hacker_user: TTY=pts/0; PWD=/home/hacker_user; USER=root; COMMAND=/bin/bash`
-Baris di atas memvalidasi *True Positive* peretasan, mengonfirmasi eksistensi pengguna standar `hacker_user` beralih posisi mengeksekusi wewenang absolut administrator puncak (user `root`) dan membuka akses lingkungan antarmuka peretasan interaktif persisten.
+Baris di atas memvalidasi insiden nyata (*True Positive*): pengguna `hacker_user` berhasil mengeksekusi wewenang administratif tertinggi (pengguna `root`) dan membuka akses interaktif persisten (`/bin/bash`).
 
-### Modernisasi Ekstraksi Catatan: `journalctl`
+### Ekstraksi Log Modern: `journalctl`
 
-Pada ekosistem OS Linux generasi terbaru yang diatur melalui *Systemd*, metode pendokumentasian log telah diotomatisasi secara struktural dan dikoordinasikan secara biner. Repositori komprehensif log *systemd* ini dapat diinterogasi melalui komponen terminal tunggal, yakni instruksi perintah: **`journalctl`**.
+Pada ekosistem Linux modern yang menggunakan manajemen layanan *Systemd*, pencatatan log dikelola secara terpusat dan berformat biner oleh `systemd-journald`. Log ini dapat diakses, difilter, dan dianalisis menggunakan satu perintah andalan: **`journalctl`**.
 
-Kapasitas tertinggi dari `journalctl` terletak pada keleluasaan fungsi pemfilteran dan pencarian variabel kueri terstruktur (mirip fungsi bahasa SQL)!
-- `journalctl -u ssh.service`: Menyaring (*Filter*) pencarian dan hanya menampilkan entitas rekam jejak untuk unit layanan *SSH/daemon* (membedah interaksi otentikasi khusus SSH).
-- `journalctl --since "1 hour ago"`: Mencari rekam jejak spesifik kejadian terpusat secara eksklusif hanya untuk jangka rentang waktu 60 menit mundur dari waktu eksekusi saat ini.
-- `journalctl -p err`: Parameter penyeleksian diaktifkan untuk menampilkan secara spesifik hanya kejadian krisis teknis atau pelaporan kesalahan sistem (Status: Error).
+Kekuatan utama `journalctl` terletak pada kemampuan pemfilteran argumen (*query*):
+- `journalctl -u ssh.service`: Menyaring log dan hanya menampilkan rekaman yang berkaitan dengan layanan/daemon SSH.
+- `journalctl --since "1 hour ago"`: Menampilkan rentetan kejadian spesifik yang terjadi secara eksklusif dalam 60 menit terakhir.
+- `journalctl -p err`: Hanya menampilkan log yang berstatus krisis teknis atau memiliki tingkat keparahan tinggi (*Error*).
 
 ---
 
@@ -54,61 +54,60 @@ Kapasitas tertinggi dari `journalctl` terletak pada keleluasaan fungsi pemfilter
 
 **Durasi**: ~10 menit
 
-Mari melakukan validasi pelacakan berbasis fungsi instruksi terminal Linux sederhana!
+Mari belajar mencari bukti kompromi sistem (IOCs) dengan perintah dasar Linux!
 
-1. Siapkan instalasi distribusi Linux Anda di ekosistem (Linux Virtual Machine/WSL) jika Anda ingin memanifestasikannya. (Dapat dilaksanakan melalui praktik simulasi visual berikut).
-2. Anda bertugas menginvestigasi log kegagalan koneksi di atas server Ubuntu. Sasaran analisis difokuskan pada identifikasi *Brute Force* dan otentikasi anomali eskalasi (*Sudo*).
-3. Anda diminta mencari ekstraksi fungsi spesifik ke dalam data taktis dengan memanfaatkan parameter `grep` guna mengekstrak kata kunci log di direktori `/var/log/auth.log`.
-4. Anda merumuskan kueri ekstraksi:
- `grep "Failed password" /var/log/auth.log`
-5. Terminal CLI menampilkan (Output) lebih dari seratus baris dokumentasi gagal (penolakan) parameter eksekusi kredensial otentikasi yang mayoritas diinisiasi dari lokasi rute statis (IP Asal `45.33.22.11`).
-6. Selanjutnya, Anda menguji indikator eksistensi komando `sudo` dari perintah: 
- `grep "sudo" /var/log/auth.log | grep "COMMAND="`
-7. Teridentifikasi eksekusi baris komando eksternal tak lazim, menegaskan aktivitas entitas tamu sukses memanfaatkan komando *root* secara paksa (Privilege Escalation). *Evaluasi Triase: Indikator Serangan True Positive (Eskalasi ke Tier 2 secara seketika)*.
+1. Anda bertugas menginvestigasi log koneksi di sebuah server Ubuntu. Fokus Anda adalah mengidentifikasi *Brute Force* dan otentikasi eskalasi privilese (*Sudo*).
+2. Anda diminta untuk mengekstrak entri yang mengindikasikan *password* salah di `/var/log/auth.log` menggunakan alat bantu `grep`.
+3. Anda menjalankan perintah pencarian:
+   `grep "Failed password" /var/log/auth.log`
+4. **Hasil (Output):** Terminal menampilkan ratusan baris log penolakan autentikasi yang secara dominan berasal dari satu alamat IP statis (`45.33.22.11`). Ini memvalidasi serangan *Brute Force*.
+5. Selanjutnya, Anda mencari indikasi penyalahgunaan *sudo* dengan perintah: 
+   `grep "sudo" /var/log/auth.log | grep "COMMAND="`
+6. **Evaluasi (Triage):** Terdeteksi eksekusi baris komando yang tidak wajar. Ini menegaskan bahwa penyerang telah berhasil masuk dan melakukan Eskalasi Privilese (*Privilege Escalation*). Insiden berstatus *True Positive* dan harus segera ditangani.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membedah infrastruktur log Linux secara spesifik, direktori (rute folder) absolut utama manakah yang berfungsi mendokumentasikan serta memusatkan hampir seluruh rekam jejak log OS dan layanan aplikasi di ekosistem standar Linux?</summary>
+<summary>❓ Dalam infrastruktur Linux standar, di direktori manakah hampir semua rekaman aktivitas (*logs*) sistem operasi dan layanan aplikasi dipusatkan?</summary>
 
 **Jawaban:** `/var/log/`.
 </details>
 
 <details>
-<summary>❓ Apabila penganalisis merumuskan investigasi pencarian bukti rentetan log <i>Brute Force</i> dan upaya otentikasi (seperti eskalasi <i>ssh</i> atau perampasan privilese <i>sudo</i>) pada OS turunan keluarga Debian/Ubuntu, dokumen log sentral spesifik manakah yang akan diperiksa (dikueri) pertama kali?</summary>
+<summary>❓ Apabila Analis SOC ingin menyelidiki rentetan serangan <i>Brute Force SSH</i> atau upaya eskalasi privilese melalui perintah <i>sudo</i> di OS Ubuntu, <i>file</i> log manakah yang harus ia periksa pertama kali?</summary>
 
 **Jawaban:** `auth.log` (atau `/var/log/auth.log`).
 </details>
 
 <details>
-<summary>❓ Di ekosistem Linux termutakhir berbasis konfigurasi manajemen *Systemd*, fitur komando terminal spesifik apa (dengan awalan nama 'j') yang berfungsi selaku fasilitas analitikal untuk melakukan ekstraksi filter data binari peringatan serta log peladen Linux yang sangat kompleks secara dinamis?</summary>
+<summary>❓ Pada ekosistem Linux modern yang berbasis <i>Systemd</i>, alat (*command*) apa yang digunakan untuk mengekstrak dan memfilter log terpusat dengan kemampuan pencarian waktu (misal: <i>--since</i>)?</summary>
 
-**Jawaban:** perintah `journalctl`.
+**Jawaban:** `journalctl`.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menguasai struktur penyimpanan arsip pada parameter hierarki folder `/var/log/`.
-- [ ] Saya mengetahui dan pemahaman dokumentasi otentikasi pada *auth.log*.
-- [ ] Saya mendemonstrasikan metode validasi deteksi otentikasi penyusupan melalui pengawasan lalu-lintas aktivitas *SSH*.
-- [ ] Saya sanggup menyederhanakan data pemantauan kueri *Systemd* melalui pengerahan parameter *journalctl*.
+- [ ] Saya memahami struktur penyimpanan direktori log di `/var/log/`.
+- [ ] Saya mengerti fungsi dan pentingnya log autentikasi `auth.log` (atau `secure`).
+- [ ] Saya dapat membaca dan mendeteksi anomali kegagalan autentikasi SSH.
+- [ ] Saya dapat menggunakan alat bantu `journalctl` untuk memfilter riwayat *Systemd*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [DigitalOcean: How To View and Configure Linux Logs](https://www.digitalocean.com/community/tutorials/how-to-view-and-configure-linux-logs-on-ubuntu-and-centos) — Dokumen mengenai dasar penelusuran manajemen direktori dokumentasi log di distribusi Ubuntu dan CentOS.
+- [DigitalOcean: How To View and Configure Linux Logs](https://www.digitalocean.com/community/tutorials/how-to-view-and-configure-linux-logs-on-ubuntu-and-centos) — Panduan teknis memahami lokasi dan cara membaca direktori log di Ubuntu dan CentOS.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Pattern Recognition** — Penguasaan komponen struktural metadata arsitektur telah ditunaikan. Kini, parameter kapabilitas *Blue Team* memindahkan kompetensi utama untuk membedah ekosistem data yang berlimpah di dunia industri yang padat (*Big Data logs*). Pembacaan kronologi baris log teks tergolong statis. Besok, kompetensi keahlian menuntut pemilahan metode pengenalan visual kognitif, yakni **Pattern Recognition** (Mengenali pola berulang). Anda akan diperkenalkan bagaimana melacak tanda ancaman peretasan *Brute Force*, aktivitas pengintaian peladen (*Vulnerability Scanner*), dan mitigasi taktis insiden indikasi pencurian transmisi data (*Data Exfiltration*).
+**Day 4: Pattern Recognition** — Setelah memahami format struktural log dasar, saatnya melangkah lebih jauh. Dalam lingkungan *Enterprise* nyata, data log sangat berlimpah (*Big Data logs*). Membaca log baris per baris secara manual tidak lagi memungkinkan. Besok, kita akan mempelajari **Pattern Recognition** (Pengenalan Pola) untuk mendeteksi anomali. Kamu akan belajar mengidentifikasi bentuk visual atau frekuensi khas dari serangan *Brute Force*, aktivitas *Vulnerability Scanner*, dan percobaan *Data Exfiltration*.
 
 ---
 

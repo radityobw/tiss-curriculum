@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mengenali** kapabilitas operasional dan arsitektur pengolahan data pada platform *Splunk*.
-2. **Menyusun** tata cara pencarian data operasional log melalui instruksi kueri *Search Processing Language* (SPL).
-3. **Mengekstraksi** data analisis memanfaatkan perintah penyaringan seperti `stats`, `table`, dan seleksi *fields*.
+1. **Mengenali** fungsi dan arsitektur pengolahan data pada platform *Splunk*.
+2. **Menyusun** kueri pencarian log menggunakan *Search Processing Language* (SPL).
+3. **Mengekstrak** dan memfilter data analitik menggunakan perintah `stats`, `table`, dan seleksi *fields*.
 
 ---
 
@@ -20,31 +20,31 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Pengantar Fungsionalitas Splunk
 
-Dari semua ekosistem SIEM tingkat *Enterprise*, **Splunk** merupakan salah satu solusi manajemen data log operasional terbesar dan paling dominan di arsitektur pertahanan bank multinasional dan perusahaan teknologi global. Kemahiran menyusun pencarian data (*Query*) di dalam Splunk adalah sertifikasi kompetensi mutlak bagi karir analis SOC operasional modern.
+Dari semua solusi SIEM tingkat *Enterprise*, **Splunk** merupakan salah satu platform manajemen log terbesar yang paling banyak digunakan oleh perusahaan multinasional dan teknologi global. Kemampuan menyusun kueri pencarian data di Splunk adalah kompetensi inti yang wajib dimiliki oleh analis SOC modern.
 
-Splunk memiliki kemampuan indeksasi (Indexing) berkapasitas luar biasa, menjadikannya seakan perambah mesin pencari spesifik berkinerja tinggi terhadap data mesin dan data mentah yang tersentralisasi.
+Splunk memiliki kemampuan indeksasi (*Indexing*) berkapasitas sangat tinggi, menjadikannya mesin pencari spesifik yang sangat cepat untuk memproses jutaan baris data mesin dan log terpusat.
 
 ### Struktur Fundamental Kueri: SPL (Search Processing Language)
 
-Pengoperasian pencarian log pada Splunk memanfaatkan bahasa kueri khusus yang disebut **SPL (Search Processing Language)**.
-Struktur instruksional ini mengadaptasi secara erat mekanisme *Piping* yang ada di lingkungan terminal Linux, di mana satu instruksi kueri akan dirangkaikan berkesinambungan menuju tahap fungsi kueri operasional selanjutnya dengan penyisipan karakter simbol `|`.
+Pengoperasian pencarian log pada Splunk dilakukan menggunakan bahasa kueri khusus bernama **SPL (Search Processing Language)**.
+Struktur SPL sangat mirip dengan konsep *Piping* di terminal Linux. Satu instruksi kueri akan dirangkaikan ke instruksi penyaringan selanjutnya menggunakan karakter garis vertikal/simbol `|` (Pipe).
 
-**Contoh Struktur Fungsionalitas SPL Fundamental:**
+**Contoh Struktur SPL Fundamental:**
 
-1. **Kueri Pemilahan (Filtering) Parameter Dasar:**
- `index=web_logs sourcetype=access_combined status=404`
- *(Definisi Operasional: Melakukan pencarian dari struktur tempat data "web_logs", dengan kategori format file log Apache, serta menarik hasil baris secara eksklusif hanya untuk parameter respon status galat bernilai 404).*
+1. **Pencarian Parameter Dasar (Filtering):**
+   `index=web_logs sourcetype=access_combined status=404`
+   *(Penjelasan: Mencari data di indeks "web_logs" yang berformat log akses web (Apache/Nginx), dengan memfilter secara spesifik hanya log yang menghasilkan status error 404).*
 
-2. **Organisasi Formasi Tabel (`table`):**
- `index=security_logs EventCode=4625 | table _time, user, src_ip`
- *(Definisi Operasional: Melakukan pencarian catatan kegagalan masuk (EventCode 4625), namun instruksi diproses untuk tidak menyajikan susunan teks lengkap melainkan menyaringnya menjadi tiga parameter tabel komprehensif berwujud: Cap Waktu, entitas akun User, serta Alamat IP klien peretas/pengguna).*
+2. **Membuat Format Tabel (`table`):**
+   `index=security_logs EventCode=4625 | table _time, user, src_ip`
+   *(Penjelasan: Mencari log kegagalan login (EventCode 4625), lalu menghilangkan teks log mentah yang panjang, dan menyajikannya dalam bentuk tabel ringkas berisi 3 kolom: Waktu kejadian (`_time`), nama pengguna (`user`), dan IP penyerang (`src_ip`)).*
 
-3. **Fungsionalitas Akumulasi Kuantitatif (`stats count`):**
- `index=web_logs status=401 | stats count by src_ip | sort - count`
- *(Definisi Operasional: Mengekstrak indikasi upaya akses ditolak (401), melaksanakan operasi matematis untuk menghitung agregat jumlah frekuensi kegagalan diurutkan menurut Alamat IP pelaku (`src_ip`), lalu mendayagunakan parameter urutan dari nominal intervensi dominan yang paling terbesar menuju ke frekuensi yang terkecil). Ini merupakan metodologi utama Analis SOC mengumpulkan bukti eskalasi peretasan Brute Force.*
+3. **Perhitungan Statistik (`stats count`):**
+   `index=web_logs status=401 | stats count by src_ip | sort - count`
+   *(Penjelasan: Mengekstrak indikasi akses ditolak (401), menghitung jumlah kejadian berdasarkan IP pelakunya (`src_ip`), lalu mengurutkannya dari jumlah terbanyak hingga terkecil (`sort - count`). Ini adalah teknik utama SOC untuk menemukan IP yang melakukan Brute Force).*
 
-### Abstraksi Parameter Ekstraksi (Fields)
-Splunk secara dinamis dan otomatis (schema-on-the-fly) menyeleksi dan mengekstrak blok struktur teks mentah lalu menyematkannya menjadi parameter metadata yang bisa dicari, biasa dikenal sebagai **Fields**. Contohnya, meski data teks log aslinya tak memiliki susunan tabel, sistem *Splunk* mendelegasikan secara cerdas urutan karakter IP seperti `192.168.1.1` sebagai Fields beralias/variabel `src_ip`, memudahkan penyebutan nilai tanpa pengolahan rumit.
+### Ekstraksi Parameter Otomatis (Fields)
+Splunk secara dinamis dan otomatis mengekstrak informasi penting dari teks log mentah dan mengubahnya menjadi variabel yang dapat dicari. Variabel ini disebut **Fields**. Sebagai contoh, sistem Splunk dapat secara otomatis mengenali alamat IP seperti `192.168.1.1` di dalam log teks dan memasukkannya ke dalam parameter `src_ip`. Ini sangat memudahkan Analis karena tidak perlu lagi menggunakan alat teks rumit seperti `awk` untuk mengambil kolom tertentu.
 
 ---
 
@@ -52,63 +52,64 @@ Splunk secara dinamis dan otomatis (schema-on-the-fly) menyeleksi dan mengekstra
 
 **Durasi**: ~10 menit
 
-Mari menyusun konseptual simulasi bahasa parameter SPL!
+Mari menyimulasikan penyusunan bahasa kueri SPL!
 
-1. Asumsikan perangkat latihan ini adalah platform simulasi kueri (Anda tidak memerlukan perangkat asli saat ini).
-2. Anda bertugas mengatasi eskalasi operasional. Direksi SOC melaporkan indikasi lonjakan galat di koneksi fasilitas Remote Desktop Protocol (RDP) korporat dari luar jam kerja normal. Mereka mengharapkan konfirmasi identifikasi IP penyerang terkait.
-3. **Rencana Eksekusi:** Menulis kueri ekstraksi SPL untuk mencari tahu entitas penyerang di dalam indeks penyimpanan `index=win_sec`.
-4. **Instruksi Eksekusi 1 (Filter Parameter Peristiwa):**
- Mencari catatan percobaan penetrasi gagal. Kueri awal: `index=win_sec EventCode=4625 Logon_Type=10`
-5. **Instruksi Eksekusi 2 (Kalkulasi Matematis):**
- Merangkai kalkulasi jumlah perulangan berbasis IP klien sumber dengan operator agregasi statistik:
- `| stats count by Source_Network_Address`
-6. **Integrasi Eksekusi Kueri (Urutan Ekstraktif Valid):**
- `index=win_sec EventCode=4625 Logon_Type=10 | stats count by Source_Network_Address | sort - count`
-7. Sistem SIEM akan mengeksekusi ekstraksi dan seketika menyajikan agregasi IP penyerang, yang mana entitas pelapor terekstrak telah mengeksekusi serangan 5.000 kali berturut-turut pada jam bersangkutan.
+1. Asumsikan Anda sedang menggunakan *Splunk Search bar*.
+2. **Skenario:** Manajemen SOC melaporkan lonjakan aktivitas kegagalan koneksi *Remote Desktop* (RDP) di luar jam kerja. Anda diminta mencari tahu alamat IP penyerang yang melakukan aktivitas tersebut.
+3. **Rencana Eksekusi:** Menulis kueri SPL untuk mencari indikasi penyerangan pada indeks keamanan Windows (`index=win_sec`).
+4. **Instruksi 1 (Filter Log Pencarian):**
+   Mencari log kegagalan autentikasi RDP: 
+   `index=win_sec EventCode=4625 Logon_Type=10`
+5. **Instruksi 2 (Kalkulasi Matematis):**
+   Merangkai perintah untuk menghitung akumulasi serangan berdasarkan IP klien:
+   `| stats count by Source_Network_Address`
+6. **Integrasi Kueri Penuh:**
+   `index=win_sec EventCode=4625 Logon_Type=10 | stats count by Source_Network_Address | sort - count`
+7. **Hasil:** Splunk akan mengeksekusi kueri tersebut dan menampilkan tabel yang menunjukkan bahwa ada satu IP mencurigakan yang telah melakukan 5.000 kali upaya *login* berurutan. Ini mengonfirmasi serangan *Brute Force*.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Menguraikan mesin *Splunk*, apa singkatan bahasa (be SPL) yang wajib dikuasai untuk melakukan analisis penyaringan pencarian log secara interaktif di platform SIEM tersebut?</summary>
+<summary>❓ Apa kepanjangan dari SPL, bahasa kueri yang digunakan untuk melakukan pencarian dan analisis log di dalam platform Splunk?</summary>
 
 **Jawaban:** Search Processing Language.
 </details>
 
 <details>
-<summary>❓ Saat mengelola tata bahasa pencarian kueri *SPL*, apa kegunaan utama instruksi parameter `table` (misal diterapkan pada <code>| table _time, src_ip</code>)?</summary>
+<summary>❓ Saat menyusun kueri SPL, apa fungsi utama dari argumen perintah `table` (contoh: <code>| table _time, src_ip</code>)?</summary>
 
-**Jawaban:** Berfungsi menghilangkan visualisasi penyajian format baris-baris teks mentah (raw log), lantas menata ulang data operasional tersebut menjadi antarmuka tabel kolom bersih yang spesifik memuat label argumen *field* terpilih.
+**Jawaban:** Berfungsi menghilangkan tampilan teks log mentah (*raw log*) yang kompleks dan merapikan data menjadi tabel yang hanya memuat kolom/parameter (*fields*) yang kita pilih.
 </details>
 
 <details>
-<summary>❓ Apabila operator SOC merumuskan parameter instruksi SPL <code>| stats count by src_ip</code>, analitis apakah yang diselenggarakan algoritma platform Splunk?</summary>
+<summary>❓ Jika seorang Analis SOC menjalankan perintah <code>| stats count by src_ip</code>, proses analitik apa yang akan dilakukan oleh Splunk?</summary>
 
-**Jawaban:** Menghitung total jumlah (frekuensi kejadian akumulatif) dari log operasional tersebut yang spesifik dikategorisasikan berdasarkan variabel alamat *IP Asal (src_ip)*.
+**Jawaban:** Splunk akan menghitung total frekuensi kemunculan log berdasarkan masing-masing alamat IP pelakunya (*src_ip*).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami peran dan keunggulan *Splunk* sebagai peramban data SIEM.
-- [ ] Saya cakap mendemonstrasikan implementasi logika dasar kueri *SPL*.
-- [ ] Saya mengetahui penerapan manajemen modifikasi presentasi menggunakan parameter fungsi *table*.
-- [ ] Saya mengenal konsep pendataan taksonomi *Fields* (Ekstraksi metadata dinamis).
+- [ ] Saya memahami peran dan keunggulan *Splunk* sebagai platform SIEM.
+- [ ] Saya mampu mendemonstrasikan penyusunan dasar kueri *SPL*.
+- [ ] Saya memahami penggunaan parameter `table` untuk merapikan presentasi data.
+- [ ] Saya mengerti fungsi ekstraksi metadata dinamis menggunakan taksonomi *Fields*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [Splunk SPL Quick Reference Guide](https://www.splunk.com/pdfs/solution-guides/splunk-quick-reference-guide.pdf) — Panduan sontekan kueri instruksi dasar pemrosesan SPL dari pengembang platform Splunk.
+- [Splunk SPL Quick Reference Guide](https://www.splunk.com/pdfs/solution-guides/splunk-quick-reference-guide.pdf) — Panduan cepat (*cheat sheet*) resmi dari Splunk mengenai perintah-perintah dasar SPL.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: Splunk Dashboards & Alerts** — Rutinitas seorang analis keamanan operasional tidak sekadar merangkai teks kueri (Search String) berulang-ulang untuk menelusuri insiden keamanan. Memantau ancaman juga memerlukan optimalisasi penyampaian notifikasi otomatis operasional. Esok hari, pemantauan SPL akan difokuskan untuk ditransformasikan sebagai antarmuka representasi pelaporan metrik keamanan *(Dashboards)* serta penyusunan fungsi notifikasi pendeteksi pencegahan respons *(Alerts)* berkelanjutan.
+**Day 3: Splunk Dashboards & Alerts** — Rutinitas seorang analis SOC tidak sekadar mengetik ulang kueri (Search String) berulang-ulang saat menelusuri ancaman. Keamanan korporat membutuhkan pemantauan otomatis. Esok hari, kita akan belajar bagaimana mengubah kueri SPL yang sudah kita buat hari ini menjadi visualisasi grafik pemantauan (*Dashboards*) serta menyusun notifikasi peringatan otomatis (*Alerts*).
 
 ---
 

@@ -27,7 +27,7 @@ total_questions: 5
 ### Q4
 **Type:** Short Answer
 **Question:** Mengapa bagian "Remediation" atau Rekomendasi wajib disertakan di akhir laporan pengujian keamanan?
-**Answer:** Untuk memandu *developer* atau tim teknis mengenai cara menambal celah tersebut, karena mereka mungkin belum menguasai teknik penu kode yang aman (*secure coding*).
+**Answer:** Untuk memandu *developer* atau tim teknis mengenai cara menambal celah tersebut, karena mereka mungkin belum menguasai teknik penulisan kode yang aman (*secure coding*).
 
 ### Q5
 **Type:** Short Answer

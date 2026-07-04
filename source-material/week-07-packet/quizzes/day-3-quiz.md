@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Perintah dasar terminal manakah yang difungsikan ketika analis ingin menampilkan seluruh teks isi file mentah langsung mencetak ke layar terminal tanpa menggunakan fitur tambahan?
+**Question:** Perintah apa yang digunakan untuk mencetak/membaca seluruh isi teks sebuah file langsung ke layar terminal?
 **Answer:** cat (Concatenate).

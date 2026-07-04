@@ -46,22 +46,22 @@ Seorang penyerang tidak akan mengisi kolom login secara valid. Ia dapat menyunti
 Maka susunan kueri SQL di dalam server akan terangkai menjadi:
 `SELECT * FROM users WHERE username = '' OR '1'='1'`
 
-Karena syarat klausa komparasi `'1'='1'` bernilai mutlak BENAR (True), mesin *Database SQL* akan mengabaikan validasi parameter sandi dan otomatis membiarkan akses terbuka, menyerahkan SELURUH DATA dalam tabel tersebut. Penyerang bahkan bisa menyisipkan komando modifikasi berbahaya lainnya (seperti `DROP TABLE`) untuk merusak peladen!
+Karena syarat klausa komparasi `'1'='1'` bernilai mutlak BENAR (True), mesin *Database SQL* akan mengabaikan validasi parameter sandi dan otomatis membiarkan akses terbuka, menyerahkan SELURUH DATA dalam tabel tersebut. Penyerang bahkan bisa menyisipkan komando modifikasi berbahaya lainnya (seperti `DROP TABLE`) untuk merusak *database*!
 
 ### Penangkal Mutlak: Parameterized Queries
 
-Jangan pernah merangkai kueri manipulasi SQL dengan penggabungan teks konkatensi (`+`). Terapkan teknik delegasi penanganan argumen dari *Driver Database* (misalnya `sqlite3`), yaitu metode **Parameterized Queries** (Kueri Berparameter).
+Jangan pernah merangkai kueri manipulasi SQL dengan penggabungan teks konkatensi (`+`). Terapkan teknik pendelegasian argumen melalui *Driver Database* (misalnya `sqlite3`), yaitu metode **Parameterized Queries** (Kueri Berparameter).
 
 ```javascript
 const username = req.body.username; 
 
-// AMAN: Gunakan tanda tanya (?) sebagai penyedia tempat (Placeholder) yang disanitasi
-const kueri = "SELECT * FROM users WHERE username =?";
+// AMAN: Gunakan tanda tanya (?) sebagai tempat penampung (Placeholder) yang disanitasi
+const kueri = "SELECT * FROM users WHERE username = ?";
 
-// Driver (sqlite3) otomatis akan membersihkan input username sehingga mesin hanya memandangnya sebagai data teks belaka.
+// Driver (sqlite3) otomatis akan membersihkan input sehingga mesin hanya memandangnya sebagai data teks belaka.
 db.get(kueri, [username]);
 ```
-Dengan deklarasi `?`, berapapun karakter aneh (misal kutip tunggal) yang disuntikkan penyerang, peramban database niscaya akan menanganinya mutlak sebagai teks data (bukan baris perintah komando SQL).
+Dengan deklarasi `?`, berapapun karakter aneh (misal kutip tunggal) yang disuntikkan penyerang, *Database Engine* akan menganggapnya secara mutlak sebagai teks data biasa (bukan perintah SQL).
 
 ---
 
@@ -71,13 +71,13 @@ Dengan deklarasi `?`, berapapun karakter aneh (misal kutip tunggal) yang disunti
 
 Mari mensimulasikan mekanisme eksploitasi serangan *SQL Injection*!
 
-1. Biasanya praktikum injeksi dieksekusi nyata memanfaatkan lab keamanan web. Kali ini kita mensimulasikan logika *code review*.
+1. Biasanya praktikum injeksi dieksekusi di lab keamanan web interaktif. Kali ini kita mensimulasikannya via tinjauan kode (*code review*).
 2. Bayangkan terdapat instalasi sistem rentan dengan kueri: `SELECT * FROM arsip WHERE kategori = 'Rahasia' AND sandi = '${input_sandi}'`.
-3. Jika admin penyerang menyuntikkan injeksi pada payload variabel `input_sandi`:
+3. Jika penyerang menyuntikkan kode ini pada kolom `input_sandi`:
 `' OR 1=1 --`
-4. Maka kueri instruksional peladen akan terangkai dan dieksekusi menjadi wujud ini:
+4. Maka kueri yang dieksekusi oleh server akan terangkai menjadi seperti ini:
 `SELECT * FROM arsip WHERE kategori = 'Rahasia' AND sandi = '' OR 1=1 --'`
-5. Simbol `--` pada sintaks *SQL* berarti "Deklarasi Komentar/Abaikan semua baris instruksi sisa di belakang karakter ini". Oleh karena itu, sisa fungsi validasi akan dibuang/diabaikan, dan gerbang data langsung terbuka akibat klausa kebenaran `1=1` (TRUE)!
+5. Simbol `--` pada sintaks *SQL* berarti "Deklarasi Komentar / Abaikan semua teks di belakang karakter ini". Oleh karena itu, sisa fungsi validasi sandi di belakang akan dibuang, dan akses data langsung terbuka lebar akibat klausa kebenaran `1=1` (TRUE)!
 
 ---
 
@@ -90,39 +90,39 @@ Mari mensimulasikan mekanisme eksploitasi serangan *SQL Injection*!
 </details>
 
 <details>
-<summary>❓ Ketika klien menyuntikkan muatan injeksi operasional `' OR '1'='1`, mengapa sistem Basis Data SQL otomatis mengabaikan validasi dan menyerahkan seluruh isi data arsipnya?</summary>
+<summary>❓ Saat penyerang menyuntikkan kode `' OR '1'='1`, mengapa sistem Database SQL otomatis mengabaikan validasi dan menyerahkan seluruh datanya?</summary>
 
-**Jawaban:** Sebab deklarasi klausa logika `OR '1'='1'` senantiasa dievaluasi bernilai statis mutlak *TRUE (Benar)*; memaksa eksekutor Basis Data mengamini kueri dan mengabaikan kegagalan evaluasi pengecekan kecocokan atribut nama, yang langsung berujung pada ekstraksi paksa rincian seluruh baris rekaman pada tabel bersangkutan tanpa terkecuali.
+**Jawaban:** Karena klausa logika `OR '1'='1'` akan selalu bernilai *TRUE (Benar)*. Hal ini memaksa *Database* untuk mengabaikan pengecekan *username* atau sandi, dan langsung mengambil seluruh baris data di dalam tabel tersebut.
 </details>
 
 <details>
-<summary>❓ Modifikasi arsitektur tameng perlindungan operasional penulisan komponen *Backend* apa yang wajib diimplementasikan selaku metode mitigasi mutlak demi menangkal serangan celah insiden peretasan *SQL Injection* secara permanen?</summary>
+<summary>❓ Teknik apa di sisi *Backend* yang wajib diimplementasikan sebagai metode mitigasi mutlak untuk menangkal serangan *SQL Injection* secara permanen?</summary>
 
-**Jawaban:** Penerapan implementasi penulisan metode penanganan tata bahasa fungsi *Parameterized Queries* / *Prepared Statements* (menyediakan simbol posisi *placeholder* `?` agar masukan input klien ditugaskan otomatis ditangani sistem *Driver* murni sebatas ditafsirkan sebagai format elemen teks murni statis belaka ketimbang skrip kueri peretasan perintah aktif penyayat eksekutor SQL).
+**Jawaban:** Penggunaan **Parameterized Queries** atau **Prepared Statements**. Teknik ini menggunakan simbol *placeholder* (seperti `?`) sehingga input pengguna akan langsung ditangani oleh *Driver* database sebagai teks biasa, bukan sebagai bagian dari perintah SQL yang bisa dieksekusi.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya telah memahami peran panduan referensi pemetaan kerentanan OWASP Top 10
-- [ ] Saya fasih menjabarkan secara rasional fungsi evaluasi logika matematis serangan `OR 1=1` pada metode eksploitasi peretasan *SQLi*
-- [ ] Saya mengetahui bahaya operasional merangkai variabel fungsi pengguna langsung ke logika kueri arsitektur memori database *SQL*
-- [ ] Saya menguasai praktik implementasi penulisan sintaks *Parameterized Queries* (`?`) di SQL lokal SQLite
-- [ ] Saya telah selesai mengevaluasi seluruh rincian laporan Quiz Kilat di akhir modul
+- [ ] Saya telah memahami peran panduan referensi pemetaan kerentanan OWASP Top 10.
+- [ ] Saya paham mengapa injeksi logika matematika `OR 1=1` sangat berbahaya pada eksploitasi *SQL Injection*.
+- [ ] Saya mengerti bahayanya merangkai *string* inputan pengguna langsung ke dalam logika kueri *SQL*.
+- [ ] Saya menguasai praktik mitigasi keamanan menggunakan sintaks *Parameterized Queries* (`?`) di *SQLite*.
+- [ ] Saya telah mereview pertanyaan pada sesi *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [OWASP Top 10 Official](https://owasp.org/www-project-top-ten/) — Dokumen repositori absah resmi yang membeberkan 10 kategori taksonomi ancaman operasi keamanan aplikasi .
-- [PortSwigger: SQL Injection](https://portswigger.net/web-security/sql-injection) — Sarana belajar pengujian lab penetrasi peretasan parameter jaringan antarmuka fungsi web dari perancang peladen piranti pengujian *Burp Suite* ternama!
+- [OWASP Top 10 Official](https://owasp.org/www-project-top-ten/) — Dokumen resmi yang membeberkan 10 kategori taksonomi ancaman operasi keamanan aplikasi web.
+- [PortSwigger: SQL Injection](https://portswigger.net/web-security/sql-injection) — Sarana belajar dan lab pengujian *SQL Injection* dari pembuat *Burp Suite* ternama!
 
 ---
 
 ## ➡️ Besok
 
-**Day 2: Cross-Site Scripting (XSS)** — Usai kau melumpuhkan bahaya penyusupan data peladen pada infrastruktur Database, di materi besok kita menugaskan penelusuran arsitektur keamanan fungsi injeksi peramban operasional menargetkan manipulasi sistem eksternal pengunjung antarmuka aplikasi klien secara langsung: eksploitasi serangan **XSS**! Kerentanan fungsi manipulatif antarmuka situs jaringan ini bertujuan memperalat peramban lokal klien untuk mengeksekusi bongkahan logika *JavaScript* serangan tersembunyi!
+**Day 2: Cross-Site Scripting (XSS)** — Setelah kamu memahami cara mencegah kebocoran data di infrastruktur *Database* akibat SQLi, besok kita akan beralih ke kerentanan yang menyerang *browser* korban secara langsung: **Cross-Site Scripting (XSS)**! Celah keamanan ini memungkinkan penyerang menyisipkan *JavaScript* berbahaya ke dalam *browser* pengguna lain untuk mencuri token sesi atau memanipulasi tampilan.
 
 ---
 

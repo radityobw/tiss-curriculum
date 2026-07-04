@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Secara fundamental teknis, apakah pendeskripsian yang paling tepat mengenai arsitektur lingkungan eksekusi Node.js?
-- [x] A. Node.js bukanlah sebuah bahasa pemrograman baru, melainkan sebuah lingkungan eksekusi (*Runtime Environment*) di sisi server (*backend*) yang dibangun di atas mesin JavaScript V8 (dari peramban Google Chrome) agar *JavaScript* dapat mengakses jaringan dan Sistem Operasi.
-- [ ] B. Merupakan versi pengembangan kelanjutan spesifikasi eksklusif (sekuel absolut) dari arsitektur eksekusi bahasa Java tulen.
-- [ ] C. Node.js sejatinya hanyalah ekstensi pelacak *antivirus* tambahan yang diperuntukkan bagi peramban *Firefox*.
-- [ ] D. Node.js adalah basis penyimpanan data (*database*) terstruktur relasional SQL yang dirancang ulang menyerupai lingkungan *NoSQL*.
+**Question:** Apa deskripsi yang paling tepat mengenai Node.js?
+- [x] A. Node.js bukan bahasa pemrograman baru, melainkan *Runtime Environment* agar JavaScript bisa dijalankan di luar *browser* (di sisi *server*).
+- [ ] B. Versi pengembangan lanjutan dari bahasa Java.
+- [ ] C. Ekstensi antivirus tambahan untuk peramban Firefox.
+- [ ] D. Basis data relasional SQL yang dirancang menyerupai NoSQL.
 
 ### Q2
 **Type:** True/False
-**Question:** Setelah perintah inisialisasi manajemen dependensi `npm init -y` dijalankan pada sebuah direktori proyek *backend* baru, *file* penting yang akan otomatis terbuat sebagai penampung konfigurasi informasi dasar *blueprint* kepemilikan pustaka/paket aplikasi dinamakan `server.js`.
+**Question:** Setelah menjalankan perintah `npm init -y`, sebuah *file* konfigurasi manajemen *package* akan otomatis dibuat dengan nama `server.js`.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Evolusi kebangkitan JavaScript masuk batas pengekangan *browser* (menuju server) ditopang oleh keberhasilan implementasi mesin pembaca (*engine*) kompilasi tercepat yang awalnya dibuat untuk peramban *Google Chrome*. Apakah sebutan nama resmi spesifik *engine* sakti (berinisial 'V') tersebut?
-**Answer:** Mesin V8 (V8 Engine).
+**Question:** Mesin kompilasi (*engine*) JavaScript apa yang mendasari Node.js, yang awalnya dikembangkan untuk peramban Google Chrome?
+**Answer:** V8 (V8 Engine).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Mengupas tatanan konsep pemanggilan pustaka modul (*module system*) *Node.js* tipe klasik (*CommonJS*), fungsi spesifik absolut manakah (diikuti dengan tanda buka-tutup kurung paramater `()`) yang diluncurkan ketika sebuah berkas memerlukan komponen pelengkap fungsionalitas dari kawan *file* di luar *script* itu?
-**Answer:** require (atau require()).
+**Question:** Dalam sistem modul bawaan Node.js (CommonJS), fungsi apa yang digunakan untuk mengimpor atau memanggil kode dari *file* lain?
+**Answer:** `require()` (atau `require`).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Di panggung peretasan pemrograman dunia pengembangan *backend* modern, singkatan tiga abjad leksikal *NPM* mewakili sebuah ekosistem perangkat registri pusat paket *Node*. Singkatan apakah kepanjangan penuh dari entitas itu?
+**Question:** Apa kepanjangan dari manajer paket *Node.js*, NPM?
 **Answer:** Node Package Manager.

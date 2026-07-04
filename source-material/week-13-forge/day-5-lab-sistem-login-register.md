@@ -19,7 +19,7 @@
 
 ## 📝 Rekap Minggu Ini
 
-Minggu krusial telah tuntas. Engkau telah diinisiasi menyelami arsitektur persemayaman basis data permanen peladen beserta struktur pertahanan pengenal *API*:
+Minggu krusial telah tuntas. Kamu telah mempelajari cara kerja basis data permanen pada server beserta struktur perlindungan *API*:
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
@@ -38,7 +38,7 @@ Minggu krusial telah tuntas. Engkau telah diinisiasi menyelami arsitektur persem
 
 ### Misi Hari Ini: "Membangun API Sistem Otentikasi"
 
-Segala teoretis telah engkau kuasai. Hari ini dirimu bakal mengukir perakitan puncak menyatukan kerangka *Express Backend API*, menjahitnya bersama penyimpanan *SQLite*, serta melapisnya dengan sistem perisai kriptografi *Bcrypt*! 
+Secara teori kamu sudah siap. Hari ini, kamu akan membangun *Express Backend API* secara utuh, menghubungkannya dengan *SQLite*, dan melindunginya dengan kriptografi *Bcrypt*!
 
 ### Step 1: Inisiasi Direktori (Setup)
 
@@ -67,147 +67,146 @@ app.use(express.json()); // Penadah sandi payload bodi JSON
 // ===============================================
 const db = new sqlite3.Database('./brankas-agen.db');
 db.serialize(() => {
- // Merakit kerangka tabel pengguna
- db.run(`CREATE TABLE IF NOT EXISTS users (
- id INTEGER PRIMARY KEY AUTOINCREMENT,
- username VARCHAR(50) UNIQUE,
- password_hash TEXT
-)`);
+  // Merakit kerangka tabel pengguna
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(50) UNIQUE,
+    password_hash TEXT
+  )`);
 });
 
 // ===============================================
 // 2. RUTE REGISTRASI (CREATE USER)
 // ===============================================
 app.post('/api/register', async (req, res) => {
- const { username, password } = req.body; // Ekstraksi data sandi dari permintaan klien
- 
- if(!username ||!password) return res.status(400).json({pesan_status: "Error 400: Nama pengguna atau kata sandi tidak boleh kosong!"});
+  const { username, password } = req.body; // Ekstraksi data sandi dari permintaan klien
+  
+  if(!username || !password) return res.status(400).json({pesan_status: "Error 400: Nama pengguna atau kata sandi tidak boleh kosong!"});
 
- try {
- // Fungsi Hashing Sandi (Tingkat salt: 10)
- const saltRounds = 10;
- const hashAbadi = await bcrypt.hash(password, saltRounds);
+  try {
+    // Fungsi Hashing Sandi (Tingkat salt: 10)
+    const saltRounds = 10;
+    const hashAbadi = await bcrypt.hash(password, saltRounds);
 
- // Sisipkan cincangan sandi (BUKAN teks aslinya!) ke Database
- const tembakanKueri = db.prepare("INSERT INTO users (username, password_hash) VALUES (?,?)");
- 
- tembakanKueri.run([username, hashAbadi], function(err) {
- if (err) {
- return res.status(400).json({pesan_status: "Gagal, username tersebut sudah digunakan oleh pengguna lain!"});
- }
- res.status(201).json({pesan_status: "Registrasi Sukses! Akun Anda terdaftar dengan aman!"});
- });
- tembakanKueri.finalize();
- } catch (error) {
- res.status(500).json({pesan_status: "Kegagalan Peladen Internal (Internal Server Error)."});
- }
+    // Sisipkan cincangan sandi (BUKAN teks aslinya!) ke Database
+    const tembakanKueri = db.prepare("INSERT INTO users (username, password_hash) VALUES (?,?)");
+    
+    tembakanKueri.run([username, hashAbadi], function(err) {
+      if (err) {
+        return res.status(400).json({pesan_status: "Gagal, username tersebut sudah digunakan oleh pengguna lain!"});
+      }
+      res.status(201).json({pesan_status: "Registrasi Sukses! Akun Anda terdaftar dengan aman!"});
+    });
+    tembakanKueri.finalize();
+  } catch (error) {
+    res.status(500).json({pesan_status: "Kegagalan Peladen Internal (Internal Server Error)."});
+  }
 });
 
 // ===============================================
 // 3. RUTE LOGIN halaman (AUTENTIKASI)
 // ===============================================
 app.post('/api/login', (req, res) => {
- const { username, password } = req.body;
+  const { username, password } = req.body;
 
- // Lakukan pencarian awal di Database berdasarkan username
- db.get("SELECT * FROM users WHERE username =?", [username], async (err, hasilData) => {
- 
- // Validasi apakah pengguna tersebut eksis
- if (!hasilData) {
- return res.status(401).json({pesan_status: "Akses Ditolak! Akun pengguna belum terdaftar."});
- }
+  // Lakukan pencarian awal di Database berdasarkan username
+  db.get("SELECT * FROM users WHERE username = ?", [username], async (err, hasilData) => {
+    
+    // Validasi apakah pengguna tersebut eksis
+    if (!hasilData) {
+      return res.status(401).json({pesan_status: "Akses Ditolak! Akun pengguna belum terdaftar."});
+    }
 
- // Apabila eksis, sinkronkan kecocokan fungsi 'password' masukan dengan 'hash' di peladen
- const tebakanCocok = await bcrypt.compare(password, hasilData.password_hash);
- 
- if (tebakanCocok) {
- res.status(200).json({pesan_status: `Verifikasi Login Berhasil! Selamat datang, ${username}!`});
- // Di arsitektur produksi nyata, di titik inilah server menerbitkan token JWT untuk diserahkan ke klien.
- } else {
- res.status(401).json({pesan_status: "Akses Ditolak (401)! Kata sandi yang Anda masukkan tidak tepat."});
- }
- });
+    // Apabila eksis, sinkronkan kecocokan fungsi 'password' masukan dengan 'hash' di peladen
+    const tebakanCocok = await bcrypt.compare(password, hasilData.password_hash);
+    
+    if (tebakanCocok) {
+      res.status(200).json({pesan_status: `Verifikasi Login Berhasil! Selamat datang, ${username}!`});
+      // Di arsitektur produksi nyata, di titik inilah server menerbitkan token JWT untuk diserahkan ke klien.
+    } else {
+      res.status(401).json({pesan_status: "Akses Ditolak (401)! Kata sandi yang Anda masukkan tidak tepat."});
+    }
+  });
 });
 
-// Jalankan Palang Radar Aplikasi!
-app.listen(3000, () => console.log('Sistem API Otentikasi beroperasi mendengarkan koneksi di Port 3000.'));
+// Jalankan Server
+app.listen(3000, () => console.log('Server API Otentikasi berjalan di Port 3000.'));
 ```
 
 ### Step 3: Pengecekan Daya Operasional Aplikasi Klien (Postman)
 
-1. Nyalakan sirkuit peladen via instruksi `node server.js`.
-2. Bidik eksekusi pengikatan POST memakai aplikasi klien penguji (*Postman / Thunder Client*) ke alamat rute API:
- `http://localhost:3000/api/register` (Sisipkan payload di *Body JSON* yang memuat atribut payload "username" dan "password").
-3. Usai proses registrasi tercatat berhasil divalidasi, ujilah pengalihan lajur eksekusi menyasar metode rute `/api/login` dengan merancang parameter masukan berupa kombinasi sandi yang disengaja keliru (tinjau respons penolakan stempel `401 Unauthorized`).
-4. Perbaiki input kombinasi sandi dengan teks autentik, luncurkan kuerinya dan nikmati status keabsahan `200 OK` yang mengesahkan validasi arsitektur keamanan absolut otentikasi logikmu!
+1. Jalankan server dengan perintah `node server.js`.
+2. Buka *Postman* atau *Thunder Client*. Buat *request* POST ke rute API: `http://localhost:3000/api/register` (Kirimkan JSON *Body* yang berisi "username" dan "password").
+3. Setelah registrasi berhasil, tes rute `/api/login` dengan memasukkan kata sandi yang salah secara sengaja (pastikan kamu mendapat respons `401 Unauthorized`).
+4. Kemudian, coba lagi dengan kata sandi yang benar untuk memastikan kamu mendapatkan status `200 OK`!
 
 ---
 
 ## 🎯 Weekly Mission
 
-### Misi: Mengevaluasi Keamanan Data Secara 
-**Deskripsi:** Apabila dirimu menelaah arsitektur penyusunan struktur kerangka Database *SQLite* pada *folder* operasional lab hari ini, peladen telah secara diam-diam menghasilkan sebongkah ekstensi file biner `.db` (*brankas-agen.db*) di lokasi direktori luringmu. 
+### Misi: Mengevaluasi Keamanan Data Secara Visual
+**Deskripsi:** Apabila kamu memperhatikan *folder* proyekmu, skrip server secara otomatis telah membuat sebuah file *Database SQLite* berformat `.db` (`brankas-agen.db`). 
 
-**Tugas Mandiri:** Lakukanlah inspeksi manual untuk memeriksa secara visual kondisi rekam penulisan *Database* tersebut langsung pada media antarmuka penyimpanan di komputermu (Anda bebas memanfaatkan fitur ekstensi VS Code *SQLite Viewer* atau mengoperasikan peranti aplikasi GUI khusus semacam *SQLite Studio*). Bukalah modul muatan isi struktur tabel dari berkas `brankas-agen.db`!
+**Tugas Mandiri:** Lakukanlah inspeksi manual ke dalam file *Database* tersebut secara visual menggunakan ekstensi VS Code *SQLite Viewer* atau aplikasi eksternal seperti *DB Browser for SQLite*. Buka dan lihatlah struktur tabel dari berkas `brankas-agen.db`!
 
 **Deliverables:**
-1. Tangkapan layar (*Screenshot*) visual yang mengilustrasikan penampang susunan barisan tabel pada berkas Database `brankas-agen.db` tempat rekam catatan log entitas *user* Anda bertengger mengabstraksikan panjang acak deretan enkripsi pelindung fungsi *hash* pada kolom `password_hash` (yang sukses disuntikkan via prosedur pengerjaan pertahanan bcrypt).
-2. Lampirkan berkas gambar dokumentasi pengujian tangkapan visual (*screenshot*) tersebut untuk diunggah melengkapi dokumen repositorimu.
+1. Tangkapan layar (*Screenshot*) tabel `users` di dalam database `brankas-agen.db`, yang menampilkan bahwa kolom `password_hash` telah tersimpan sebagai teks acak berkat perlindungan *bcrypt*.
+2. Lampirkan gambar tangkapan layar tersebut di laporan misimu.
 
 **Kriteria Sukses:**
-- [ ] Mampu berinteraksi mengakses berkas pembaca basis SQLite menggunakan antarmuka eksternal (*GUI*).
-- [ ] Memvalidasi dan memastikan penampakan penyimpanan data *password* tidak lagi berbentuk *plaintext*, melainkan termutasi sepenuhnya menjadi struktur fungsi hash rahasia acak 60 abjad.
+- [ ] Mampu mengakses dan membaca *Database SQLite* secara visual menggunakan antarmuka eksternal (*GUI*).
+- [ ] Memastikan bahwa data *password* tersimpan dalam bentuk algoritma *hash* acak yang aman, bukan teks murni (*plaintext*).
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Mengingat parameter pengiriman sandi otentikasi peladen API otentikasi pada gerbang *Register/Login* membungkus parameter paket *JSON* berisikan data sandi amat sensitif, rutinitas metode HTTP apa yang diwajibkan untuk mengalokasi pengiriman alurnya (dan mengapa diharamkan menggunakan GET)?</summary>
+<summary>❓ [MUDAH] Mengingat parameter pengiriman sandi otentikasi peladen API otentikasi pada gerbang *Register/Login* membungkus parameter paket *JSON* berisikan data sandi amat sensitif, rutinitas metode HTTP apa yang diwajibkan untuk mengalokasi pengiriman alurnya (dan mengapa tidak diperbolehkan menggunakan GET)?</summary>
 
-**Jawaban:** Pengiriman otentikasi diwajibkan mutlak diselundupkan tersembunyi menumpang payload paket *body* dari HTTP metode pengiriman transmisi jenis *POST*. Metode *GET* diharamkan karena berisiko memaparkan informasi parameter sandi secara vulgar terlihat transparan menempel pada antarmuka alur tautan *URL Address Bar* (dan terkam riwayat histori *browser*).
+**Jawaban:** Pengiriman kredensial wajib dikirim melalui *Body* pada metode HTTP *POST*. Metode *GET* sangat dilarang karena data yang dikirim via GET akan terekspos jelas secara transparan pada *URL Address Bar* (dan terekam di riwayat / histori browser).
 </details>
 
 <details>
-<summary>❓ [MUDAH] Atribut konfigurasi pembatas tambahan apa yang wajib disematkan pada spesifikasi pengikatan konstruksi pembuatan kolom tabel laksana barisan pendefinisian kueri `username VARCHAR(50)...` guna menggaransi pertahanan penangkal database seandainya didapati pendaftar yang berniat meretas profil menyabotase serta mengklaim identitas kombinasi abjad akun *username* yang eksistensinya persis identik telah digunakan sebelumnya?</summary>
+<summary>❓ [MUDAH] Atribut batasan (*constraint*) tambahan apa yang wajib disematkan saat membuat kolom `username VARCHAR(50)...` agar pendaftar baru tidak bisa menggunakan *username* yang sama persis dengan yang sudah terdaftar?</summary>
 
-**Jawaban:** Pengikatan pelibatan spesifikasi sintaks batas kekangan kendali validitas klausa pengingat konstrain atribut pembatas `UNIQUE`.
+**Jawaban:** Atribut pembatas `UNIQUE`.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Di tengah mengoperasikan kelancaran rute rutinitas inspeksi penyelarasan alur skrip verifikasi fungsi *Login* merespons pemanggilan API dari peluncur, jikalau lajur verifikasi sistem klien tersebut terbukti menyuntikkan kesalahan tebakan parameter kata sandi atau nama akun di masukan kargonya, jenis pelaporan stempel identifikasi kode status HTTP (*balasan HTTP Error Codes ras 4xx*) manakah yang mesti dieksekusi dikirim merespons interupsinya?</summary>
+<summary>❓ [SEDANG] Saat menjalankan API *Login*, apabila klien terbukti memasukkan tebakan kombinasi kata sandi atau *username* yang salah, kode status HTTP ras 4xx berapakah yang paling tepat dikirim oleh peladen sebagai respons penolakan?</summary>
 
-**Jawaban:** Konfirmasi respons pelaporan parameter kegagalan validasi galat bernomor kode status 401 (Unauthorized / Penolakan Autorisasi Akses).
+**Jawaban:** Respons kode status HTTP 401 (*Unauthorized* / Akses Ditolak).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Menyasar analisis terhadap struktur fungsi persandian `bcrypt.hash(password, saltRounds)`, definisikan signifikansi paramater argumen variabel *saltRounds* (lazim bernilai 10) bagi efektivitas perisai pertahanan arsitektur keamanannya?</summary>
+<summary>❓ [SEDANG] Pada fungsi hashing `bcrypt.hash(password, saltRounds)`, apa tujuan utama dan signifikansi parameter *saltRounds* (yang lazim disetel dengan nilai 10)?</summary>
 
-**Jawaban:** *Salt rounds* menentukan tingkat kompleksitas dan porsi parameter besaran biaya operasional logik pengacakan (*cost factor*) algoritma kriptografi dalam menjejal sirkuit memori. Makin masif pengesetan nilainya, kian tersita waktu peladen memproses eksekutor kalkulasi pencincangannya (sengaja dilambatkan secara ekstrem), fungsi ini krusial diandalkan guna menguras ketahanan sumber daya memori mesin peretas dalam upaya menangkal eksploitasi peretasan sandi masif sejenis metode instan *Brute-Force*.
+**Jawaban:** *Salt rounds* menentukan tingkat kompleksitas komputasi (biaya waktu kalkulasi / *cost factor*) dari algoritma enkripsi. Semakin tinggi nilainya, semakin lambat server memprosesnya. Ini sangat krusial untuk menguras dan menyulitkan ketahanan mesin *hacker* jika mereka berniat meretas sandi secara masif dengan metode tebakan massal (*Brute-Force*).
 </details>
 
 <details>
-<summary>❓ [SULIT] Ketika operasi sirkulasi sandi skrip rute *API Login* divalidasi kinerjanya; coba runutkan dua tahapan krusial alur pengujian operasional validitas *Server Backend* di sebalik kodingan, sebelum putusan pengesahan konfirmasi sandi kode balasan HTTP *200 OK* dirilis diterbitkan!</summary>
+<summary>❓ [SULIT] Saat mengeksekusi operasi API *Login*, coba jelaskan dua tahapan logis validasi backend sebelum server akhirnya secara sah merilis konfirmasi balasan *200 OK*!</summary>
 
-**Jawaban:** Tahapan Babak Pertama (Validasi Ketersediaan Ekstraksi Identitas Kredensial Basis Data): Peladen menelusuri memori basis SQL menggunakan kunci nilai variabel payload kolom nama akun `username` demi memverifikasi eksistensi kepemilikan akun tamu pengunjung (*jika hampa/tidak ada satupun indeks korelasi terkait yang menjahit, eksekutor bakal segera menerbitkan putusan penolakan peringatan status galat Unauthorized 401*). Babak Kedua (Konfirmasi Silang Ketahanan Pertahanan Kredensial Hash Cincang vs Sandi Tulen Masukan Klien Pendaftar): Ketika verifikasi baris validasi akun pengunjung eksis dijemput, barulah logik peladen mengekstrak simpanan rahasia parameter teks cincang *password_hash* di kumpulan database, mengadu memanggil pembenturan pengujian integrasi logik penyelarasan silang (via aktivasi parameter komparasi metode *bcrypt.compare*) untuk ditubrukkan diadu kekuatan mencocokkannya merespons kombinasi teks rahasia sandi murni tebakan pengunjung barusan (dikalkulasikan dan dicincang algoritma hash lagi saat di udara untuk dibandingkan kelop validitas logiknya). Bilamana rentetan dwi tahapan validasi arsitektur perisai itu sukses sinkron mutlak tanpa kecacatan verifikasi, barulah gerbang menerbitkan status pelaporan sah konfirmasi otorisasi penyematan label sandi keberhasilan respons 200 OK.
+**Jawaban:** Babak Pertama (Validasi Username): Server akan melakukan kueri ke database berdasar masukan nama akun (`username`). Jika datanya kosong, server merilis status penolakan 401. Babak Kedua (Pencocokan Sandi Hash): Jika *username* ditemukan, server mengambil data *password_hash* di database lalu mengadu kekuatannya dengan sandi teks inputan pengunjung yang sedang *login* (via metode *bcrypt.compare*). Hanya jika tahap pertama dan tahap kedua tuntas dengan valid, barulah server menerbitkan pengesahan logik akses berhasil *200 OK*.
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya fasih merencanakan arsitektur kerangka penyusunan relasional pembuatan tabel kueri SQL (`CREATE`) menyusup ekosistem SQLite.
-- [ ] Saya telah menuntaskan pendemonstrasian praktik menjahit fungsi konektor integrasi eksekusi payload skrip perantara API peladen *Express Node.js* melawan struktur transmisi arsitektur penyimpanan basis data SQL permanen lokal.
-- [ ] Saya menuntaskan penguasaan teoretis perihal siklus kriptografis perlindungan segenap rekaman sandi basis pengamanan database (terbantu fungsi algoritma pembalut *Bcrypt*).
-- [ ] Saya berhasil mendirikan operasional rutinitas arsitektur API secara komprehensif, mencakup rute payload fungsi sistem *Register* dan sistem verifikasi verifikator *Login* terpadu (Arsitektur API *Backend Security Controller Parameter System*).
-- [ ] Saya sukses mengaplikasikan pembongkaran pengkajian evaluasi peramban inspeksi direktori database memanfaatkan bantuan pembaca visual *SQLite GUI Editor Viewer Software App* pada modul pencapaian pengukuhan *Weekly Mission*.
+- [ ] Saya mampu merancang pembuatan tabel kueri SQL (`CREATE TABLE`) di ekosistem *SQLite*.
+- [ ] Saya telah menuntaskan praktik penyatuan API server *Express Node.js* dengan sistem penyimpanan database permanen *SQL*.
+- [ ] Saya memahami siklus perlindungan keamanan pencatatan sandi dengan memanfaatkan algoritma kriptografi *Bcrypt*.
+- [ ] Saya berhasil mendirikan API yang solid, meliputi rute *Register* dan sistem otentikasi *Login*.
+- [ ] Saya berhasil menyelesaikan Misi Mingguan dengan melakukan inspeksi database secara visual lewat antarmuka grafis *SQLite Viewer*.
 
 ---
 
 ## 💬 Diskusi Minggu Ini
 
-1. Jika algoritma otentikasi cincang *Bcrypt Hashing Cryptographic Parameter* terbukti secara teknis memiliki jaminan parameter enkripsi yang mutlak ireversibel dan tidak sanggup diretas balikan secara ke bentuk murni (didekripsi ulang) lantas dipaksa direkayasa, maka secara praktis relevankah atau fungsionalkah peladen mewajibkan secara mutlak fungsi validasi pencegat persyaratan penempatan fungsionalitas panjang variasi ragam batasan format modifikasi karakter sandi minimum (semisal pengimplementasian validasi "Sandi Wajib Tersusun Minimal Atas 8 Kombinasi Karakter Spesifik + 1 Sisipan Simbol Tanda Baca Khusus + Kombinasi Huruf Kapital") ke seluruh pendaftar profil pengguna *web application* klien tersebut? Mengapa tidak melepaskan kebebasan pendaftar meski ia nekat mendaftarkan frasa sandi bodoh layaknya "123"?
-2. Evaluasi pengerjaan rentetan parameter arsitektur kolaborasi integrasi asimilasi instalasi sandi antarmuka *Backend API Node Developer Backend Logic Interface (Framework `Express` + Permanen `SQLite` + Perisai Keamanan *Hashing Cryptosystem Module `Bcrypt`)*! Komparasikan kadar tingkat porsi kesulitan merakit perisai arsitektur *Backend* ini bilamana disandingkan dengan parameter fokus rutinitas modifikasi kosmetik pengerjaan logika sintaks kustomisasi tata letak arsitektur fungsi interaksi *Frontend (Desain `CSS` / Logika Manipulasi `DOM Application`)* di rute pengerjaan eksplorasi minggu materi terdahulu? Manakah sisi yang memacu dan melahirkan gejolak stimulasi penalaran kecenderungan peminatanmu secara krusial?
+1. Karena sandi *Bcrypt* mustahil diretas kembali ke bentuk aslinya (ireversibel), apakah menurutmu server masih perlu menerapkan batasan "Sandi wajib minimal 8 karakter dengan huruf dan angka"? Kenapa kita tidak membebaskan saja pengguna mendaftar dengan sandi konyol seperti "123"?
+2. Evaluasi tingkat kesulitan perakitan *Backend API* minggu ini (Express + SQLite + Bcrypt Hashing) dibandingkan ketika merakit *Frontend* (CSS & Manipulasi DOM) minggu lalu. Manakah yang menurutmu terasa lebih mengasah nalar logikamu secara kritis? Mengapa?
 
 ---
 
@@ -215,12 +214,12 @@ app.listen(3000, () => console.log('Sistem API Otentikasi beroperasi mendengarka
 
 ```
 ┌─────────────────────────────────────┐
-│ │
-│ 🎖️ THE GATEKEEPER │
-│ Week 13 Complete │
-│ "You have built the vault │
-│ and forged the unbreakable key." │
-│ │
+│                                     │
+│     🎖️ THE GATEKEEPER               │
+│     Week 13 Complete                │
+│     "You have built the vault       │
+│      and forged the unbreakable key."│
+│                                     │
 └─────────────────────────────────────┘
 ```
 
@@ -230,7 +229,7 @@ app.listen(3000, () => console.log('Sistem API Otentikasi beroperasi mendengarka
 
 **Minggu 14: Secure Coding & OWASP Top 10**
 
-Sekian pekan lamanya, secara berturut-turut rutinitasmu diekspos terhanyut terbuai di alam zona aman perakitan pendirian parameter kerangka pembangun konstruksi aplikasi antarmuka *Full-Stack App Developer Parameter Backend Frontend Implementation Database Logic Node Infrastructure* memori logik sirkuit mandiri pada peranti *environment* isolasi tertutup ruang rahasiamu! Di minggu mendebarkan depan, saatnya membangkitkan rutinitas gejolak peralihan zona nyaman dari lena perancangan struktur semu semata tersebut. Esok harinya, perumusan logikmu dipaksa mengalami pergeseran radikal merentang lintas alam operasi! Kita bakal memusnahkan dan mengakhiri penugasan rute pemetaan struktur profil kognitif arsitektur perancang arsitektur pembangun aplikasi semata (*Yellow Team Defensive/Developer Posture System Architecture Software Design Creation Implementation Developer Architecture Application Parameter Web App Logic Dev Methodology Developer*). Momen ini adalah transisi drastis di mana penugasan pikiran logik peramban instingmu dilatih menceburkan diri berasimiliasi sepenuhnya mengadopsi insting nalar agresif dan manipulatif pergerakan sirkulasi Arsitek Pengeksploitasi Jaringan Penetrasi (Insting Analis Kritis Peretas /Intelejen Penetration Tester Analis Kerentanan Keamanan Serangan Manipulatif *Offensive Red Teaming Hacking Hacker Web Hacker App Sec Security Analyst Vulnerability Web Intrusion Pen Testing Security Bug Logic Penetration App App Exploitation Methodology Security Hacker Method Tester System Testing Security Hacker Tester Bug Bounty Hunter Web Hacking Logic Application Attack*). Kita lantas berorientasi fokus merajut menelusuri penelaahan pendeteksi ancaman mendebarkan membedah kelamnya sirkuit kerentanan dokumen arsitektur daftar **OWASP Top 10**—yakni himpunan konsorsium kompilasi standardisasi dokumen global penyusunan urutan peringkat daftar 10 pengklasifikasian arsitektur peretasan tipe kelemahan fungsi kelalaian *logic code bug vulnerability* eksploitasi parameter kerentanan rute injeksi celah jaringan peladen operasi sistem aplikasi berpotensi fatal paling krusial mendominasi dan mengerikan di penjuru muka bumi peramban jaringan peretasan web sejagat jaringan!
+Sekian pekan kamu terus belajar sebagai seorang perancang dan pembangun (*Software Developer/Blue Team*). Di minggu depan, paradigmamu akan diputar 180 derajat! Momen ini adalah masa transisi di mana kamu tidak lagi sekadar merancang sistem, namun dilatih berpikir ofensif selayaknya seorang **Penetration Tester** (Red Team). Kita akan menelaah kompilasi standardisasi celah keamanan dunia, yaitu **OWASP Top 10**, untuk membedah peringkat teknik-teknik peretasan paling masif dan mengerikan di kancah siber global!
 
 > 🚀 *"To defend the fortress, one must learn how to burn it down."*
 

@@ -106,13 +106,13 @@ Perhatikan layar Google-mu sekarang, tampilannya berubah menjadi gelap dengan lo
 </details>
 
 <details>
-<summary>❓ Kerentanan/Vulnerability (*security vulnerability*) apa yang timbul bila pemrogram membiarkan masukan teks tak divalidasi dari *input* tamu web dicetak kembali (dirender) ke penampang laman situs melalui perintah manipulasi `.innerHTML`?</summary>
+<summary>❓ Kerentanan keamanan apa yang bisa terjadi jika kita menggunakan `.innerHTML` untuk menampilkan teks *input* dari pengguna tanpa divalidasi terlebih dahulu?</summary>
 
-**Jawaban:** Memicu ancaman *Cross-Site Scripting* (XSS). Penyerang (*attacker*) bisa memanfaatkan fitur komentar atau *input* formulir guna menyisipkan baris peretasan berupa atribut `<script>kode_berbahaya();</script>`. Ketika situs menelan dan menampilkan *input* ini membonceng atribut fungsi `.innerHTML`, *browser* akan keliru menafsirkan *input* mentah tersebut sebagai skrip *HTML* aktif, bukan melukiskannya murni sebatas deretan teks tulisan tangan biasa; alhasil, mengeksekusi program serangan (*malware/payload*) milik pelaku.
+**Jawaban:** Dapat memicu serangan *Cross-Site Scripting* (XSS). Penyerang bisa menyisipkan tag `<script>` berbahaya melalui *input* formulir. Jika dirender menggunakan `.innerHTML`, *browser* akan mengeksekusi *script* tersebut (alih-alih menampilkannya sebagai teks biasa), yang memungkinkan penyerang mencuri data atau meretas pengguna lain.
 </details>
 
 <details>
-<summary>❓ Apakah nama variabel perantara *Object* induk mutlak (bawaan *browser JavaScript*) yang berperan selaku entri poin awal/titik sentral untuk menjangkau ranting hierarki *HTML* pada situs?</summary>
+<summary>❓ Apa nama *object* global bawaan *browser* dalam JavaScript yang digunakan sebagai titik awal untuk menyeleksi dan memanipulasi elemen HTML?</summary>
 
 **Jawaban:** Objek global bernama `document`.
 </details>
@@ -123,7 +123,7 @@ Perhatikan layar Google-mu sekarang, tampilannya berubah menjadi gelap dengan lo
 
 - [ ] Saya mengerti hierarki fundamental konsep struktur *Pohon DOM*.
 - [ ] Saya piawai memanfaatkan perintah seleksi `document.querySelector`.
-- [ ] Saya memahami perbedaan perlakuan antara penempatan atribut `.innerText` berbanding `.innerHTML` (dan memahami perikatan ancaman eksploitasi celah *XSS*).
+- [ ] Saya memahami perbedaan antara `.innerText` dan `.innerHTML` (serta risiko celah keamanan XSS).
 - [ ] Saya sukses menjalankan simulasi injeksi lokal memodifikasi laman visual Google di *Mini Lab*.
 - [ ] Saya telah meninjau kembali seluruh ulasan tes kemampuan pada kuis kilat di atas.
 
@@ -132,13 +132,13 @@ Perhatikan layar Google-mu sekarang, tampilannya berubah menjadi gelap dengan lo
 ## 🔗 Resources
 
 - [JavaScript HTML DOM (W3Schools)](https://www.w3schools.com/js/js_htmldom.asp) — Ensiklopedia mengenai referensi manipulasi fungsi DOM.
-- [DOM XSS Prevention (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html) — (Tingkat Menengah Lanjut) Dokumentasi formal *OWASP* bagi divisi keamanan dalam mitigasi dan mereduksi celah rekayasa peretasan fungsi berisiko *DOM innerHTML*.
+- [DOM XSS Prevention (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html) — Dokumentasi resmi OWASP tentang cara mencegah celah keamanan DOM XSS.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Event Handling & Form Validation** — Fungsi penambahan *DOM* kita hari ini barulah terhitung *static* (disuntikkan manual via antarmuka *Console*). Esok hari, kita akan merevolusi rancangan situs kita menjadi laman REAKTIF! Apabila pengunjung (user) mengklik sebuah modul tombol konfirmasi pelaporan form atau mengetuk tuts keyboard, mesin pengawasan *JavaScript* situsmu bakal lekas merespons secara responsif dan otomatis!
+**Day 4: Event Handling & Form Validation** — Manipulasi DOM kita hari ini masih bersifat manual (melalui *Console*). Besok, kita akan membuat halaman *web* menjadi reaktif! Kita akan belajar cara merespons interaksi pengguna, seperti mendeteksi saat *user* mengklik tombol atau mengetik di *keyboard*, agar kode JavaScript kita bisa berjalan secara otomatis.
 
 ---
 

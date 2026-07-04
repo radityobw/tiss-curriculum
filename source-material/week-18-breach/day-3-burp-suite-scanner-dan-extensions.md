@@ -10,34 +10,34 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** fitur penarik payload kueri otomatis (Burp Scanner).
-2. **Membedakan** lisensi pembatasan antara versi *Community* versus *Professional*.
-3. **Menerapkan** instalasi sandi ekstensi *BApp Store* demi menambah persenjataan (*Extensions & Macros*).
+1. **Memahami** fitur pemindaian kerentanan web otomatis (Burp Scanner).
+2. **Membedakan** batasan fitur antara lisensi versi *Community* dan *Professional*.
+3. **Menerapkan** instalasi *plugin* tambahan melalui *BApp Store* untuk memperluas kapabilitas Burp Suite.
 
 ---
 
 ## 📖 Materi Inti
 
-### Kemewahan Otomasi: Burp Scanner (Professional Edition)
+### Kemudahan Otomatisasi: Burp Scanner (Professional Edition)
 
-Bila *Repeater* dan *Intruder* memaksamu mengotori tangan, fungsionalitas kasta tertinggi milik PortSwigger menyimpan senjata pemusnah otomatisasi: **Burp Scanner**.
-*Scanner* ini mampu memindai (*Crawl & Audit*) situs dari ujung ke ujung semalaman, lantas memuntahkan lembar laporan yang membeberkan : *"Ada SQLi di URL A, ada XSS di URL B, ada CSRF di C"*.
+Jika *Repeater* dan *Intruder* ditujukan untuk pengujian semi-manual, *PortSwigger* menyediakan senjata pamungkas untuk otomatisasi penuh: **Burp Scanner**.
+*Scanner* ini mampu memindai (*Crawl & Audit*) situs web secara keseluruhan dari ujung ke ujung, dan secara otomatis menghasilkan laporan seperti: *"Terdapat SQLi di URL A, XSS di URL B, dan CSRF di URL C"*.
 
-**Kendala Lisensi:** Sayangnya, fitur *Scanner* yang maha otomatis ini **DIKUNCI KETAT **! Ia hanya hadir di versi *Burp Suite Professional* (Harganya selangit, $450/tahun).
-Di versi *Community* yang kamu unduh gratis, tab *Dashboard Scanner* hanya bisa kamu ratapi (abu-abu alias diblokir). 
+**Kendala Lisensi:** Sayangnya, fitur *Scanner* otomatis ini hanya tersedia di versi berbayar, yaitu *Burp Suite Professional* (dengan harga langganan [sekitar $449/tahun](https://portswigger.net/burp/pro/pricing)).
+Pada versi *Community Edition* yang dapat diunduh gratis, fitur tab *Dashboard Scanner* dinonaktifkan (berwarna abu-abu/dikunci). 
 
-Tapi jangan putus asa, spesialis penganalisis *Bug Hunter* sejati memburu kerentanan jauh lebih buas bermodalkan tangan telanjang arsitektur *Repeater* ketimbang bermanja ria disuapi *Scanner* !
+Namun, jangan khawatir! Seorang *Bug Hunter* dan pentester yang hebat tidak selalu bergantung pada pemindai otomatis. Keterampilan pengujian manual menggunakan *Repeater* sering kali lebih akurat dan mampu menemukan celah logika (*Logic Flaws*) yang tidak bisa dideteksi oleh *Scanner*.
 
-### Bursa Ekstensi : BApp Store (Extensions)
+### Bursa Ekstensi: BApp Store (Extensions)
 
-Sama seperti editor *VS Code* punya *Extensions*, *Burp Suite* dibekali sarang modifikasi pihak ketiga bernama **BApp Store (Burp App Store)**.
+Sama seperti editor teks *VS Code* yang memiliki *Extensions*, *Burp Suite* juga dibekali dengan sarana modifikasi pihak ketiga bernama **BApp Store (Burp App Store)**.
 
-Peretas sedunia merakit bungkusan *plugin* Python/Java skrip dan merilisnya gratis di BApp Store untuk menambah kekuatan Burp! (Catatan : Butuh instalasi Jython jika mengunduh plugin Python).
+Komunitas keamanan siber di seluruh dunia mengembangkan berbagai *plugin* (menggunakan Python atau Java) dan merilisnya secara gratis di BApp Store untuk menambah kekuatan Burp Suite. (Catatan: Kamu membutuhkan instalasi lingkungan *Jython* jika ingin mengunduh plugin berbasis Python).
 
-**Ekstensi Maut Andalan:**
-1. **Autorize:** Merajai peretasan *IDOR*! (Ini bakal jadi andalanmu kelak). Ia otomatis mengirimkan seluruh URL dengan kalung *Cookie* pangkat rendah demi mendeteksi kerentanan Otorisasi secara massal di latar belakang.
-2. **Logger++:** Papan catatan (Log) terperinci yang membeberkan merekam sejarah seluruh rentetan hantaran HTTP tanpa ampun (Lebih komplit dari *HTTP History* bawaan).
-3. **Turbo Intruder:** Senapan *Brute Force* yang melontarkan jutaan serangan kueri ratusan kali lebih kilat ganas ketimbang bawaan *Intruder* orisinal Burp!
+**Ekstensi Andalan:**
+1. **Autorize:** Sangat populer untuk pengujian kerentanan *IDOR* (Insecure Direct Object Reference) dan *Broken Access Control*. Ekstensi ini otomatis mengirimkan setiap permintaan HTTP ulang (*replay*) menggunakan token sesi berhak akses rendah di latar belakang, sangat memudahkan pencarian celah otorisasi secara massal.
+2. **Logger++:** Papan catatan (Log) terperinci yang merekam seluruh riwayat aktivitas *HTTP* secara menyeluruh (jauh lebih detail dari fitur *HTTP History* bawaan).
+3. **Turbo Intruder:** Skrip otomatisasi tingkat lanjut yang melontarkan ribuan kueri jauh lebih cepat daripada *Intruder* bawaan Burp Suite. Sangat berguna untuk *Brute Force* dengan performa tinggi.
 
 ---
 
@@ -45,33 +45,33 @@ Peretas sedunia merakit bungkusan *plugin* Python/Java skrip dan merilisnya grat
 
 **Durasi**: ~10 menit
 
-Ayo rakit ekstensi peretasan di bursa *BApp Store*!
+Ayo mencoba memasang ekstensi dari *BApp Store*!
 
-1. Gelar jendela rahim *Burp Suite Community Edition*.
-2. Navigasikan tetikus menuju tab **Extender -> BApp Store**.
-3. Di layar depan, disuguhi ratusan plugin *hacker* sedunia .
-4. Cari ekstensi bertajuk **"Logger++"**. Klik lantas tekan tombol **Install** di panel bawah!
-5. Pasca terinstal, tab baru *Logger++* akan nampang meronta di deretan menu atas Burp. Buka tab itu.
-6. Mulai detik ini, *Logger++* bakal diam-diam merangkum mengekstrak merekam setiap serangan desahan paket data HTTP yang merangsek keluar masuk Burp-mu laksana mesin perekam CCTV abadi.
+1. Buka aplikasi *Burp Suite Community Edition*.
+2. Arahkan kursor ke tab **Extender -> BApp Store**. (Pada versi terbaru, mungkin bernama **Extensions -> BApp Store**).
+3. Di layar tersebut, kamu akan disuguhi ratusan *plugin* yang tersedia secara gratis.
+4. Cari ekstensi bernama **"Logger++"**. Klik ekstensi tersebut lalu tekan tombol **Install** di panel bawah.
+5. Setelah terinstal, tab baru bernama *Logger++* akan muncul di deretan menu navigasi atas Burp. Buka tab tersebut.
+6. Mulai saat ini, *Logger++* akan mencatat dan merekam setiap detail paket data HTTP yang keluar-masuk dari Burp-mu seperti mesin log abadi.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membuka kasta arsitektur peretasan Web, apa fitur sakral (Crawl & Audit otomatis) yang diharamkan dan dikunci gembok abu-abu pada lisensi <i>Burp Suite Community Edition</i>?</summary>
+<summary>❓ Fitur utama apa untuk pemindaian kerentanan otomatis (*Crawl & Audit*) yang dikunci pada lisensi <i>Burp Suite Community Edition</i>?</summary>
 
 **Jawaban:** Fitur *Burp Scanner* (Vulnerability Scanner Otomatis).
 </details>
 
 <details>
-<summary>❓ Ketika penganalisis meratapi kelemahan keterbatasan fitur bawaan *Burp Suite*, tab perbendaharaan bursa apa yang dituju demi mengunduh merakit *plugin* tambahan (Extensions) racikan *Hacker* sedunia?</summary>
+<summary>❓ Tab manakah yang harus dituju jika seorang pentester ingin mengunduh dan memasang <i>plugin</i> tambahan (*Extensions*) buatan komunitas pada Burp Suite?</summary>
 
-**Jawaban:** Tab *BApp Store* (atau *Extender*).
+**Jawaban:** Tab *BApp Store* (biasanya di dalam tab *Extender* atau *Extensions*).
 </details>
 
 <details>
-<summary>❓ Di ranah ekstensi , embel ekstensi kasta apakah yang senantiasa digandrungi dipuja penganalisis guna menelusuri penemuan celah *IDOR (Broken Access Control)* secara otomatis masif di peramban Burp?</summary>
+<summary>❓ Ekstensi populer manakah dari BApp Store yang sering digunakan untuk mendeteksi kerentanan <i>IDOR / Broken Access Control</i> secara otomatis di latar belakang?</summary>
 
 **Jawaban:** Autorize.
 </details>
@@ -80,19 +80,23 @@ Ayo rakit ekstensi peretasan di bursa *BApp Store*!
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap dominasi letak *Scanner* otomatis *Professional Edition* - [ ] Saya fasih meratapi nasib bodi lisensi *Community Edition* - [ ] Saya menguasai titah instalasi ekstensi *BApp Store*
-- [ ] Saya memahami kegunaan penyedot *Autorize* dan *Logger++* - [ ] Saya telah menjawab seluruh ulasan *quiz kilat* 
+- [ ] Saya memahami fungsi dari *Burp Scanner* pada versi *Professional*.
+- [ ] Saya mengerti perbedaan fitur utama antara lisensi *Community* dan *Professional*.
+- [ ] Saya berhasil menemukan dan melakukan instalasi ekstensi dari *BApp Store*.
+- [ ] Saya mengetahui kegunaan ekstensi *Autorize* dan *Logger++*.
+- [ ] Saya telah menjawab seluruh *Quiz Kilat* dengan benar.
+
 ---
 
 ## 🔗 Resources
 
-- [PortSwigger BApp Store Directory](https://portswigger.net/bappstore) — Kumpulan galeri pajangan seribu plugin Burp sedunia.
+- [PortSwigger BApp Store Directory](https://portswigger.net/bappstore) — Galeri resmi direktori ekstensi *plugin* Burp Suite.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Other Tools (ZAP, ffuf, nikto)** — Lantaran *Burp Scanner* versi *Community* dikunci mati, haruskah menangis merana mencari otomasi? TIDAK! Esok hari, Web menuntut penganalisis menoleh pada barisan bedil *Open Source* gratisan! Kenalkan **OWASP ZAP** (Pemindai Web Otomatis Gratis!), pelacak kerentanan purba **Nikto**, dan perobek direktori **ffuf** di altar pengujian (*Alternative Tooling*)!
+**Day 4: Other Tools (ZAP, ffuf, nikto)** — Karena *Burp Scanner* versi *Community* dikunci, apakah kita tidak bisa menggunakan pemindai otomatis sama sekali? Tentu saja bisa! Besok, kita akan beralih ke alat pengujian alternatif *Open Source* yang 100% gratis. Kita akan berkenalan dengan **OWASP ZAP** (Pemindai Web Otomatis Gratis!), pemindai kerentanan web legendaris **Nikto**, dan aplikasi *Fuzzing* andalan masa kini: **ffuf**!
 
 ---
 

@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memperluas** cakupan permukaan serangan (*Attack Surface*) melalui ekskavasi pemetaan turunan *Subdomain*.
-2. **Mengoperasikan** perkakas penelusuran arsitektur *Subdomain* (*Sublist3r* & *Amass*).
-3. **Mencetak-sidik** tumpukan arsitektur ekosistem perangkat teknologi situs (*Technology Fingerprinting*).
+1. **Memperluas** cakupan permukaan serangan (*Attack Surface*) melalui pencarian *Subdomain*.
+2. **Mengoperasikan** alat bantu pencarian *Subdomain* seperti *Sublist3r* dan *Amass*.
+3. **Mendeteksi** tumpukan teknologi yang digunakan oleh situs target (*Technology Fingerprinting*).
 
 ---
 
@@ -20,33 +20,33 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Memperlebar Peta: Mengapa Memburu Subdomain?
 
-Domain situs utama suatu organisasi (seperti `www.banktiss.com`) umumnya dipersenjatai dengan pengamanan arsitektur yang sangat tangguh. Namun di sisi lain, organisasi kerap membiarkan infrastruktur *Subdomain* tersembunyi (seperti portal *staging* `dev.banktiss.com` atau layanan usang `vpn-lama.banktiss.com`) beroperasi dengan minimnya pengawalan audit, menjadikan subdomain ini luput dari pembaruan modul aplikasi peladen sehingga berstatus sebagai sasaran eksploitasi peretasan yang rapuh.
+Domain utama sebuah organisasi (misalnya `www.banktiss.com`) biasanya dijaga dengan pengamanan yang sangat ketat. Namun, sebuah organisasi sering kali memiliki *Subdomain* yang tersembunyi atau terlupakan (seperti portal *staging* di `dev.banktiss.com` atau layanan lama di `vpn-lama.banktiss.com`). Subdomain ini sering kali tidak terpantau, jarang di-*update*, dan menjadi titik masuk yang sangat rapuh bagi para peretas.
 
-Aktivitas memetakan daftar *Subdomain* ini dinamakan **Subdomain Enumeration**, sebuah tahapan penelusuran fundamental esensial dalam fase operasional rekognisi audit kompetisi keamanan *Bug Bounty*.
+Aktivitas mencari dan mendaftar subdomain ini disebut **Subdomain Enumeration**, sebuah langkah fundamental dalam *Bug Bounty* maupun audit keamanan.
 
-**Perkakas Ekskavator Subdomain:**
-- **Sublist3r:** pencarian klasik namun tangguh yang mengekstrak jejak subdomain berbekal mesin peramban pencari terbuka OSINT publik (Google, Bing, Baidu).
-- **Amass:** Perkakas mutakhir arsitektur keluaran OWASP. ini tidak sebatas menghimpun penelusuran API, melainkan juga menambang serta mengurai struktur arsip arsip sertifikat fungsi pelindung *SSL* dan *DNS*!
+**Alat Pencari Subdomain:**
+- **Sublist3r:** Alat klasik yang sangat cepat untuk mengekstrak subdomain menggunakan mesin pencari publik (Google, Bing, Baidu) dan sumber OSINT lainnya.
+- **Amass:** Alat mutakhir buatan OWASP. Amass tidak hanya mencari melalui API dan mesin pencari, tetapi juga membedah sertifikat SSL dan DNS untuk menemukan subdomain yang sangat tersembunyi.
 
 ```bash
-# Menembak peluncuran pencarian subdomain sasaran 
+# Contoh penggunaan Sublist3r untuk mencari subdomain
 sublist3r -d target.com
 ```
 
-### Membedah Susunan Tumpukan Peladen: Technology Fingerprinting
+### Membedah Susunan Server: Technology Fingerprinting
 
-Pasca tahap penemuan sarang *Subdomain* atau ekstraksi IP dari Nmap, penganalisis kelak diwajibkan mengidentifikasi rincian tumpukan teknologi perangkat lunak (*tech stack*) arsitektur sasaran. Apakah peladen tersebut dirakit berbasis *PHP* usang? Ataukah menunggangi ekosistem konfigurasi antarmuka *Node.js Express*, atau kerangka kerja spesifik semacam *Laravel*?
+Setelah menemukan *Subdomain* atau IP, langkah selanjutnya adalah mengetahui teknologi perangkat lunak (*tech stack*) apa yang digunakan target. Apakah server tersebut menggunakan *PHP* versi lama? Menggunakan kerangka kerja *React*? Atau dijalankan di atas *Nginx*?
 
-Aktivitas mengidentifikasi wajah arsitektur instalasi perangkat lunak peladen *Backend* maupun antarmuka layanan web ini dinamai **Technology Fingerprinting** (Identifikasi Sidik Jari Teknologi).
+Aktivitas mengidentifikasi perangkat lunak dan arsitektur yang digunakan oleh aplikasi target ini disebut **Technology Fingerprinting** (Identifikasi Sidik Jari Teknologi).
 
 **Senjata Fingerprinting:**
-1. **Wappalyzer** (Pendekatan GUI Ekstensi Peramban): Peranti ini disematkan sebagai ekstensi pada peramban *Chrome*/*Firefox*. Penganalisis cukup mengeklik fungsionalitas fiturnya saat memuat sebuah situs, dan *Wappalyzer* akan seketika membongkar memaparkan seluruh entitas teknologi dan kerangka arsitektur situs tersebut (contoh laporannya: "Situs memuat kerangka *React, framework Express*, serta dilayani peladen *Nginx*").
-2. **WhatWeb** (Pendekatan Kasta Terminal): bedil operasi bawaan distribusi lingkungan *Kali Linux* yang menunaikan fungsionalitas analisis pemetaan identik, namun memuntahkan laporannya secara ringkas ke antarmuka eksekusi layar konsol terminal .
+1. **Wappalyzer (Ekstensi Browser):** Alat ini dipasang sebagai ekstensi di *Chrome* atau *Firefox*. Saat kamu mengunjungi sebuah situs, Wappalyzer akan secara otomatis mendeteksi dan menampilkan semua teknologi yang digunakan (contoh: "Situs ini menggunakan React, Express, dan Nginx").
+2. **WhatWeb (Terminal):** Alat bawaan *Kali Linux* yang memiliki fungsi serupa dengan Wappalyzer, namun dijalankan melalui terminal dan sangat cocok untuk proses otomatisasi (*scripting*).
 ```bash
 whatweb https://dev.target.com
 ```
 
-Dengan mengetahui versi spesifikasi perangkat lunak peladen (*misalnya penemuan deteksi instalasi Apache 2.4.49*), spesialis keamanan penganalisis dapat segera menelusuri penugasan referensi mesin pencari atau literatur data *CVE (Common Vulnerabilities and Exposures)* guna mendapati dokumen publik pelaporan kerentanan beserta senjata eksploitasi siap pakai arsitektur aplikasi tersebut tanpa pemborosan operasional deduksi manual yang sia-sia.
+Dengan mengetahui versi spesifik dari perangkat lunak (misalnya, target menggunakan *Apache 2.4.49*), kamu bisa langsung mencari kerentanan publik (*CVE - Common Vulnerabilities and Exposures*) dan kode eksploitasinya (Exploit) di internet. Hal ini sangat menghemat waktu dibandingkan mencoba eksploitasi secara acak.
 
 ---
 
@@ -54,59 +54,59 @@ Dengan mengetahui versi spesifikasi perangkat lunak peladen (*misalnya penemuan 
 
 **Durasi**: ~10 menit
 
-Mari mempraktikkan pelacakan instalasi alat sadap *Wappalyzer*!
+Mari mempraktikkan *Technology Fingerprinting* menggunakan Wappalyzer!
 
-1. Buka lingkungan instalasi operasi peramban Google Chrome atau Mozilla Firefox Anda.
-2. Jelajahi menu ekstensi peramban (*Extensions/Add-ons*) dan instal perangkat ekstensi **Wappalyzer**.
-3. Pastikan ekstensi tersebut telah aktif (ikon Wappalyzer akan tersemat di sudut atas peramban).
-4. Kunjungi tautan situs publik semisal `academy.tiss.or.id` atau portal publik `tokopedia.com`.
+1. Buka *browser* Google Chrome atau Mozilla Firefox.
+2. Buka menu ekstensi (*Extensions/Add-ons*) dan cari lalu instal **Wappalyzer**.
+3. Pastikan ekstensi tersebut aktif (ikon Wappalyzer akan muncul di bilah ekstensi).
+4. Kunjungi situs publik mana saja, misalnya `academy.tiss.or.id` atau situs berita.
 5. Klik ikon Wappalyzer. 
-6. Perhatikan pelaporannya! Seluruh arsitektur tersembunyi konfigurasi infrastruktur perangkat lunak web yang membangun situs terkait (mulai kerangka UI *Frontend*, server *Web Backend*, layanan peramban *Analytic*) niscaya terbongkar membeberkan spesifikasinya. Kini Anda menyadari persis nomenklatur arsitektur peranti lunak sasaran!
+6. Perhatikan hasilnya! Semua teknologi yang membangun situs tersebut, mulai dari kerangka *Frontend* (UI), *Web Server*, hingga layanan analitik, akan terbongkar. Sekarang kamu tahu teknologi apa yang sedang kamu hadapi!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Menelaah eksekusi pendekatan strategis intelijen penganalisis keamanan kerentanan korporasi (*Bug Bounty*), alasan strategis logis apakah yang memotivasi penganalisis untuk mengalokasikan konsentrasi ekskavasi spesifik <i>Subdomain Enumeration</i> ketimbang mendedikasikan waktu sebatas menggedor keamanan situs utama?</summary>
+<summary>❓ Dalam kegiatan <i>Bug Bounty</i> atau <i>Pentesting</i>, mengapa penyerang sering kali lebih fokus mencari celah di <i>Subdomain</i> (seperti `dev.target.com`) daripada di domain utama?</summary>
 
-**Jawaban:** Pintu benteng gerbang domain situs utama organisasi lazimnya diisolasi berlapis fungsionalitas pembaruan keamanan level prioritas. Sebaliknya, infrastruktur *Subdomain* semacam laman eksperimen (*dev/staging*) lazim terlantar fungsionalitas ketiadaan kontrol administrator dan jarang dilakukan peremajaan pembaruan patch (*update*), sehingga keberadaannya menjelma sebagai letak kerentanan permukaan serangan (*attack surface*) dengan resistansi perlindungan terlemah.
+**Jawaban:** Domain utama biasanya diawasi dengan ketat dan sering diperbarui. Sebaliknya, *subdomain* (seperti server pengembangan/staging) sering kali dilupakan oleh administrator, jarang mendapatkan *patch* keamanan, dan memiliki tingkat perlindungan yang jauh lebih lemah.
 </details>
 
 <details>
-<summary>❓ Sebutkan titah nomenklatur dua peranti (<i>Tools</i>) primadona penganalisis intelijen *Red Team* yang kerap andal menyedot deteksi puluhan <i>Subdomain</i> rahasia!</summary>
+<summary>❓ Sebutkan dua alat (<i>tools</i>) populer yang digunakan untuk mencari dan mengumpulkan daftar <i>Subdomain</i>!</summary>
 
 **Jawaban:** Amass dan Sublist3r.
 </details>
 
 <details>
-<summary>❓ Pasca pengoperasian penganalisis peramban arsitektur <i>Wappalyzer</i> lantas membentangkan penemuan sidik jari bahwasanya infrastruktur peladen memendam instalasi arsitektur <i>Nginx 1.18.0</i>, apa esensi signifikansi aktivitas pencetakan spesifikasi (<i>Technology Fingerprinting</i>) tersebut bagi persiapan operasi peretasan?</summary>
+<summary>❓ Apa keuntungan mengetahui versi spesifik dari teknologi server target (misalnya mengetahui bahwa target menggunakan Nginx 1.18.0) melalui proses <i>Technology Fingerprinting</i>?</summary>
 
-**Jawaban:** Mendeteksi tabir versi spesifik peladen memampukan penganalisis peretas mencari dan menelusuri literatur letak eksploitasi kerentanan perangkat keamanan *CVE (Common Vulnerabilities and Exposures)* pada pencarian yang memang menohok dan dipastikan secara logis hanya beroperasi mematahkan kerentanan aplikasi *Nginx 1.18.0*, menghindarkan penganalisis peretas dari eksekusi meluncurkan uji pelacakan payload eksekusi eksploitasi kerentanan yang tidak relevan (tidak *compatible*).
+**Jawaban:** Dengan mengetahui versi spesifiknya, kita bisa mencari kerentanan (*CVE*) yang memang secara khusus ada pada versi tersebut. Ini mencegah kita membuang-buang waktu mencoba metode serangan yang tidak relevan.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap pengetahuan strategis pemetaan pelacakan celah *Subdomain*
-- [ ] Saya mengenali pemetaan pelacak ekskavasi ekstensi subdomain *Sublist3r* dan *Amass*
-- [ ] Saya fasih mengoperasikan peranti ekstensi *Wappalyzer* dalam uji pembedahan operasional kerangka *Mini Lab*
-- [ ] Saya tangkas menafsirkan perumusan faedah parameter *Technology Fingerprinting*
-- [ ] Saya telah menyimak tuntas ulasan pelaporan penyerapan modul *Quiz Kilat*
+- [ ] Saya memahami pentingnya mencari *Subdomain* untuk memperluas permukaan serangan (*attack surface*).
+- [ ] Saya mengenal *tools* pencari subdomain seperti *Sublist3r* dan *Amass*.
+- [ ] Saya telah menginstal dan mencoba ekstensi *Wappalyzer* di *Mini Lab*.
+- [ ] Saya mengerti apa itu *Technology Fingerprinting* dan fungsinya.
+- [ ] Saya telah menyelesaikan dan memahami jawaban dari *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [Wappalyzer Extension](https://www.wappalyzer.com/) — Ekstensi peramban penganalisis pencetak arsitektur tumpukan web mutakhir.
-- [OWASP Amass](https://github.com/owasp-amass/amass) — Repositori peramban andalan perburuan ekskavasi *Subdomain* rancangan OWASP.
+- [Wappalyzer Extension](https://www.wappalyzer.com/) — Ekstensi browser untuk mendeteksi teknologi pembentuk website.
+- [OWASP Amass](https://github.com/owasp-amass/amass) — Repositori alat pencari subdomain yang sangat kuat buatan OWASP.
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Full Recon Report** — Segala pelacakan ekstraksi instalasi peramban intelijen logis (*Passive Reconnaissance: WHOIS, Google Dork*), fase pemetaan interaktif transmisi (*Active Recon: Nmap, Ffuf*), analisis enumerasi turunan sasaran (*Subdomain: Amass*), serta identifikasi tumpukan teknologi sasaran (*Technology Fingerprinting: Wappalyzer*) usai dikuasai! Esok hari, panggung *Lab* simulasi peretasan resmi pertamamu siap digunakan. Konsolidasikan segenap kerangka jurus parameter peramban penelusuran arsitektur ekskavasimu menjadi satu kompilasi laporan hasil intaian intelijen (*Recon Report*) layaknya operasional pengujian penganalisis kerentanan (*Bug Bounty Hunter*) profesional sejati!
+**Day 5: Lab & Mission: Full Recon Report** — Semua teknik pengumpulan informasi telah kamu pelajari: *Passive Recon* (WHOIS, Google Dork), *Active Recon* (Nmap, Directory Bruteforcing), *Subdomain Enumeration*, dan *Technology Fingerprinting* (Wappalyzer). Besok, kamu akan mempraktikkan semuanya dalam simulasi laboratorium resmi pertamamu! Kamu akan mengumpulkan semua informasi dan menyusunnya menjadi sebuah laporan *Reconnaissance* (Recon Report), layaknya seorang *Bug Bounty Hunter* profesional!
 
 ---
 

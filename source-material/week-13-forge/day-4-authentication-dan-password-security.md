@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membedakan** mekanisme otentikasi manajemen sesi konvensional (*Session-based*) dengan pendelegasian status token berbasis identitas (*JWT Stateless Authentication*).
-2. **Menerapkan** fungsionalitas algoritma kriptografi perlindungan (*Hashing*) satu arah untuk merahasiakan memori kata sandi memanfaatkan `bcrypt`.
-3. **Menggambarkan** skema alur arsitektur sirkulasi keamanan sistem validasi jaringan login ekosistem peladen otentikasi.
+1. **Membedakan** mekanisme otentikasi konvensional (*Session-based*) dengan token (*JWT*).
+2. **Menerapkan** kriptografi (*Hashing*) satu arah untuk merahasiakan kata sandi menggunakan `bcrypt`.
+3. **Menggambarkan** alur arsitektur keamanan sistem validasi login.
 
 ---
 
@@ -20,26 +20,26 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Otentikasi: Manajemen Sesi pada Server
 
-Protokol operasional jaringan *HTTP* sifat dasarnya berstatus tanpa jejak riwayat memori (*Stateless*). Protokol arsitektur tersebut tidak didesain mengenali maupun merekam identitas klien yang sukses melalui gerbang verifikasi perutean fungsi login pada permintaan sebelumnya. Demi memastikan Peladen (*Server*) secara kontinu mengingat otorisasi pengguna pada perpindahan lintas rute pengaksesan, arsitek peladen perlu mendistribusikan "stempel karcis tanda pengenal" atau tiket otorisasi identitas usai validasi sandi pendaftar dinyatakan tuntas.
+Protokol *HTTP* pada dasarnya bersifat *Stateless* (tidak merekam jejak riwayat/memori). Protokol ini tidak didesain untuk mengenali klien yang sukses melakukan login pada permintaan sebelumnya. Agar peladen (*Server*) bisa mengingat bahwa pengguna tersebut sudah terotorisasi saat berpindah halaman, server perlu memberikan "tanda pengenal" atau tiket otorisasi.
 
-Di lingkungan eksekutor industri perancangan peladen, terdapat 2 kutub mazhab otentikasi :
+Di dunia pengembangan backend, terdapat 2 pendekatan utama untuk otentikasi:
 
-**1. Session-Based Authentication (Otentikasi Berbasis Riwayat Sesi Klasik)**
-Server mengelola daftar panjang tamu (*Session Store*) di memori lokalnya, lantas peladen mencetak delegasi stempel (berwujud *Session ID*) untuk didelegasikan agar diikat menyusup mendiami bungkusan fungsionalisasi penyimpanan payload *Cookie* peramban pengguna. Setiap klien meluncurkan transmisi eksekusi , *Cookie Session ID* tersebut disertakan untuk terus dikomparasi kecocokannya dengan daftar riwayat catatan *Server*.
+**1. Session-Based Authentication**
+Server mengelola daftar sesi (*Session Store*) di memori lokalnya, lalu memberikan ID (*Session ID*) yang disimpan di dalam *Cookie* peramban pengguna. Setiap klien mengirimkan permintaan baru, *Cookie* tersebut akan disertakan untuk dicocokkan dengan catatan *Server*.
 
-**2. Token-Based Authentication (Otentikasi Berbasis Token API Modern: JWT)**
-Server merilis manajemen arsitektur bebas pencatatan sesi riwayat, menanggalkan peranan fungsi **pencatatan riwayat** (*Stateless Architecture*). Pasca login terverifikasi akurat, Server memformulasikan sertifikat token digital khusus berlabel tanda tangan kriptografi enkripsi magis (*JSON Web Token / JWT*), diisi payload pengenal atribut spesifik (misal ID 5), dan diserahkan agar diselipkan dititipkan secara (di penyimpangan sisi) ke peramban *Frontend*. Server menaruh kepercayaan kepada sesi identitas klien selama klien tersebut responsif mendedahkan/mencantumkan deklarasi kemurnian token bertanda tangan absah racikan server terkait.
+**2. Token-Based Authentication (JWT)**
+Server menggunakan arsitektur tanpa riwayat status (*Stateless*). Setelah login berhasil, Server membuat sertifikat token digital yang ditandatangani secara kriptografi (*JSON Web Token / JWT*). Token ini berisi pengenal spesifik (seperti ID pengguna) dan disimpan di peramban *Frontend*. Server tidak perlu menyimpan status sesi, ia cukup memvalidasi tanda tangan kriptografi dari token yang dikirimkan klien.
 
 ### Mencegah Kebocoran Kredensial: Hashing Kata Sandi (Bcrypt)
 
-Sebagai pengembang *Backend*, **DILARANG KERAS** dan diharamkan mencatat kata sandi pengguna dalam format teks telanjang dan murni (*Plaintext*) di hamparan struktur pelaporan *Database*. Jika basis data diretas (skenario kebocoran basis log), seluruh kredensial sandi pengguna akan terekspos secara langsung!
+Sebagai pengembang *Backend*, **DILARANG KERAS** menyimpan kata sandi pengguna dalam format teks telanjang (*Plaintext*) di dalam *Database*. Jika basis data bocor, seluruh kredensial pengguna akan terekspos secara langsung!
 
-Kita wajib menyamarkan data kata sandi murni melalui arsitektur pengikatan fungsi Kriptografi (*Hashing*). Berbeda jauh dengan teknik *Enkripsi* (bisa diputar/ditarik direkayasa divalidasi ke bentuk awal tulennya dengan memutar kunci dekripsi pembalik algoritmanya), fungsi kalkulasi matematis *Hashing* dirancang murni secara absolut berjalan **satu arah tunggal**. Sandi hasil hashing mustahil diretas kembali (di-*reverse*) menjadi wujud abjad murni asalnya.
+Kita wajib menyamarkan kata sandi melalui fungsi Kriptografi (*Hashing*). Berbeda dengan *Enkripsi* (yang bisa didekripsi kembali ke bentuk asli asalkan memiliki kuncinya), *Hashing* dirancang berjalan **satu arah**. Sandi hasil *hashing* tidak bisa dikembalikan (di-*reverse*) menjadi teks aslinya.
 
-Modul pustaka penyandian yang terjamin kualitasnya pada *Node Backend* kekinian adalah paket `bcrypt`.
+Modul penyandian yang sangat disarankan pada *Node.js* saat ini adalah paket `bcrypt`.
 
-**Lantas, Bagaimana Server Tahu Sandinya Cocok Kalo Gak Bisa Dibalikin (Di-dekrip)?**
-Mudah! Saat pengguna memasukkan kembali inputan teks sandi "R4hasi4" saat menjalankan sirkuit *Login*, peladen segera mengambil teks masukan tersebut dan mencincangnya detik itu juga. Hasil perhitungan logik sandi *hash* teks tamu yang baru lantas dicocokkan *"Apakah payload *hash* kalkulasi serangan ini sama identik persis formatnya dengan hash yang tersimpan permanen di Database?"*. Jika nilainya divalidasi klop identik, status peramban login disahkan!
+**Lantas, Bagaimana Server Tahu Sandinya Cocok Kalo Gak Bisa Didekripsi?**
+Sederhana! Saat pengguna mengetik sandi "R4hasi4" di halaman *Login*, server mengambil teks tersebut dan melakukan kalkulasi *hash* saat itu juga. Hasil *hash* ini kemudian dikomparasi: *"Apakah hash dari input baru ini sama persis dengan hash yang tersimpan di Database?"*. Jika cocok, akses masuk diberikan!
 
 ---
 
@@ -49,90 +49,90 @@ Mudah! Saat pengguna memasukkan kembali inputan teks sandi "R4hasi4" saat menjal
 
 Mari mempraktikkan proses perlindungan algoritma pengamanan sandi sistem *hashing* menggunakan `bcrypt`!
 
-1. Bentangkan antarmuka OS *Terminal*, lalu cetak barisan sarang direktori eksperimen: `mkdir lab-bcrypt`, kemudian akses masuk `cd lab-bcrypt`.
-2. Prakarsai registrasi berkas *Node API* dengan mengeksekusi inisiasi `npm init -y`.
-3. Pasang instalasi perisai pustaka perlindungan sandi arsitektur fungsi *Bcrypt*: 
+1. Buka Terminal, buat folder baru `mkdir lab-bcrypt`, lalu masuk ke folder tersebut `cd lab-bcrypt`.
+2. Inisialisasi proyek Node.js dengan perintah `npm init -y`.
+3. Instal pustaka `bcrypt`: 
 ```bash
 npm install bcrypt
 ```
-4. Susunlah pelaporan fail baru bernama `cincang.js`, lalu sisipkan parameter deklarasi ini ke dalamnya:
+4. Buat file baru bernama `cincang.js`, lalu masukkan kode berikut:
 
 ```javascript
 const bcrypt = require('bcrypt');
 
-const sandiUser = "TissAcademy2026!"; // Konstruksi Sandi Tulen (Plaintext)
-const kadarGaram = 10; // Salt rounds (Faktor parameter kalkulasi biaya kekebalan pengacakan enkripsi algoritmanya)
+const sandiUser = "TissAcademy2026!"; // Kata Sandi Asli (Plaintext)
+const kadarGaram = 10; // Salt rounds (Tingkat kompleksitas pengacakan algoritma)
 
 // ===========================================
-// 1. FASE REGISTRASI (Perlakuan Mencincang Sandi Tulen Pengguna sebelum rekam tabel memori Database)
+// 1. FASE REGISTRASI (Mencincang sandi sebelum disimpan ke Database)
 // ===========================================
 bcrypt.hash(sandiUser, kadarGaram, (error, hasilCincanganSandiUtama) => {
- console.log("Parameter Sandi Tulen Pendaftar:", sandiUser);
- console.log("Parameter Hasil Hash Cincang (Yg direkam ke SQLite DB):", hasilCincanganSandiUtama);
- 
- // ===========================================
- // 2. FASE LOGIN (Eksekusi Operasional Pengecekan kecocokan fungsi pengetikan Sandi)
- // Ceritanya User nyoba kembali Login dan mendaraskan tebakan entri sandi
- // ===========================================
- const ketikanSandiTamu = "TissAcademy2026!"; // Kamu dapat merombak teks ini nanti buat membuktikan uji tes penolakan sandi salah (Gagal validasi login error)!
- 
- // Server memanggil perintah Adu komparasi
- bcrypt.compare(ketikanSandiTamu, hasilCincanganSandiUtama, (err, validitasCocok) => {
- if(validitasCocok) {
- console.log("✅ STATUS VERIFIKASI : AKSES IDENTITAS SANDI KLOP & COCOK MUTLAK!");
- } else {
- console.log("❌ STATUS VERIFIKASI : VALIDASI SANDI SALAH TOTAL, PENYUSUP DITOLAK!");
- }
- });
+  console.log("Parameter Sandi Tulen Pendaftar:", sandiUser);
+  console.log("Parameter Hasil Hash Cincang (Yg direkam ke DB):", hasilCincanganSandiUtama);
+  
+  // ===========================================
+  // 2. FASE LOGIN (Pengecekan kecocokan sandi)
+  // Ceritanya User mencoba Login kembali
+  // ===========================================
+  const ketikanSandiTamu = "TissAcademy2026!"; // Kamu bisa mengubah teks ini untuk mengetes fungsi penolakan!
+  
+  // Server memanggil perintah komparasi
+  bcrypt.compare(ketikanSandiTamu, hasilCincanganSandiUtama, (err, validitasCocok) => {
+    if(validitasCocok) {
+      console.log("✅ STATUS VERIFIKASI : AKSES IDENTITAS SANDI COCOK!");
+    } else {
+      console.log("❌ STATUS VERIFIKASI : SANDI SALAH, AKSES DITOLAK!");
+    }
+  });
 });
 ```
 
-5. Ketik hulu perintah pemicu terminal untuk menerjemahkannya: `node cincang.js`.
-6. Tarik napas saat Anda menatap penampang terminal. Terdapat barisan teks acak mencapai panjang parameter 60+ abjad (*Hasil Hash Cincangan Abadi*) tercetak murni. Mustahil Anda maupun peretas merancang formula khusus untuk menerjemahkan (mendekripsi) fungsi deretan teks pelaporan acak tersebut agar memeras balik maknanya wujud kembali rupa abjad "TissAcademy2026!".
+5. Jalankan skrip di terminal: `node cincang.js`.
+6. Perhatikan terminalmu. Terdapat barisan teks acak yang panjang (*Hash*) tercetak di terminal. Mustahil bagi siapa pun untuk merancang formula khusus untuk mendekripsi deretan teks tersebut agar kembali menjadi "TissAcademy2026!".
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Ketika mendirikan peladen otentikasi login jaringan (*JWT Stateless Authentication*), mengapa arsitek peladen dibebaskan dari kewajiban berat untuk mengelola pencatatan status rekaman peramban jejak riwayat login pendaftar pengunjung di log memori penyimpanan database *Session ID Server*?</summary>
+<summary>❓ Mengapa pada otentikasi *JWT (Stateless)*, server tidak perlu menyimpan status login pengguna di dalam database *Session*?</summary>
 
-**Jawaban:** Dikarenakan hakikat pengoperasian eksekusi otorisasi parameter peladen peramban tipe JWT murni berbasis rancangan skema arsitektur nir-status (*Stateless Architecture*). Sebatas payload sertifikat token digital spesifik otorisasi yang disimpan di saku ruang penyimpanan lokal peramban itu sendirilah yang mandiri merepresentasikan profil klaim hak otoritas pendaftar (seusai Server sigap memverifikasi stempel kriptografi keabsahan digitalnya). Konsep struktur pendelegasian verifikasi di saku peramban tersebut secara revolusioner memerdekakan peladen basis data eksekusi untuk tak disibukkan operasi rutin sekadar buat mendokumentasikan serta mencatat rekaman status jejak kunjungan login sistem!
+**Jawaban:** Karena *JWT* bersifat *Stateless*. Token JWT yang disimpan di sisi klien (*browser*) sudah memuat klaim otorisasi yang sah beserta tanda tangan kriptografi dari server. Saat klien mengirim token tersebut, server cukup memverifikasi tanda tangannya tanpa perlu mencocokkan atau mencatat apapun ke memori/database internalnya. Hal ini meringankan beban operasional server.
 </details>
 
 <details>
-<summary>❓ Sasar rincian perbedaan konsep filosofis yang menjadi garis pemisah mutlak batasan pembelahan pemaknaan terminologi proteksi modifikasi keamanan sandi berbasis perlindungan *Hashing* dibandingkan penyamaran kata payload berwujud enkripsi modifikasi keamanan kriptografi perisai parameter perlindungan *Enkripsi* perlindungan kata sandi!</summary>
+<summary>❓ Apa perbedaan paling mendasar antara perlindungan sandi menggunakan metode *Hashing* dibandingkan *Enkripsi*?</summary>
 
-**Jawaban:** Arsitektur perlindungan manipulasi fungsi keamanan tameng operasi *Enkripsi (Encryption)* dirancang khusus untuk memfasilitasi kebutuhan perlindungan pertukaran payload pengikatan spesifikasi konversi parameter pergerakan sandi *dua arah (reversible)*; payload muatan parameter abjad fungsi perlindungan arsitektur sandi enkripsi (seperti rekaman fungsi teks terselubung) dirancang untuk bebas diekstraksi ditarik, dibongkar direkayasa dekripsinya kembali memulihkan rupa wujud parameter asli tulen jika dan hanya jika pengguna memiliki akses memori otentik kunci parameter (kunci deskripsi pelacak pembongkar rahasianya). Berbeda jauh dengan spesifikasi *Hashing*, yang mana operasional fungsinya terikat murni bertangan besi dalam sistem logik kalkulasi parameter matematis operasi penyandian statis satu arah (*satu arah / irreversible modification parameter calculation*); teks spesifikasi log yang usai tuntas diolah oleh rahim modul *hash* niscaya mustahil diretas, mustahil didekripsi (diurai dibongkar ditarik pemulihannya siuman) ke parameter abjad wujud penyusunan string pengetikan aslinya semula menggunakan rumusan kalkulasi logik parameter apa pun.
+**Jawaban:** *Enkripsi* bersifat dua arah (*reversible*); data yang dienkripsi bisa dibongkar (didekripsi) kembali menjadi teks aslinya jika kita memiliki kunci rahasianya. Sedangkan *Hashing* bersifat mutlak satu arah (*irreversible*); hasil pemrosesan algoritma *hash* tidak bisa dibongkar kembali menjadi teks aslinya menggunakan kunci apapun.
 </details>
 
 <details>
-<summary>❓ Dalam bongkahan kerangka instalasi perisai penangkal arsitektur *Bcrypt*, parameter argumen sisipan bertitel 'Salt' (Kadar Garam / *Salt Rounds*) lantas bertugas secara spesifik ditambahkan membaur demi mempertebal perisai pertahanan kekebalan algoritma dari kerentanan bahaya insiden keamanan apa?</summary>
+<summary>❓ Dalam modul `bcrypt`, parameter `Salt` (Garam) ditambahkan untuk menangkal serangan peretasan jenis apa?</summary>
 
-**Jawaban:** Paramater sisipan *Salt* (Garam / *String Modifier Randomized String Logic Parameter Injection Value Encryption Hashing Logic Integration Random Text Modification Element Configuration Application Algorithm Crypto Hashing Algorithm Randomization Value Addition String Hash Cryptographic Architecture Hash Algorithm Component Property*) berwujud ekstrak sisipan serpihan teks abjad modifikasi deret acak unik yang secara gaib otomatis tergenerasi diinjeksi diaduk diramu membaur mengkustomisasi logik rakitan *hash* tulen. Hal ini diinisiasi secara mutlak oleh logik program guna mengecoh, mengebiri serta menggagalkan operasi serangan serangan peretasan kamus tebakan referensial pembongkar basis peretasan sandi (*Rainbow Tables Application Attack / Array Dictionary Attacks Logic Dictionary Brute-Force Authentication Rejection Method Error Configuration Network Array Hacker Exploitation*), memastikan bahwa walau sepasang klien berbeda kompak mendeskripsikan penetapan logik payload nilai entri sandi kembar yang identik persis (umpama "12345"), parameter *output* arsitektur ukiran cetak hash rekaman keduanya di SQL database *backend server array* niscaya bakal melenceng dan berbeda bentuk tampilannya satu dan lain!
+**Jawaban:** `Salt` ditambahkan secara acak ke dalam kata sandi sebelum proses *hashing* untuk menggagalkan serangan seperti *Rainbow Tables* atau pola tebakan kamus yang sudah dipersiapkan sebelumnya (pre-computed hash). Dengan `Salt`, dua pengguna yang memiliki kata sandi yang sama persis (misal: "12345") akan menghasilkan cetakan *hash* yang sepenuhnya berbeda di database.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya fasih membedah spesifikasi perbedaan prinsipil arsitektur manajemen sesi otentikasi memori otentikasi Server memori peladen terikat tabel *Session ID Storage Database Node Backend Token Application Memory Implementation Framework* berbanding perutean arsitektur *JSON Web Token API Stateless Logic Authentication Protocol Setup Implementation Parameters*.
-- [ ] Saya menyerap konvensi saklek dan mematuhi kredo absolut pedoman parameter pelarangan integrasi perekaman sandi mentah rahim teks murni tak terlindungi sandi operasi aplikasi parameter *Plaintext Logic System Text Form Application Error Database Structure Code Injection* di peladen basis data.
-- [ ] Saya berhasil mendemonstrasikan keahlian mengeksploitasi fungsi pencincang sandi (*hashing cryptosystem module algorithm architecture configuration tool node*) pustaka pelindung `bcrypt.hash` dan proses pencocokkan `compare`.
-- [ ] Saya kelar menuntaskan rekam uji coba rutinitas instalasi aplikasi cincang sandi integrasi `bcrypt module Node integration module Node testing script function logic Node` di operasi terminal ruang *Mini Lab*.
-- [ ] Saya menuntaskan pengujian ulasan referensi jawaban ringkasan evaluasi (*Quiz Kilat*).
+- [ ] Saya memahami perbedaan antara *Session-based Authentication* dan *JWT Stateless Authentication*.
+- [ ] Saya mematuhi standar keamanan absolut untuk TIDAK menyimpan kata sandi dalam bentuk teks murni (*Plaintext*) di database.
+- [ ] Saya berhasil mendemonstrasikan keahlian mempraktikkan proses *hashing* dan pencocokan sandi (*compare*) menggunakan pustaka `bcrypt`.
+- [ ] Saya telah menuntaskan praktik *Mini Lab*.
+- [ ] Saya telah mereview pertanyaan pada sesi *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [JWT.io Debugger](https://jwt.io/) — radar sistem pembedahan inspeksi (*JSON Web Token Decoder Parser Visualizer Analyzer Inspector Security Test Integration Protocol Development Component Parameter Logic Parsing Security Component Interface Utility Software Tools Test Integration Debugger API Client API Testing API Architecture Authorization HTTP JWT Parsing Debugger Utility Testing Application Interface Security Software Inspection*) andalan spesialis pengembang web yang diandalkan untuk keperluan memecah membongkar mendaras mendeteksi rincian komponen bungkusan muatan pengiriman ekstrak klaim selimut payload informasi atribut pelaporan token otorisasi antarmuka klien API server otorisasi *JSON Web Tokens Payload Data Signature Header Parser Format Tools Decoder Visualization Component Tool Architecture Decoder Decoder JSON Tokens Payload Verification Component*.
+- [JWT.io Debugger](https://jwt.io/) — Tool esensial bagi pengembang web untuk membaca, memeriksa, dan membedah komponen di dalam struktur *JSON Web Token* (Header, Payload, Signature).
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Sistem Login/Register** — Seluruh fondasi pemodelan infrastruktur kelam gerbang pertahanan otentikasi arsitektur peramban fungsi telah tersedia komplet dibahas tuntas parameter teknikal arsitektur perakitan teoretis konseptual instalasi fungsinya di dokumentasi materi ekosistem kurikulum modul pengerjaan implementasi *Software Application Node Security Password Cryptographic Security Hash Logic Bcrypt Implementation Logic Server Router Security System Architecture Web Endpoint Router Routing SQL Node Controller User Middleware Form Node SQL Endpoint HTTP Database Form API Integration Security System Middleware Router SQLite DB Validation API Controller* selama 4 fase materi hari operasional minggu krusial ini! Di sesi pengerjaan laboratorium mutlak esok hari, Kawah Candradimuka perancangan utuh aplikasi basis server perutean fungsi login menunggu pengerjaan peretasan utuhmu menuntaskan parameter eksekutor rilis utuh fungsi perakitan sirkuit logik operasional fungsi rilis sirkuit pemrograman utuh logik murni memformulasikan rilis perakitan spesifikasi fungsi peladen proyek modul! Engkau akan menyatukan kerangka utuh perakitan *server* rahim API komplit meliputi sirkulasi spesifikasi gerbang arsitektur pembuatan klien Akun Registrasi Sistem API Klien (*User Register Account Application Data Creation System Controller Endpoint Route Logic User Validation SQLite Request Form Architecture Routing App Logic Node Endpoint*), serta mengintegrasikannya dengan fungsi halaman Otentikasi Masuk Sesi Akses Sistem Validasi Operasional (*Application User Login Auth Request Validator Form Controller Verification Architecture App SQLite Database Routing Parameter App User Route Logic Express HTTP Security API Server Application*) dengan mensinkronisasikan memadukan kolaborasi maut tri-komponen kerangka instalasi pustaka penyusunan aplikasi peladen utama (Kerangka gerbang fungsi *Express Server Router Node Node Interface Architecture HTTP Request Node Routing Method Router Implementation Routing Component Module Configuration Architecture App Node Module Node Logic Controller Backend Service HTTP Module Application Protocol Protocol Architecture Route Service Controller System Engine Framework System Method Data App Node App Middleware Request Handler Config Controller Endpoint Request* + Basis perakitan relasional *SQLite Architecture DB Table Parameter Request Component DB Architecture DB Driver Storage Persistence Data Module Network Form Integration Memory Data Architecture Integration Node SQLite Integration SQLite Config Storage SQL Engine DB Network Data Storage Module Command Initialization Logic Initialization Data Storage Implementation Engine Storage Network Database Storage Config Interface* + Seraya mengaktifkan pertahanan cincang kriptografis arsitektur pelindungan mutlak tameng perlindungan otentik otentikasi operasional sandi spesifikasi *Bcrypt Data Algorithm Hash Auth Cryptographic Storage Logic Password Logic Verification Module API Logic User Configuration Auth Integration Architecture Request Password Implementation Node Hashing Encryption Protection Hash Cryptographic Architecture Security Bcrypt Authorization Middleware User Identity Password Architecture Authentication Logic Access Component App Parameter Node Storage Middleware Form Config API Interface Encryption Controller Auth Backend Middleware Application Auth Security Tool Module Router Auth Verification Controller Auth Tool Security Framework Node Password* mutakhir)!
+**Day 5: Lab & Mission: Sistem Login/Register** — Fondasi teoritis tentang arsitektur otentikasi web sudah kamu kuasai. Di sesi *Lab* besok, kamu akan membangun secara utuh sistem aplikasi peladen *Node.js* yang komprehensif! Kamu akan menyatukan kerangka arsitektur *Express.js*, mengintegrasikannya dengan database *SQLite*, dan menerapkan perlindungan *hashing* menggunakan *Bcrypt* untuk menciptakan fitur Registrasi Akun dan Login yang fungsional dan aman.
 
 ---
 

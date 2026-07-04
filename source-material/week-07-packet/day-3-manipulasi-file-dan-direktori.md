@@ -86,7 +86,7 @@ Saat ini kamu berada di `/home/user`. Lacak apa yang terjadi jika 4 baris perint
 1. mkdir rahasia
 2. cd rahasia
 3. touch password.txt
-4. mv password.txt../kunci.txt
+4. mv password.txt ../kunci.txt
 ```
 
 **Pertanyaan:**

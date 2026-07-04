@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Menilik arsitektur teknikal pengelolaan sesi otentikasi menggunakan *JSON Web Token (JWT)*, pendekatan logis revolusioner apakah yang mampu membebaskan peladen *Server* dari beban krusial mencatat rekam riwayat login seluruh penggunanya secara *stateful* di *database*?
-- [x] A. Arsitektur komunikasi *JWT* menganut prinsip desain nir-status (*Stateless*). Token JWT yang berisi stempel digital dititipkan sepenuhnya di sisi klien. Ketika disertakan pada permintaan, *Server* hanya perlu memvalidasi tanda tangan kriptografis dari token tersebut untuk membuktikan keabsahan klaim identitas, sehingga *Server* terbebas dari kebutuhan merawat log penyimpanan sesi secara memori.
-- [ ] B. Karena eksekusi logik *Server* JWT senantiasa mewajibkan pemasangan modul duplikat database mini secara otomatis yang diselipkan membaur pada *hard disk peramban lokal* milik pihak klien penjelajah.
-- [ ] C. *JWT* mentransmisikan parameter pelacakan spesifik via verifikasi retina peladen fisik jaringan.
-- [ ] D. *JWT* diam-diam menduplikasi rutinitas rekam jejak pengguna melalui injeksi catatan *Log OS Linux* yang berjalan di belakang layar perangkat peladen.
+**Question:** Mengapa pendekatan otentikasi *JSON Web Token (JWT)* bisa membebaskan *Server* dari beban berat untuk mencatat riwayat login (*session*) pengguna di dalam *database*?
+- [x] A. Arsitektur *JWT* bersifat *Stateless*. Token JWT yang valid disimpan secara penuh di sisi klien. Server hanya perlu memvalidasi tanda tangan kriptografis di dalam token tersebut tanpa perlu merawat catatan sesi secara internal.
+- [ ] B. Karena *Server* JWT secara otomatis menyisipkan database mini langsung ke dalam *hard disk* perangkat klien pengguna.
+- [ ] C. *JWT* tidak memerlukan otentikasi dan memberikan akses bebas pada setiap rute web yang dikunjungi.
+- [ ] D. *JWT* diam-diam memindahkan riwayat catatan log pengguna ke dalam penyimpanan sistem operasi server, bukan ke *database*.
 
 ### Q2
 **Type:** True/False
-**Question:** Pembeda esensial perlindungan sandi melalui teknik pembalutan *Enkripsi* (*Encryption*) dibandingkan pemrosesan *Hashing* terletak pada fungsi kalkulasinya; di mana sandi hasil *Enkripsi* dirancang agar bisa didekripsi (diubah kembali ke wujud aslinya/dua arah), sedangkan kalkulasi *Hashing* diformulasikan murni memproses mutasi teks secara matematis *satu arah* (sehingga nilai hasilnya mustahil dapat direkayasa balik (di-*reverse*) menjadi teks kata sandi murni orisinal asalnya).
+**Question:** Perbedaan mendasar antara *Enkripsi* dan *Hashing* adalah: *Enkripsi* bersifat dua arah (bisa didekripsi), sedangkan *Hashing* bersifat mutlak satu arah (tidak bisa dikembalikan ke wujud aslinya).
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Parameter suci berupa serpihan teks acak pengaman tambahan apakah (yang pada algoritma kriptografi modern semacam *Bcrypt* secara otomatis diracik membaur bersama kata sandi pendaftar) yang ditugaskan khusus menjamin bahwa pengacakan sandi akan tetap membuahkan dua deretan struktur nilai *hash* yang sangat berbeda kendatipun ada dua pendaftar pengguna menyetel inputan teks sandi murni ("12345") yang persis sama persis?
+**Question:** Parameter teks acak pengaman tambahan apakah (pada algoritma *Bcrypt*) yang dicampur pada kata sandi sebelum proses enkripsi, guna memastikan dua *password* yang identik tetap akan menghasilkan cetakan *hash* yang sepenuhnya berbeda?
 **Answer:** Salt (atau Kadar Garam / Salt Rounds).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apa wujud nama modul dependensi pustaka pelengkap spesialis arsitektur penyandian kriptografi satu arah yang masyhur dan direkomendasikan penggunaannya secara absolut oleh *developer Backend JavaScript* untuk melindungi data teks kata sandi (*hashing algorithm*)?
+**Question:** Modul *NPM* populer apakah yang sangat direkomendasikan bagi *developer Node.js* untuk melakukan operasi *hashing* pada kata sandi secara aman?
 **Answer:** bcrypt (atau bcryptjs).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Ketika entitas peretas meluncurkan eksekusi simulasi pelacakan algoritma tebakan perombakan kata sandi memborbardir gerbang peladen tanpa henti (rutin menyerang lewat kalkulasi metode pengujian permutasi kueri kata yang diekstraksi dari basis kamus probabilitas *wordlist*), apa identifikasi nama kategori nomenklatur log penyerbuan identifikasi sandi intensif semacam itu?
+**Question:** Apa nama metode serangan peretasan sandi di mana penyerang membombardir server dengan tebakan permutasi kata sandi secara masif dan tanpa henti (biasanya memakai daftar kata / *wordlist*)?
 **Answer:** Brute-Force (atau Brute Force Attack / Serangan Brute-Force).

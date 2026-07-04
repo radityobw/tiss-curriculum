@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** esensi pembuktian telak dokumen *Proof of Concept* (PoC).
-2. **Merakit** langkah-langkah reproduksi eksploitasi (*Steps to Reproduce*).
-3. **Menerapkan** pajangan barang bukti (<i>HTTP Request/Response</i> & <i>Screenshots</i>).
+1. **Memahami** esensi dari dokumen *Proof of Concept* (PoC) yang solid dan tidak terbantahkan.
+2. **Merakit** langkah-langkah reproduksi eksploitasi (*Steps to Reproduce*) dengan jelas dan sistematis.
+3. **Menerapkan** penyertaan barang bukti teknis (<i>HTTP Request/Response</i> & <i>Screenshots/Video</i>).
 
 ---
 
@@ -20,32 +20,32 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Membantah Alibi dengan Bukti Otentik (Proof of Concept)
 
-Dalam industri *Bug Bounty*, seringkali peretas pemula meratapi laporannya DITOLAK (Status *Not Applicable* atau *Can't Reproduce*). Bukan karena mereka tak menemukan celah, tapi karena mereka gagal memandu *Developer* menirukan serangan tersebut!
+Dalam industri *Bug Bounty* maupun *Pentesting* profesional, sering kali *Bug Hunter* pemula mendapati laporannya DITOLAK (dengan status *Not Applicable* atau *Can't Reproduce*). Hal ini biasanya bukan karena mereka tidak menemukan celah, tetapi karena mereka gagal memberikan instruksi yang jelas bagi *Developer* untuk meniru (merekreasi) serangan tersebut!
 
-**Proof of Concept (PoC)** adalah jantung dari laporan. Ia adalah resep eksploitasi. Kalau kamu menulis PoC dengan cemerlang, *Developer* yang membacanya bakal sukses menduplikasi celah yang sama persis dalam hitungan detik.
+**Proof of Concept (PoC)** adalah inti dari sebuah laporan keamanan. Ini adalah resep eksploitasi. Jika kamu menulis PoC dengan cemerlang, *Developer* yang membacanya akan berhasil menduplikasi celah yang sama persis dalam hitungan detik.
 
 ### 3 Pilar PoC yang Komprehensif
 
 **1. Steps to Reproduce (Langkah Reproduksi):**
-Tulislah instruksi layaknya panduan teknis. Jangan melompati satu langkah pun.
-- *BURUK :* "Eksekusi SQLi ke parameter ID."
-- *SEMPURNA :* 
- - "Langkah 1: Kunjungi URL `http://target.com/produk` "
- - "Langkah 2: Tangkap lalu lintas (*Intercept*) di *Burp Suite*."
- - "Langkah 3: Ubah payload `id=1` menjadi `id=1' AND SLEEP(10)--`."
- - "Langkah 4: Tekan tombol <i>Forward</i> dan amati <i>Browser</i> memutar (loading) selama 10 detik."
+Tulislah instruksi secara berurutan layaknya panduan teknis. Jangan melewatkan satu langkah pun.
+- *BURUK:* "Eksekusi SQLi ke parameter ID."
+- *SEMPURNA:* 
+  - "Langkah 1: Kunjungi URL `http://target.com/produk`."
+  - "Langkah 2: Tangkap lalu lintas (*Intercept*) menggunakan *Burp Suite*."
+  - "Langkah 3: Ubah payload parameter `id=1` menjadi `id=1' AND SLEEP(10)--`."
+  - "Langkah 4: Teruskan paket (*Forward*) dan amati bahwa *Browser* terus memuat (*loading*) tertunda selama tepat 10 detik."
 
 **2. HTTP Request & Response (Barang Bukti Teknis):**
-Sisipkan teks mentahan lalu-lintas (Salin dari Burp *Repeater*). Soroti di baris mana serangan (Payload) disuntikkan, dan di baris <i>Response</i> mana serangan SQL galat memuntahkan indikasi kerentanan.
+Sisipkan teks mentah dari lalu lintas HTTP (Salin dari *Burp Repeater*). Soroti pada baris mana injeksi (*Payload*) disuntikkan, dan tunjukkan *Response* dari server (seperti pesan *error* SQL atau perbedaan ukuran balasan) yang membuktikan kerentanan tersebut.
 
 **3. Visual Evidence (Tangkapan Layar & Video):**
-Otak manusia mencintai gambar.
-- Untuk serangan *RCE* atau *SQLi*, sebiji tangkapan layar *Burp Repeater* sudah cukup.
-- Untuk retasan rumit *Chaining Vulnerabilities* atau manipulasi berantai *CSRF+ATO*, **Video Rekaman Layar (Screencast)** berdurasi 1 menit adalah absolut yang tak terbantahkan!
+Otak manusia lebih mudah memproses bukti visual.
+- Untuk serangan sederhana seperti *RCE* atau *SQLi*, satu atau dua tangkapan layar (*Screenshot*) *Burp Repeater* biasanya sudah cukup.
+- Untuk serangan kompleks (*Chaining Vulnerabilities*) atau eksploitasi *CSRF / Account Takeover*, **Video Rekaman Layar (Screencast)** berdurasi 1-2 menit adalah bukti absolut yang paling disukai perusahaan.
 
 ### Pantangan Menulis PoC
-- JANGAN menyuruh mengeksploitasi pakai *SQLMap otomatis*. (Developer tak paham instalasi SQLMap). Berikan Payload *Manual* (Misal payload UNION) agar mereka bisa mengetiknya sendiri di <i>Browser</i>.
-- JANGAN mendemonstrasikan kerentanan di server produksi *(Production)* sampai merusak data perusahaan. Gunakan *Safe Payload* (sebatas memanggil `sleep` atau `whoami`).
+- **JANGAN menyuruh menggunakan alat otomatis** (misalnya *SQLMap*). *Developer* mungkin tidak mengerti cara menggunakan alat tersebut atau tidak menginstalnya. Selalu berikan instruksi serangan manual (misalnya *payload UNION/Sleep*) yang bisa direproduksi via *Browser* atau perintah *cURL*.
+- **JANGAN merusak data di server produksi (*Production*).** Saat membuat PoC, gunakan *Safe Payload* (sebatas menampilkan peringatan *alert()*, memanggil perintah *sleep*, atau mengeksekusi *whoami*) untuk membuktikan adanya celah tanpa menghapus atau membocorkan data asli klien.
 
 ---
 
@@ -53,59 +53,64 @@ Otak manusia mencintai gambar.
 
 **Durasi**: ~10 menit
 
-Ayo rakit pembuktian (PoC) di atas kertas teks editor!
+Ayo berlatih merakit langkah-langkah PoC di *text editor*!
 
 1. Buka *Notepad / VS Code*.
-2. Bayangkan kamu baru menemukan celah *Stored XSS* di kolom "Ubah Alamat Pengiriman" milik e-commerce.
-3. Rangkai <i>Steps to Reproduce</i> (Minimal 4 langkah).
-4. Contoh :
- `### Steps to Reproduce :`
- `1. Login ke http://target.com pakai akun Test.`
- `2. Pergi ke tab "Pengaturan Profil" -> "Alamat Pengiriman".`
- `3. Pada kolom "Alamat Lengkap", isikan payload : <img src=x onerror=alert('PoC_Berhasil')>`
- `4. Klik Simpan.`
- `5. Pergi ke Halaman Utama (Home), lalu kembali lagi ke Profil.`
- `6. Pop-up peringatan bertuliskan 'PoC_Berhasil' akan muncul di layar.`
-5. Selamat, kamu baru saja meracik resep serangan (PoC) yang takkan pernah bisa dibantah oleh tim IT mana pun!
+2. Bayangkan kamu baru saja menemukan celah *Stored XSS* di kolom "Ubah Alamat Pengiriman" pada situs web e-commerce klien.
+3. Rangkai instruksi <i>Steps to Reproduce</i> (Minimal 4 langkah).
+4. Contoh:
+   `### Steps to Reproduce :`
+   `1. Lakukan login ke http://target.com menggunakan akun Test.`
+   `2. Navigasikan ke halaman "Pengaturan Profil" -> "Alamat Pengiriman".`
+   `3. Pada kolom input "Alamat Lengkap", isikan payload XSS berikut: <img src=x onerror=alert('PoC_Berhasil')>`
+   `4. Klik tombol "Simpan".`
+   `5. Navigasikan ke Halaman Utama (Home), lalu kembali lagi ke halaman Profil.`
+   `6. Pop-up peringatan alert bertuliskan 'PoC_Berhasil' akan langsung dieksekusi oleh browser.`
+5. Selamat, kamu baru saja meracik langkah reproduksi (PoC) yang jelas dan mudah diikuti oleh tim pengembang mana pun!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membuka anatomi dokumen laporan peretasan, apa sebutan untuk seksi bagian di mana penganalisis mendiktekan panduan langkah demi langkah resep agar penerima laporan (*Developer*) mampu menduplikasi serangan?</summary>
+<summary>❓ Apa sebutan untuk bagian dalam laporan pentest yang berisi panduan teknis langkah demi langkah agar pembaca (Developer) dapat mereproduksi dan memvalidasi serangan kerentanan?</summary>
 
 **Jawaban:** Proof of Concept (PoC) atau <i>Steps to Reproduce</i>.
 </details>
 
 <details>
-<summary>❓ Ketika meluncurkan pembuktian celah <i>Blind SQLi Time-Based</i> (di mana tak ada tabel yang bocor maupun <i>Error</i> yang muncul), tangkapan layar visual apakah yang paling krusial disertakan di PoC sebagai barang bukti?</summary>
+<summary>❓ Saat membuktikan celah <i>Blind SQLi Time-Based</i> (di mana data tidak muncul di layar dan tidak ada pesan error), bukti tangkapan layar (*Screenshot*) apa yang paling penting untuk dilampirkan?</summary>
 
-**Jawaban:** Tangkapan visual layar alat <i>Burp Suite Repeater</i> yang menyorot bagian selisih waktu respons (misal menyorot indikator balasan <i>Response time : 10,045 millis</i>) membuktikan peladen dipaksa tertidur.
+**Jawaban:** Tangkapan layar *Burp Suite Repeater* yang dengan jelas menyorot waktu penundaan respons (misal: menyoroti bagian <i>Response time: 10,045 millis</i>) untuk membuktikan bahwa server dipaksa tertidur/menunggu oleh payload SQL.
 </details>
 
 <details>
-<summary>❓ Di ranah pengujian penyusunan PoC, mengapa penganalisis sangat diharamkan menyuruh tim IT Developer perusahaan agar mengeksploitasi ulang mereproduksi celah menggunakan alat otomatis (contoh : "Silakan jalankan SQLMap ")?</summary>
+<summary>❓ Mengapa seorang pentester sangat tidak disarankan menyuruh <i>Developer</i> untuk mereproduksi celah menggunakan alat peretasan otomatis (contoh: "Silakan jalankan SQLMap ")?</summary>
 
-**Jawaban:** Karena <i>Developer</i> bukan pakar <i>Cybersecurity</i> (mereka belum tentu terampil memasang/menjalankan SQLMap), dan otomatis bisa membuahkan ketidakstabilan di <i>Server</i> produksi. PoC haruslah manual, sederhana, dan bisa direproduksi langsung via <i>Browser</i> biasa atau <i>cURL</i>.
+**Jawaban:** Karena *Developer* bukan pakar *Cybersecurity* (mereka belum tentu terampil/memiliki instalasi alat tersebut), dan alat otomatis dapat menyebabkan ketidakstabilan pada server produksi. PoC harus manual, terkontrol, dan mudah direproduksi langsung via *Browser* atau alat standar (*cURL*).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap dominasi pembuktian resep *PoC* - [ ] Saya fasih merangkai hirarki eksekusi *Steps to Reproduce* yang tak terbantahkan - [ ] Saya cakap menerjemahkan tangkapan <i>HTTP Request/Response</i> - [ ] Saya paham bahaya laten menggunakan SQLMap dalam penyusunan *PoC* - [ ] Saya telah menjawab seluruh ulasan *quiz kilat* 
+- [ ] Saya memahami pentingnya menyertakan *Proof of Concept* (PoC) yang solid.
+- [ ] Saya mampu merangkai instruksi *Steps to Reproduce* yang sistematis dan detail.
+- [ ] Saya mengerti pentingnya menyertakan bukti pendukung seperti <i>HTTP Request/Response</i> dan *Screenshot/Video*.
+- [ ] Saya mengetahui pantangan dalam menyusun PoC (menghindari *tools* otomatis dan menjaga integritas server produksi).
+- [ ] Saya telah menjawab seluruh *Quiz Kilat* dengan benar.
+
 ---
 
 ## 🔗 Resources
 
-- [Bugcrowd Vulnerability Rating Taxonomy (VRT)](https://bugcrowd.com/vulnerability-rating-taxonomy) — Kumpulan referensi taktik panduan standar industri laporan Bug Bounty dunia.
+- [Bugcrowd Vulnerability Rating Taxonomy (VRT)](https://bugcrowd.com/vulnerability-rating-taxonomy) — Standar industri untuk penulisan laporan dalam ekosistem Bug Bounty.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Remediation & Mitigation Advice** — Kau sukses menemukan kerentanan, memamerkan CVSS 9.8 Critical, dan menulis PoC sempurna. Lantas Direktur IT membalas laporanmu dengan kalimat : *"Lalu kami harus bagaimana agar tidak diretas lagi?!"* Esok harinya, dirimu bakal menjelma konsultan penyembuh . Kamu dituntut merajut panduan resep obat mujarab penawar kerentanan : **Remediation Advice**! Ajari <i>Programmer</i> cara merajut benteng pertahanan yang tak lekang oleh serangan!
+**Day 4: Remediation & Mitigation Advice** — Kamu telah berhasil menemukan celah, membuktikan CVSS 9.8 Critical, dan menulis PoC yang sempurna. Lalu Direktur IT membalas laporanmu: *"Lalu apa yang harus kami lakukan agar hal ini tidak terjadi lagi?!"* Besok, kamu akan belajar menjadi konsultan solusi! Kamu dituntut menyusun panduan perbaikan: **Remediation Advice**! Belajarlah mengajari *Programmer* cara membangun pertahanan (misal: implementasi parameterisasi query, sanitasi input) yang kebal terhadap serangan siber.
 
 ---
 

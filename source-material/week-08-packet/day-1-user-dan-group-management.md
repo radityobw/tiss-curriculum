@@ -44,7 +44,7 @@ Di Linux, ada satu akun yang memiliki kekuasaan di atas segalanya. Akun ini bern
 - Root bisa membaca rahasia siapa saja, menghapus apa saja (termasuk menghapus OS itu sendiri), dan menjalankan program apapun tanpa bisa dicegah.
 - Tujuan akhir setiap peretas (*Hacker*) adalah mendapatkan akses ke akun Root ini. Proses mendaki dari user biasa menjadi Root disebut **Privilege Escalation** (Eskalasi Hak Istimewa).
 
-Tanda termudah membedakan apakah kamu atau manusia biasa di Terminal adalah dengan melihat **karakter terakhir di ujung baris perintahmu (Prompt):**
+Tanda termudah membedakan apakah kamu Root atau manusia biasa di Terminal adalah dengan melihat **karakter terakhir di ujung baris perintahmu (Prompt):**
 - Simbol Dolar **`$`** = Kamu adalah *User Biasa*.
 - Simbol Pagar **`#`** = Kamu adalah *Root* (Hati-hati mengetik!).
 

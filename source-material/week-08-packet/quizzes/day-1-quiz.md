@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Siapakah entitas pengguna dengan posisi strata kekuasaan tertinggi di sistem Linux yang secara bawaan menyandang kepemilikan eksklusif atas nomor takdir UID 0?
+**Question:** Siapakah pengguna dengan hak akses tertinggi di sistem Linux yang selalu memiliki UID 0?
 - [x] A. Akun Root (Superuser).
 - [ ] B. Akun Administrator Microsoft.
 - [ ] C. Akun default Guest.
@@ -16,20 +16,20 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Kamu mampu leluasa menginfiltrasi serta beralih menyusup ke seluruh direktori pengguna lokal lain cuma mengandalkan instruksi sepihak `su [nama_user]` walau dirimu benar-benar luput mengetahui kata sandinya.
+**Question:** Kamu bisa dengan bebas berpindah ke akun pengguna lain menggunakan perintah `su [nama_user]` tanpa perlu mengetahui *password* mereka.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Sandi perintah (*command line*) ringkas apakah yang senantiasa dipakai buat meminta komputer meneriakkan konfirmasi ihwal nama akun diri (*username*) yang tengah komputermu gerakkan sekarang?
+**Question:** Perintah (*command*) apa yang digunakan untuk mengecek identitas akun (*username*) yang sedang kamu gunakan saat ini?
 **Answer:** whoami (atau id).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Sebutkan dua besaran unit identitas (berwujud akronim 3 abjad kapital) di luar nama karakter yang didaparkan sewaktu kamu mengeksekusi pemeriksaan perintah `id`?
+**Question:** Selain *username*, sebutkan dua identitas (dalam bentuk singkatan 3 huruf) yang ditampilkan saat kamu menjalankan perintah `id`!
 **Answer:** UID (User ID) dan GID (Group ID).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Apa indikator spesifik di penutup pangkal ketik (*prompt*) sebuah terminal yang membedakan bahwa sistem kini dieksekusi secara utuh oleh wujud Tuhan peladen (*Root*), bukannya wujud jelata (*User Biasa*) berujung lambang dolar (`$`)?
+**Question:** Simbol apa yang muncul di akhir baris perintah (*prompt*) Terminal yang menandakan bahwa kamu sedang *login* sebagai Root (Superuser)?
 **Answer:** Lambang Pagar (`#`).

@@ -26,7 +26,7 @@ total_questions: 5
 
 ### Q4
 **Type:** Short Answer
-**Question:** Lapisan *Application* pada Model TCP/IP secara merupakan penggabungan dari tiga lapisan teratas model OSI. Sebutkan ketiga lapisan OSI tersebut!
+**Question:** Lapisan *Application* pada Model TCP/IP merupakan penggabungan dari tiga lapisan teratas model OSI. Sebutkan ketiga lapisan OSI tersebut!
 **Answer:** Layer 5 (Session), Layer 6 (Presentation), dan Layer 7 (Application).
 
 ### Q5

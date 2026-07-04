@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** infrastruktur arsitektur pengarsipan riwayat operasional di lingkungan *Windows* (*Event Viewer*).
-2. **Mengidentifikasi** sandi identifikasi log krusial (*Key Event IDs*) yang merepresentasikan indikator proses otentikasi.
-3. **Menganalisis** rekam jejak pembuatan presistensi (instalasi layanan baru) oleh aktivitas peretasan.
+1. **Memahami** infrastruktur pencatatan (*logging*) di lingkungan Windows menggunakan *Event Viewer*.
+2. **Mengidentifikasi** *Event IDs* krusial yang berkaitan dengan proses autentikasi.
+3. **Menganalisis** indikasi peretasan dan pembuatan mekanisme akses jarak jauh yang menetap (*Persistence*).
 
 ---
 
@@ -20,23 +20,23 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Jantung Forensik Korporasi: Windows Event Viewer
 
-Infrastruktur jaringan *backend* internal di sebagian besar korporasi dikelola menggunakan sistem operasi **Microsoft Windows Server**. Analisis tingkat lanjut (Endpoint Detection) berfokus pada pelacakan aktivitas administratif di lapisan OS ini.
+Sebagian besar infrastruktur internal perusahaan dikelola menggunakan sistem operasi **Microsoft Windows Server**. Oleh karena itu, analisis keamanan tingkat lanjut (*Endpoint Detection*) sangat bergantung pada pelacakan aktivitas di sistem operasi ini.
 
-Berbeda dengan keluarga sistem *Unix/Linux* yang menggunakan berkas teks ASCII datar (`.log`), OS Windows mengumpulkan, merangkum, dan menstrukturisasi rekaman aktivitas sistemnya dalam basis data biner spesifik yang dirancang untuk dibaca utuh dengan antarmuka manajemen grafis bawaan bernama **Event Viewer** (berformat berkas arsip `.evtx`).
+Berbeda dengan keluarga Linux yang mencatat log dalam bentuk teks datar (`.log`), OS Windows menyimpan rekaman aktivitas sistem dalam basis data biner khusus (berformat `.evtx`). Log ini dirancang untuk dibaca menggunakan antarmuka grafis bawaan bernama **Event Viewer**.
 
-Klasifikasi utama riwayat sistem di Windows Event Viewer terbagi menjadi tiga penampang (*Log Channels*):
-1. **Application:** Dokumentasi peringatan diagnostik aplikasi dan perangkat lunak perangkat lunak mandiri pihak ketiga (seperti layanan basis data MS SQL).
-2. **System:** Dokumentasi parameter kesehatan kernel, peringatan interupsi sirkuit piranti keras, dan layanan kegagalan inisialisasi boot.
-3. **Security (Keamanan):** Dokumentasi sentral pemantauan analis perlindungan (*Blue Team*). Merangkum aktivitas otentikasi (logon/logoff), delegasi privilese direktori administratif (hak akses), dan manipulasi kebijakan audit *firewall*.
+Log utama pada *Windows Event Viewer* terbagi menjadi tiga kategori:
+1. **Application:** Mencatat aktivitas dan pesan peringatan dari aplikasi pihak ketiga (seperti basis data MS SQL atau antivirus).
+2. **System:** Mencatat aktivitas komponen inti Windows, masalah *driver* perangkat keras, dan status layanan sistem saat proses *booting*.
+3. **Security (Keamanan):** Pusat perhatian bagi Analis SOC (*Blue Team*). Kategori ini merangkum aktivitas autentikasi (*logon/logoff*), perubahan hak akses administrator, dan modifikasi kebijakan keamanan.
 
 ### Kategori Identifikasi Utama: Key Event IDs
 
-Alih-alih menuliskan rincian narasi dalam setiap kejadian, Windows mengelompokkan dokumentasi tersebut menggunakan indeks identifikasi numerik yang disebut sebagai **Event ID**. Menghafal signifikansi ID fundamental merupakan kapabilitas wajib bagi seorang spesialis SOC:
+Alih-alih menuliskan rincian teks secara panjang lebar, Windows mengelompokkan kejadian menggunakan nomor identifikasi yang disebut **Event ID**. Mengetahui *Event ID* yang fundamental adalah kompetensi wajib bagi seorang analis SOC:
 
-- 🚨 **Event ID 4624 (Logon Success):** Mencatat indikasi bahwa proses otentikasi entitas pengguna (atau peretas) sukses tereksekusi sehingga sesi koneksi diberikan (Berhasil masuk). ID ini senantiasa disandingkan dengan parameter *Logon Type* (Tipe 2 menandakan interaksi fisik di depan konsol, Tipe 3 untuk akses berbagi *file* dari jaringan, dan Tipe 10 mengindikasikan konektivitas remot seperti *RDP*).
-- 🚨 **Event ID 4625 (Logon Failed):** Mencatat indikasi kegagalan otentikasi (sandi/kredensial keliru). Apabila ID 4625 terekam dalam frekuensi yang sangat beruntun dan masif di dalam rentang *timestamp* hitungan detik, ini merupakan parameter indikatif aktivitas peretasan jenis *Brute Force*.
-- 🚨 **Event ID 4688 (Process Creation):** Mencatat inisiasi pengeksekusian sebuah berkas aplikasi, perintah, atau program baru. Sangat krusial dalam prosedur audit (Threat Hunting) apabila peretas mengeksekusi binari administratif secara terselubung (contoh: pemanggilan CMD kueri `net user`).
-- 🚨 **Event ID 7045 (New Service Installed):** Peretas persisten (seperti ancaman *APT*) sering kali mendemonstrasikan tahapan *Persistence* (agar tidak kehilangan akses bila komputer dinyalakan ulang). Mereka akan mengonfigurasi skrip eksploitasinya (Backdoor) dengan meregistrasikannya secara permanen menyamar sebagai *Service* Windows yang sah. ID ini menandakan instalasi layanan servis yang tak wajar.
+- 🚨 **Event ID 4624 (Logon Success):** Menandakan bahwa proses autentikasi pengguna (atau peretas) berhasil. ID ini juga mencatat *Logon Type* (contoh: Tipe 2 untuk akses langsung di depan komputer, Tipe 3 untuk akses jaringan/folder *sharing*, dan Tipe 10 untuk akses jarak jauh seperti *Remote Desktop* / RDP).
+- 🚨 **Event ID 4625 (Logon Failed):** Menandakan kegagalan autentikasi (salah *password*). Jika ID 4625 muncul berulang kali secara masif dalam waktu singkat, ini adalah indikator kuat adanya serangan *Brute Force*.
+- 🚨 **Event ID 4688 (Process Creation):** Mencatat setiap kali sebuah program atau perintah baru dijalankan. ID ini sangat krusial saat melakukan *Threat Hunting* untuk melihat apakah ada *file* mencurigakan atau perintah administrator yang dieksekusi diam-diam (contoh: perintah CMD `net user`).
+- 🚨 **Event ID 7045 (New Service Installed):** Peretas persisten (seperti *Advanced Persistent Threat* / APT) sering melakukan *Persistence* agar tetap memiliki akses meskipun server di-*restart*. Mereka sering kali menyembunyikan *Backdoor* dengan mendaftarkannya sebagai layanan (*Service*) sistem Windows yang sah. ID ini menandakan instalasi layanan baru yang perlu diawasi.
 
 ---
 
@@ -44,36 +44,39 @@ Alih-alih menuliskan rincian narasi dalam setiap kejadian, Windows mengelompokka
 
 **Durasi**: ~10 menit
 
-Mari menyusun simulasi ekstraksi korelasi identifikasi ancaman pada peladen Windows!
+Mari belajar mengkorelasikan log Windows untuk mendeteksi ancaman!
 
-1. Anda sedang melakukan observasi dasbor SIEM yang mengintegrasikan pencatatan logs keamanan dari peladen divisi finansial perusahaan (Alamat IP: `192.168.10.5`).
-2. Dasbor menyajikan agregasi matriks riwayat berurutan berikut (Format Ekstraksi Data):
- - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
- - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
- - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
- - `02:11 AM | Event ID: 4624 | User: Administrator | IP Asal: 10.10.10.50 | Logon Type: 10`
- - `02:12 AM | Event ID: 7045 | Service Name: WindowsUpdateHelper`
-3. **Simpulan Triage (Korelasi Bukti):**
- Berdasarkan pengamatan sekuensial, pada pukul 02:10 AM terekam insiden *Brute Force* (anomali frekuensi *Event ID 4625*) yang membidik instansi administrator lokal dari rute koneksi eksternal yang statis. Pada pukul 02:11 AM, proses peretasan membobol parameter sandi terkonfirmasi valid melalui instalasi sesi autentikasi jarak jauh *Remote Desktop* (dibuktikan dengan eksistensi *Event ID 4624* berstatus *Logon Type 10*). Puncaknya di pukul 02:12 AM, penyerang menerapkan rutinitas penetrasi persisten dengan memicu pembuatan entitas servis parasit (*Event ID 7045*) dengan menyamarkan namanya (obfuscated) menjadi `WindowsUpdateHelper`. Eksekusi status eskalasi insiden valid untuk dilakukan taktik remediasi *Containment* segera.
+1. Anda sedang memantau dasbor SIEM yang merekam log dari server departemen keuangan (`192.168.10.5`).
+2. Dasbor menunjukkan riwayat peringatan berikut secara berurutan:
+   - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
+   - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
+   - `02:10 AM | Event ID: 4625 | User: Administrator | IP Asal: 10.10.10.50`
+   - `02:11 AM | Event ID: 4624 | User: Administrator | IP Asal: 10.10.10.50 | Logon Type: 10`
+   - `02:12 AM | Event ID: 7045 | Service Name: WindowsUpdateHelper`
+3. **Analisis Insiden (Triage):**
+   - Pada pukul `02:10 AM`, terjadi serangan *Brute Force* (ditandai dengan munculnya rentetan *Event ID 4625*) yang menargetkan akun Administrator lokal dari IP eksternal `10.10.10.50`.
+   - Pada pukul `02:11 AM`, serangan berhasil membobol sandi, dibuktikan dengan munculnya *Event ID 4624* melalui akses *Remote Desktop* (*Logon Type 10*).
+   - Pada pukul `02:12 AM`, penyerang mempertahankan aksennya (*Persistence*) dengan menanamkan program berbahaya yang disamarkan sebagai layanan Windows baru bernama `WindowsUpdateHelper` (*Event ID 7045*).
+   - **Tindakan:** Ini adalah insiden *True Positive* yang harus segera diisolasi (*Containment*).
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Menguraikan anatomi penyimpanan sistem operasi, kategori arsitektur log utama manakah pada aplikasi <i>Windows Event Viewer</i> yang didedikasikan secara khusus untuk dokumentasi otentikasi login dan pengawasan audit hak kepemilikan privilese di tingkat administrator SOC?</summary>
+<summary>❓ Kategori log utama apa pada <i>Windows Event Viewer</i> yang mencatat aktivitas autentikasi login dan pengawasan hak akses administratif?</summary>
 
 **Jawaban:** Kategori log *Security* (Security Logs).
 </details>
 
 <details>
-<summary>❓ Apabila SOC Analyst mendeteksi eskalasi drastis secara beruntun dari notifikasi pelaporan <i>Windows Event ID 4625</i> dalam periode sempit, indikator anomali tersebut digunakan sebagai basis penarikan bukti untuk insiden tipe apa?</summary>
+<summary>❓ Jika Analis SOC mendeteksi rentetan <i>Windows Event ID 4625</i> dalam waktu yang sangat singkat, ini adalah indikator dari serangan tipe apa?</summary>
 
-**Jawaban:** Indikator peretasan berbasis *Brute Force* (atau serangan *Credential Stuffing/Password Guessing*), karena parameter Event ID 4625 merepresentasikan aktivitas *Logon Failed* (kegagalan verifikasi kata sandi yang masif).
+**Jawaban:** Serangan *Brute Force* (atau *Credential Stuffing*), karena *Event ID 4625* menandakan kegagalan verifikasi kata sandi (*Logon Failed*).
 </details>
 
 <details>
-<summary>❓ Untuk merepresentasikan persistensi *Backdoor* di sistem operasi berbasis Windows, kemunculan indikator <i>Event ID</i> nomor berapakah yang senantiasa diincar Analis sebagai notifikasi perwujudan eksekusi registrasi aktivitas servis aplikasi latar belakang (Service) di komputer korporasi?</summary>
+<summary>❓ <i>Event ID</i> berapakah yang sering kali dicari Analis untuk mendeteksi tindakan <i>Persistence</i> (pemasangan layanan otomatis/<i>Backdoor</i>) di sistem Windows?</summary>
 
 **Jawaban:** Event ID 7045 (New Service Installed).
 </details>
@@ -82,23 +85,23 @@ Mari menyusun simulasi ekstraksi korelasi identifikasi ancaman pada peladen Wind
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami struktur konseptual penyimpanan basis data biner dalam *Windows Event Viewer*.
-- [ ] Saya sanggup mendeskripsikan secara diferensiasi dari nomor identifikasi *Event ID 4624* dan *4625*.
-- [ ] Saya mengenal signifikansi *Event ID 7045* selaku jejak persisten peretas di ranah manajemen proses (Service).
-- [ ] Saya memiliki kompetensi menarik korelasi alur kronologis pada contoh rangkaian matriks peringatan identifikasi sistem Windows (Mini Lab).
+- [ ] Saya memahami fungsi dan struktur penyimpanan *Windows Event Viewer*.
+- [ ] Saya mampu membedakan makna dari *Event ID 4624* dan *4625*.
+- [ ] Saya mengetahui bahwa *Event ID 7045* dapat menandakan adanya jejak instalasi *backdoor* (*Persistence*).
+- [ ] Saya mampu menarik kesimpulan insiden berdasarkan urutan kronologis *Event ID* (seperti pada Mini Lab).
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [Ultimate Windows Security: Event ID Encyclopedia](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/) — Repositori definitif basis pengetahuan untuk proses dokumentasi dekripsi fungsi puluhan ribu referensi log keamanan Windows.
+- [Ultimate Windows Security: Event ID Encyclopedia](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/) — Referensi lengkap dan tepercaya untuk mendeskripsi makna dari setiap Windows Event ID.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: Linux Logs & Journalctl** — Anda telah mendemonstrasikan wawasan dekripsi metadata pencatatan *Endpoint* berbasis Microsoft Windows. Esok hari, sesi fokus akan bergeser ke ranah OS peladen web, infrastruktur kontainerisasi (*Cloud*), serta arsitektur basis data relasional dominan, yaitu sistem berbasis **Linux**. Anda akan menelusuri lokasi log terstruktur di partisi khusus `/var/log/`, membedah hierarki file vital *auth.log*, serta menggunakan kemampuan sistem *query* ekstraksi sentral: log `journalctl`.
+**Day 3: Linux Logs & Journalctl** — Setelah memahami pemantauan *Endpoint* berbasis Windows, besok kita akan beralih ke lingkungan peladen yang sering digunakan untuk infrastruktur web dan *cloud*, yaitu **Linux**. Kita akan menelusuri lokasi log di direktori `/var/log/`, membedah hierarki *file* seperti `auth.log`, dan menggunakan perintah ekstraksi log terpusat: `journalctl`.
 
 ---
 

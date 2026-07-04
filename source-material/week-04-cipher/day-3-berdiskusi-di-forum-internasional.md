@@ -46,7 +46,7 @@ Di komunitas IT internasional, **bahasa Inggris yang rusak (*broken English*) ad
 
 1. Tidak ada yang peduli dengan *grammar*-mu asalkan **pesan teknisnya** sampai.
 2. Meminta maaf di awal hanya membuat orang merasa kamu kurang percaya diri.
-3. Fokus pada penu pesan *error*, log, atau baris kodemu. Di situlah letak bahasa aslinya.
+3. Fokus pada penulisan pesan *error*, log, atau baris kodemu. Di situlah letak bahasa aslinya.
 
 ### Mengatasi "Toxic" / RTFM
 

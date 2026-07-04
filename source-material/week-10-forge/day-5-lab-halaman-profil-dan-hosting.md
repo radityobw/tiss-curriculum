@@ -97,30 +97,30 @@ Siapa pun (teman, rekan, klien di seluruh dunia) sekarang dapat mengunjungi taut
 </details>
 
 <details>
-<summary>❓ Perbedaan fundamental antara metode pengiriman data HTTP GET dan POST?</summary>
+<summary>❓ Apa perbedaan antara metode pengiriman data HTTP GET dan POST?</summary>
 
-**Jawaban:** Metode **GET** menempelkan seluruh parameter datanya secara telanjang lurus ke dalam bilah alamat URL, sedangkan metode **POST** menyembunyikan bongkahan data payload secara gaib di dalam tubuh bagian dalam (Body) struktur surat HTTP.
-
-</details>
-
-<details>
-<summary>❓ Dalam hierarki urutan ketajaman CSS, selektor jenis apa (diwakili simbol #) yang kekuatan otoriternya sanggup menggugurkan pewarnaan selektor lain dan hanya boleh dimiliki satu elemen saja?</summary>
-
-**Jawaban:** Selektor tipe **ID** (ID Selector).
+**Jawaban:** Metode **GET** menyertakan data langsung di dalam URL, sedangkan metode **POST** menyembunyikan data tersebut di dalam *Body* dari *request* HTTP, sehingga lebih aman.
 
 </details>
 
 <details>
-<summary>❓ Layanan bawaan gratis di GitHub yang mumpuni menerjemahkan repositori statis kita lantas me-render dan menerbitkannya menjadi tautan situs web publik yang hidup dinamai layanan apa?</summary>
+<summary>❓ Di dalam CSS, selektor jenis apa (diwakili dengan simbol #) yang memiliki prioritas tertinggi dan hanya boleh dipasang pada satu elemen spesifik dalam satu halaman?</summary>
+
+**Jawaban:** Selektor **ID** (ID Selector).
+
+</details>
+
+<details>
+<summary>❓ Apa nama layanan gratis dari GitHub yang dapat mengubah *file* statis (HTML/CSS/JS) di repositori kita menjadi sebuah *website* publik yang bisa diakses siapa saja?</summary>
 
 **Jawaban:** GitHub Pages.
 
 </details>
 
 <details>
-<summary>❓ Mengapa pencabangan (Branch) "Forking" lazim menjadi kewajiban dalam tradisi kontribusi di proyek Open-Source ketimbang Branch konvensional belaka?</summary>
+<summary>❓ Mengapa kita sering melakukan 'Forking' saat ingin berkontribusi pada proyek sumber terbuka (Open-Source), daripada membuat *Branch* biasa?</summary>
 
-**Jawaban:** Karena untuk mendorong (*push*) kode secara langsung mensyaratkan otoritas kendali tertulis. "Forking" memfotokopi keseluruhan repositori ke rumah/akun si peretas sendiri, memungkinkannya mengoprek tuntas proyek tersebut tanpa mencederai kode arsitek asli sebelum menawarkan gabungan via "Pull Request".
+**Jawaban:** Karena kita biasanya tidak memiliki akses tulis (*write permission*) ke proyek utama orang lain. 'Forking' membuat salinan proyek tersebut ke akun kita sendiri, sehingga kita bisa memodifikasi kodenya secara bebas, dan setelah selesai, menawarkan perubahan tersebut ke proyek asli menggunakan *Pull Request*.
 
 </details>
 
@@ -164,7 +164,7 @@ Siapa pun (teman, rekan, klien di seluruh dunia) sekarang dapat mengunjungi taut
 
 **Minggu 11: JavaScript Fundamentals**
 
-Pekan ini kita telah mendirikan perancah tulang web padat (HTML) berselimut riasan warna nan kaku membisu (CSS). Besok! Tiba saatnya kita melimpahkan nafas, kepintaran akal budi, dan otot-otot gerak kehidupan kepada kastil lewat mantra sakti mandraguna: **JavaScript**. Bersiaplah, karena di ranah ini segala teka-teki interaksi hidup!
+Minggu ini kita telah mempelajari fondasi web statis menggunakan HTML dan CSS. Besok, kita akan mulai mempelajari **JavaScript**, bahasa pemrograman yang akan membuat halaman web menjadi dinamis dan interaktif. Bersiaplah untuk masuk lebih dalam ke dunia *coding*!
 
 ---
 

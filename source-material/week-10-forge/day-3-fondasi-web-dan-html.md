@@ -21,7 +21,7 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 ### Bagaimana Web Bekerja?
 
 Sebelum membuat web, kamu harus paham cara kerjanya. Internet pada dasarnya beroperasi dengan model **Client-Server**.
-- **Client ()**: Laptop atau HP-mu yang menggunakan browser (Chrome, Firefox). bertugas *meminta* (Request).
+- **Client (Klien)**: Laptop atau HP-mu yang menggunakan browser (Chrome, Firefox). Bertugas *meminta* (Request).
 - **Server (Peladen)**: Komputer super kuat di tempat lain yang selalu menyala. Server bertugas *menjawab* (Response).
 
 Saat kamu mengetik `www.google.com`, browsermu mengirimkan surat bernama **HTTP Request** ke server Google. Server Google lalu merespons dengan **HTTP Response** yang berisi kode HTML, CSS, dan JavaScript agar browsermu bisa melukis halamannya.
@@ -110,7 +110,7 @@ Mari membuat formulir sederhana!
 <details>
 <summary>❓ Komponen komputer manakah yang bertugas menerjemahkan kode HTML menjadi tampilan visual berwarna yang bisa dilihat manusia?</summary>
 
-**Jawaban:** atau Peramban Web (*Web Browser* seperti Google Chrome atau Firefox).
+**Jawaban:** Peramban Web (*Web Browser* seperti Google Chrome atau Firefox).
 
 </details>
 

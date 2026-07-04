@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Mengevaluasi arsitektur peretasan eksekusi arsitektur *Cross-Site Scripting (XSS)*, siasat manipulasi eksploitasi parameter *Payload Crafting* dinobatkan secara empiris lebih mematikan dari sekadar injeksi `alert(1)`. Apakah alasan rasional analitis yang membedah fatalitas bahayanya?
-- [ ] A. *Payload Crafting* didesain khusus mengekstrak payload pencatatan isi tabel kueri data *SQL*.
-- [x] B. Pada penerapan kasta *Payload Crafting*, penganalisis penyerang sasaran tidak sekadar memancing memunculkan kotak *pop-up* usil di antarmuka peramban pengguna korban, melainkan mengarahkan untuk merakit arsitektur skrip pemrograman *JavaScript* kompleks yang ditugaskan secara spesifik lantas terstruktur demi mengeksekusi misi eksploitatif tingkat mahir seperti merampas *Session Cookie* Admin atau penyadapan ketikan papan ketik peramban korban (*Keylogging*).
-- [ ] C. Konfigurasi *Payload* tersebut mengizinkan agen penyerang untuk meledakkan simulasi eksekusi serangan *DDoS* dari peramban.
-- [ ] D. Skrip parameter *Payload* secara spesifik ditugaskan meretas sistem deteksi *Wappalyzer* orisinal.
+**Question:** Mengapa *Payload Crafting* dinilai jauh lebih berbahaya daripada sekadar memunculkan peringatan `alert(1)` pada celah XSS?
+- [ ] A. *Payload Crafting* didesain khusus untuk mengekstrak isi *database* menggunakan SQL Injection.
+- [x] B. Pada *Payload Crafting*, penyerang merakit *JavaScript* khusus yang bertujuan untuk tindakan eksploitatif yang nyata, seperti merampas *Session Cookie* Admin atau menyadap pengetikan papan ketik korban (*Keylogging*), bukan sekadar memunculkan *pop-up*.
+- [ ] C. *Payload* tersebut mengizinkan penyerang untuk meledakkan serangan *DDoS*.
+- [ ] D. Skrip *Payload* secara spesifik ditugaskan meretas *Wappalyzer*.
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika spesialis peretas merangkai skrip penyadap sandi tombol *JavaScript* (*XSS Keylogger*), arsitektur manipulasi *JavaScript* macam memanggil *Event Listener* (semisal deklarasi penugasan *Event* `keypress`) mutlak wajib diabsahkan penggunaannya guna arsitektur mendeteksi sekaligus merekam hentakan tuts ketikan korban sasar.
+**Question:** Saat merangkai skrip penyadap tombol (*XSS Keylogger*), penyerang harus menggunakan fitur *Event Listener* pada JavaScript (misalnya mendeteksi aktivitas `keypress`) untuk mengawasi dan merekam ketikan korban.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Ketika spesialis penganalisis berniat ekskavasi untuk merampas identitas sandi autentik pengguna sasaran peramban, embel deklarasi objek properti apa pada arsitektur bawaan lingkungan operasi peramban *JavaScript* (dengan struktur nilai sandi berawalan kata `document.`) yang wajib dieksploitasi buat menarik wujud sandi pengikatan tersebut?
+**Question:** Pada eksploitasi perampasan *Cookie*, properti JavaScript bawaan apa (yang berawalan `document.`) yang dieksploitasi oleh penyerang untuk menyedot nilai sesi otentikasi korban?
 **Answer:** document.cookie
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika perisai tembok pertahanan instalasi parameter *WAF (Web Application Firewall)* sasaran menolak mutlak lantas mengharamkan pencaplokan mengeksekusi muatan injeksi elemen tag `<script>`, tag elemen HTML pembungkus penyisip payload arsitektur gambar apakah yang kerap diakali penganalisis penyerang laksana inang penyamaran (yang lazimnya dikawinkan dengan parameter sandi `onerror=`)?
-**Answer:** <img> (atau deklarasi HTML tag img).
+**Question:** Jika perlindungan sistem (*WAF*) memblokir dan melarang penggunaan tag `<script>`, elemen *HTML* apa yang sering digunakan penyerang sebagai inang penyamaran (biasanya dipadukan dengan *event handler* `onerror=`) untuk mengeksekusi XSS?
+**Answer:** <img> (atau tag img).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Di penghujung rentetan peretasan simulasi pencurian *Cookie* sasaran peramban, ketika parameter sandi tersebut dikonfirmasi sukses dicekik lantas direnggut oleh rahim ekskavasi instruksional *JavaScript* korban sasaran, ke manakah alamat payload sandi hasil rampokan itu mesti dikirimkan lantas diteruskan (sebagai contoh berbekal penerapan perintah `fetch`) agar kelak bisa dikumpulkan lantas dinikmati oleh penganalisis penyerang ?
-**Answer:** Dikirimkan (di-POST/di-GET) ke alamat instalasi peladen penadah eksternal spesifik (seperti Server milik Penganalisis/Hacker atau arsitektur pencatatan Webhook sasaran Hacker).
+**Question:** Pada eksploitasi pencurian *Cookie*, setelah *JavaScript* berhasil menyedot *Cookie* dari browser korban, ke mana skrip tersebut harus mengirimkan (mentransmisikan) *Cookie* itu agar bisa digunakan oleh penyerang?
+**Answer:** Ke server penampung atau *Webhook* milik penyerang.

@@ -99,13 +99,13 @@ SELECT kode_agen FROM intel WHERE status = 'Aktif';
 </details>
 
 <details>
-<summary>❓ Atribut mantra sakral kueri simbol karakter apakah yang disisipkan lekat bersampingan `SELECT` guna mendaulat permintaan ekstraksi brutal menyedot SEMUA kolom utuh tanpa pengecualian?</summary>
+<summary>❓ Atribut mantra krusial kueri simbol karakter apakah yang disisipkan lekat bersampingan `SELECT` guna mendaulat permintaan ekstraksi brutal menyedot SEMUA kolom utuh tanpa pengecualian?</summary>
 
 **Jawaban:** Karakter tanda Bintang (Asterisk) alias `*` (misal `SELECT * FROM`).
 </details>
 
 <details>
-<summary>❓ Tuas operasi klausa sandi perintah kueri manakah di lintasan pembacaan `SELECT` yang dipercaya spesifik mengeksekusi penyaringan (*filtering*) kondisi laksana *"Cuma comot data jika umurnya melebihi 20"*?</summary>
+<summary>❓ Tuas operasi klausa sandi perintah kueri manakah di lintasan pembacaan `SELECT` yang dipercaya spesifik mengeksekusi penyaringan (*filtering*) kondisi seperti *"Cuma comot data jika umurnya melebihi 20"*?</summary>
 
 **Jawaban:** Titah kondisi `WHERE` (contohnya `WHERE umur > 20`).
 </details>

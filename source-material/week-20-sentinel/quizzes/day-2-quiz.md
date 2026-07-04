@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Di arsitektur analisis keamanan siber, apa batasan definisi yang paling mencerai <i>Security Event</i> dengan <i>Security Incident</i>?
+**Question:** Di ranah analisis keamanan siber, apa batasan operasional yang paling membedakan antara *Security Event* dengan *Security Incident*?
 - [ ] A. *Event* adalah serangan, sedangkan *Incident* adalah peringatan alarm.
-- [ ] B. *Security Event* pasti menyebabkan kerugian finansial, sedangkan *Security Incident* hanya sebatas log *Apache*.
-- [x] C. *Security Event* merupakan setiap kejadian atau observasi aktivitas normal maupun abnormal yang tercatat pada sistem (contoh : *login* sukses). Sedangkan *Security Incident* adalah peristiwa keamanan yang terbukti secara negatif memengaruhi <i>CIA Triad</i> sistem (contoh : kebocoran data) atau melanggar kebijakan keamanan secara nyata.
-- [ ] D. *Security Incident* butuh lisensi *Burp Suite Professional*.
+- [ ] B. *Security Event* selalu menyebabkan kerugian finansial, sedangkan *Security Incident* hanya sebatas pencatatan log *Apache*.
+- [x] C. *Security Event* adalah setiap kejadian (normal maupun abnormal) yang tercatat pada sistem (contoh: *login* sukses). Sedangkan *Security Incident* adalah peristiwa keamanan yang terkonfirmasi berdampak negatif terhadap elemen keamanan *CIA Triad* sistem (contoh: kebocoran data) atau melanggar kebijakan keamanan secara nyata.
+- [ ] D. *Security Incident* memerlukan lisensi perangkat lunak khusus.
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika peranti keamanan siber membunyikan peringatan (peringatan <i>High Severity</i>) namun setelah dilakukan proses Triase (Triage) ternyata penyebabnya adalah rutinitas wajar tim IT korporasi yang sedang memindai kerentanan menggunakan *Nmap*, maka insiden tersebut diklasifikasikan sebagai <i>False Positive</i>.
+**Question:** Ketika sensor keamanan membunyikan peringatan (*High Severity Alert*), namun setelah diinvestigasi (Triase) ternyata pemicunya adalah aktivitas wajar dari tim IT yang sedang melakukan pemindaian kerentanan terjadwal, maka peringatan tersebut diklasifikasikan sebagai *False Positive*.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Di klasifikasi <i>Triage</i>, apa sebutan skenario insiden terburuk bagi Analis SOC ketika sebuah serangan nyata sukses melumpuhkan jaringan namun sistem pertahanan <i>IDS</i> tak mendeteksinya sama sekali dan bungkam tanpa alarm (tidak ada <i>alert</i>)?
+**Question:** Dalam klasifikasi *Triage*, apa sebutan untuk skenario terburuk di mana sebuah serangan peretasan benar-benar berhasil menyusup, tetapi sistem pertahanan/sensor gagal mendeteksinya dan tidak memicu peringatan (*alert*) sama sekali?
 **Answer:** False Negative.
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika seorang Analis keamanan memilah dan menimbang tingkat prioritas sebuah peringatan (<i>Alert</i>) guna menentukan apakah ia berhadapan dengan <i>False Positive</i> atau <i>True Positive</i>, apa istilah baku dari proses pemilahan tersebut?
+**Question:** Ketika seorang Analis SOC meninjau peringatan (*Alert*) baru dari sistem, memvalidasinya, dan menentukan prioritas untuk memastikan apakah itu *False Positive* atau *True Positive*, apa istilah teknis dari proses penyaringan awal ini?
 **Answer:** Triase (Triage).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Ketika sistem <i>DLP (Data Loss Prevention)</i> membunyikan alarm karena seorang mantan admin diam-diam mengunduh 100GB <i>Database</i> nasabah ke penyimpanan awan miliknya pada jam 2 pagi, dan analis SOC mengonfirmasi bahwa itu adalah pencurian data, klasifikasi triase apakah yang disematkan?
+**Question:** Ketika sistem *DLP (Data Loss Prevention)* mendeteksi dan memperingatkan bahwa seorang staf mengunduh 100GB *Database* nasabah ke penyimpanan awan pribadinya pada pukul 2 pagi, dan analis SOC mengonfirmasi hal tersebut sebagai pencurian data aktual, klasifikasi apakah yang disematkan pada peringatan tersebut?
 **Answer:** True Positive.

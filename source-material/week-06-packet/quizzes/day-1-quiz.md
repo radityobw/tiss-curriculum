@@ -16,7 +16,7 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Oleh karena panggilan video langsung (*live video call*) dan gim kompetitif multipemain daring sangat membutuhkan presisi tanpa paket yang hilang, maka mereka secara wajib dan eksklusif dioperasikan menggunakan TCP.
+**Question:** Panggilan video langsung (*live video call*) dan *game* kompetitif *multiplayer online* sangat membutuhkan presisi tanpa paket yang hilang, sehingga selalu menggunakan protokol TCP.
 **Answer:** False
 
 ### Q3
@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Jika kamu berencana mendownload pembaruan (patch) gim berukuran 50 GB dari internet, protokol transport manakah yang akan memastikan arsip tersebut tidak korup sama sekali?
+**Question:** Jika kamu berencana men-*download* pembaruan (*patch*) *game* berukuran 50 GB dari internet, protokol transport manakah yang akan memastikan *file* tersebut tidak *corrupt* sama sekali?
 **Answer:** TCP (Transmission Control Protocol).

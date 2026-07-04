@@ -47,12 +47,12 @@ TISS bukan sekedar komunitas belajar biasa. Organisasi ini dirancang seperti eko
 
 Mengapa penting? Lihat angka-angka ini:
 
-| Fakta | Data |
-|-------|------|
-| 🌐 Kerugian global akibat cybercrime (2025) | > $10.5 triliun/tahun |
-| 📈 Kebutuhan tenaga kerja cybersec global | 3.5 juta posisi kosong |
-| 🇮🇩 Serangan siber ke Indonesia (2024) | Ratusan juta anomali trafik/tahun |
-| 💰 Gaji rata-rata cybersec analyst (global) | $80,000–$130,000/tahun |
+| Fakta | Data | Sumber Referensi |
+|-------|------|------------------|
+| 🌐 Kerugian global akibat cybercrime (2025) | > $10.5 triliun/tahun | [*Cybersecurity Ventures*](https://cybersecurityventures.com/cybercrime-damage-costs-10-trillion-by-2025/) |
+| 📈 Kebutuhan tenaga kerja cybersec global | 3.5 juta posisi kosong | [*ISC2 Cybersecurity Workforce Study*](https://www.isc2.org/Research/Workforce-Study) |
+| 🇮🇩 Serangan siber ke Indonesia | Ratusan juta anomali trafik/tahun | [*Laporan Tahunan BSSN*](https://bssn.go.id/lanskap-keamanan-siber-indonesia/) |
+| 💰 Gaji rata-rata cybersec analyst (global) | $80,000–$130,000/tahun | [*ISC2 / Glassdoor*](https://www.glassdoor.com/Salaries/cyber-security-analyst-salary-SRCH_KO0,22.htm) |
 
 > 💡 **Fun Fact**: Indonesia termasuk negara dengan serangan siber tertinggi di Asia Tenggara. Ini berarti **peluang karier di bidang ini sangat besar** untuk kamu!
 

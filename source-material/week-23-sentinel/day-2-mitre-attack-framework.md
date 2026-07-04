@@ -10,7 +10,7 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** struktur kerangka kerja referensi intelijen *MITRE ATT&CK*.
+1. **Memahami** struktur kerangka kerja referensi intelijen keamanan *MITRE ATT&CK*.
 2. **Menjabarkan** klasifikasi tingkatan perilaku serangan (TTPs: *Tactics, Techniques, Procedures*).
 3. **Memanfaatkan** matriks *MITRE ATT&CK Navigator* sebagai pendukung dalam penyusunan hipotesis.
 
@@ -18,26 +18,28 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ## 📖 Materi Inti
 
-### Referensi Operasional : MITRE ATT&CK Framework
+### Referensi Operasional: MITRE ATT&CK Framework
 
-Spesialis *Threat Hunter* tidak menyandarkan penelusurannya hanya pada asumsi acak. Analis wajib berpedoman pada data intelijen tersentralisasi yang merekam seluruh taksonomi perilaku serta metode infiltrasi yang didokumentasikan dari operasi kejahatan kelompok peretas tingkat lanjut (*Advanced Persistent Threats* / APT) secara komprehensif. Matriks referensi intelijen global ini dikenal sebagai **MITRE ATT&CK Framework**.
+Seorang *Threat Hunter* tidak menyandarkan penelusurannya hanya pada asumsi acak. Analis wajib berpedoman pada data intelijen yang merekam seluruh taksonomi perilaku serta metode infiltrasi yang pernah digunakan oleh kelompok peretas (*Advanced Persistent Threats* / APT). Basis pengetahuan global ini dikenal sebagai **MITRE ATT&CK Framework**.
 
-Organisasi lembaga riset terkemuka MITRE merumuskan matriks **ATT&CK** *(Adversarial Tactics, Techniques, and Common Knowledge)* sebagai ensiklopedia pemetaan perilaku ancaman, mengklasifikasikan urutan fase manuver taktis, serta operasi infiltrasi spesifik yang berpotensi ditujukan terhadap sistem korporasi keamanan dan peladen infrastruktur jaringan.
+Organisasi nirlaba MITRE merumuskan matriks **ATT&CK** *(Adversarial Tactics, Techniques, and Common Knowledge)* sebagai ensiklopedia global pemetaan ancaman. Matriks ini mengklasifikasikan urutan fase serangan serta metode spesifik yang sering ditujukan terhadap sistem korporasi dan infrastruktur jaringan.
 
 ### Klasifikasi Perilaku Peretas (TTPs)
 
-MITRE ATT&CK mengkategorisasi tingkat eksekusi eksploitasi serangan (Model *TTPs*) ke dalam tiga jenjang granular analitis:
+MITRE ATT&CK mengkategorisasi cara kerja serangan (dikenal sebagai *TTPs*) ke dalam tiga jenjang spesifik:
 
-1. **Tactics (Taktik):** Menjawab *"Mengapa (Why) peretas mengoperasikan manuver teknis tersebut?"*
- Taktik memformulasikan tujuan utama (*Goal*) eksekutor serangan pada fase infiltrasi tertentu. Contoh parameter Taktik mencakup kategori: *Initial Access* (Titik masukan akses mula ke sistem peladen), *Privilege Escalation* (Aktivitas mengangkat tingkatan otorisasi), *Defense Evasion* (Praktik menyembunyikan log dari pendeteksian pengamanan jaringan), *Exfiltration* (Penarikan aset data korporat ke luar perimeter peladen).
-2. **Techniques (Teknik):** Menjawab *"Bagaimana (How) peretas meraih target dari Taktik operasional tersebut?"*
- Teknik menjelaskan modus operasional metodologi serangan jaringan. Sebagai ilustrasi, apabila tujuan operasional Taktiknya adalah *Initial Access*, maka pemanfaatan Tekniknya bisa mencakup: metode *Phishing* (Taktik Email tipuan rekayasa logis) atau prosedur manipulasi rute eksploitasi peretasan perangkat lunak *Exploit Public-Facing Application* (Pemanfaatan keamanan peladen celah web sistem eksternal).
-3. **Procedures (Prosedur):** Menjawab *"Apa implementasi perincian langkah taktis yang dikonfigurasikan secara spesifik?"*
- Prosedur menyajikan deskripsi implementasi arsitektur peretasan logis di tingkat terperinci (Contoh pendefinisian Prosedur: *Grup kelompok APT29* secara mendemonstrasikan distribusi dokumen Excel bermuatan perintah makro eksekusi sistem VBScript logis berstatus berbahaya).
+1. **Tactics (Taktik):** Menjawab *"Mengapa (Why) peretas melakukan tindakan tersebut?"*
+   Taktik adalah tujuan utama (*Goal*) peretas pada fase tertentu. Contoh Taktik: *Initial Access* (Mencari akses masuk awal), *Privilege Escalation* (Meningkatkan hak akses sistem), *Defense Evasion* (Menghindari deteksi keamanan), dan *Exfiltration* (Mencuri dan memindahkan data ke luar jaringan).
+2. **Techniques (Teknik):** Menjawab *"Bagaimana (How) peretas mencapai tujuan dari Taktik tersebut?"*
+   Teknik adalah metode operasional serangan. Sebagai ilustrasi, jika Taktiknya adalah *Initial Access*, maka Teknik yang digunakan bisa berupa: *Phishing* (Mengirim email tipuan) atau *Exploit Public-Facing Application* (Mengeksploitasi celah kerentanan web publik).
+3. **Procedures (Prosedur):** Menjawab *"Apa implementasi langkah teknis yang dilakukan secara spesifik?"*
+   Prosedur adalah detail observasi serangan di lapangan. Contoh Prosedur: *Grup APT29* mendistribusikan dokumen Excel yang disisipi makro berbahaya berformat VBScript.
 
-### Penggunaan MITRE Navigator untuk 
-Ketika divisi operasional keamanan mendeteksi intelijen bahwa afiliasi peretas terorganisir (misal *Grup APT Lazarus*) mengincar infrastruktur finansial, analis akan melakukan pemetaan matriks arsitektur ancaman (*Threat Mapping*) mendayagunakan platform antarmuka bernama **ATT&CK Navigator**.
-Platform ini mengaplikasikan parameter visual pada matriks. Analis dapat membaca pola operasional intelijen: *"Afiliasi operasi Lazarus terekam memiliki kecenderungan mengeksploitasi teknik modifikasi persistensi Scheduled Tasks (T1053). Sebagai respon perlindungan, penyusunan fungsi perburuan log Windows ID 4698 akan dieksekusi."*
+### Menggunakan MITRE ATT&CK Navigator
+
+Ketika divisi SOC menerima informasi intelijen bahwa grup peretas (misalnya *APT Lazarus*) sedang mengincar sektor finansial, analis akan melakukan pemetaan ancaman menggunakan platform antarmuka bernama **ATT&CK Navigator**.
+
+Analis dapat melihat pola operasional: *"Grup Lazarus diketahui sering menggunakan teknik persistensi dengan memodifikasi Scheduled Tasks (T1053). Berdasarkan informasi ini, kita akan membuat hipotesis untuk memburu log Windows Event ID 4698 (Pembuatan Scheduled Task baru) pada server kita."*
 
 ---
 
@@ -45,58 +47,58 @@ Platform ini mengaplikasikan parameter visual pada matriks. Analis dapat membaca
 
 **Durasi**: ~10 menit
 
-Mari melaksanakan pemetaan simulasi klasifikasi kasta TTPs!
+Mari melakukan pemetaan simulasi klasifikasi TTPs!
 
-1. Siapkan aplikasi penyusun teks laporan.
-2. Analisis laporan insiden taktis berikut: *"Terdapat laporan bahwa jaringan telah terkompromi. Untuk memastikan eksistensi jahatnya tersembunyi dari parameter deteksi Antivirus sistem operasi korporasi, peretas memanipulasi aset eksekusi berkas sistem. Ia mendelegasikan perintah penggantian penamaan file malware eksekutabel eksternal menyamar menjadi identitas file `svchost.exe` (Meniru entitas perangkat Windows resmi)."*
-3. **Misi Analisis:** Petakan laporan skenario tersebut menurut taksonomi logis struktur TTPs (Taktik dan Teknik)!
-4. **Evaluasi Taktik (T parameter Pertama - *Why*):** Apa rasional tujuan manipulasi tersebut? Tujuannya adalah mereduksi peluang dideteksi sistem pengamanan (*Antivirus*). Berdasarkan taksonomi matriks MITRE, kategori Taktiknya adalah klasifikasi **Defense Evasion (Penghindaran Pertahanan keamanan)**.
-5. **Evaluasi Teknik (T parameter Kedua - *How*):** Bagaimana metode peretas mengakali hal tersebut? Dengan modifikasi manipulatif merubah status penamaan berkas. Mengacu pada kerangka operasional matriks MITRE, fungsi Tekniknya masuk ke pengelompokkan taksonomi **Masquerading (Operasi Penyamaran Pengelabuan entitas File Sah)**.
-6. Dengan berpedoman pada nomenklatur standar taktis mitigasi MITRE ini, personel *Threat Hunter* di setiap korporasi multinasional dapat bertukar pemetaan analisis menggunakan struktur format taksonomi logis yang seragam.
+1. Siapkan aplikasi teks (Notepad).
+2. **Skenario Insiden:** *"Sistem mendeteksi anomali. Untuk memastikan keberadaannya tersembunyi dari deteksi Antivirus, peretas telah mengganti nama file malware eksekusi mereka menjadi `svchost.exe` (Meniru nama proses sistem Windows yang sah)."*
+3. **Misi Analisis:** Petakan laporan skenario tersebut menurut taksonomi struktur TTPs (Taktik dan Teknik)!
+4. **Evaluasi Taktik (T Pertama - *Why*):** Apa tujuan dari penggantian nama tersebut? Tujuannya adalah agar tidak terdeteksi oleh Antivirus. Berdasarkan matriks MITRE, kategori Taktiknya adalah **Defense Evasion (Penghindaran Pertahanan)**.
+5. **Evaluasi Teknik (T Kedua - *How*):** Bagaimana metode peretas mengakali hal tersebut? Dengan memanipulasi dan menyamarkan nama berkas. Mengacu pada kerangka operasional matriks MITRE, Teknik yang digunakan masuk ke kategori **Masquerading (Penyamaran)**.
+6. Dengan menggunakan penamaan standar ini, seluruh personel *Threat Hunter* di seluruh dunia dapat saling bertukar analisis ancaman menggunakan istilah yang seragam.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membedah infrastruktur intelijen ancaman keamanan, apa kepanjangan nomenklatur klasifikasi perilaku operasional <i>TTPs</i> yang digunakan sebagai basis arsitektur taksonomi pada kerangka kerja operasi <i>MITRE ATT&CK</i>?</summary>
+<summary>❓ Membedah intelijen ancaman keamanan, apa kepanjangan klasifikasi <i>TTPs</i> yang digunakan sebagai arsitektur dasar pada kerangka kerja <i>MITRE ATT&CK</i>?</summary>
 
 **Jawaban:** Tactics, Techniques, and Procedures.
 </details>
 
 <details>
-<summary>❓ Dalam implementasi analisis pemetaan TTPs, parameter klasifikasi manakah (antara Tactics atau Techniques) yang secara difokuskan untuk memecahkan rumusan objektif <i>"Mengapa (Why) entitas peretas mengimplementasikan eksploitasi serangan tersebut / Apa sasaran perolehan akhir yang dikehendaki"</i> (contoh taksonomi: <i>Privilege Escalation</i>)?</summary>
+<summary>❓ Dalam pemetaan TTPs, klasifikasi manakah yang berfokus untuk menjawab objektif <i>"Mengapa peretas melakukan tindakan tersebut / Apa tujuan utamanya"</i> (contoh: <i>Privilege Escalation</i>)?</summary>
 
-**Jawaban:** Tactics (Taktik Operasional).
+**Jawaban:** Tactics (Taktik).
 </details>
 
 <details>
-<summary>❓ Pada spesifikasi perumusan matriks pemetaan pertahanan korporasi, bilamana analis keamanan (*Threat Hunter*) mengevaluasi parameter Taktik tingkat <i>Initial Access (Upaya Akses Mula)</i>, maka implementasi teknikal operasional peretasan berupa <i>"Distribusi surel lampiran bermuatan eksploitasi logis (Phishing)"</i> diklasifikasikan sebagai tingkatan apa pada pengelompokan hierarki taksonomi logis sistem TTPs?</summary>
+<summary>❓ Jika Analis SOC mengevaluasi Taktik <i>Initial Access (Akses Awal)</i>, maka aktivitas serangan berupa <i>"Distribusi email lampiran berbahaya (Phishing)"</i> diklasifikasikan sebagai tingkatan apa pada hierarki TTPs?</summary>
 
-**Jawaban:** Pengelompokan spesifikasi Techniques (Teknik).
+**Jawaban:** Techniques (Teknik).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami fungsi matriks intelijen *MITRE ATT&CK*.
-- [ ] Saya menguasai perbedaan arsitektur parameter *Tactics* vs *Techniques*.
-- [ ] Saya mengerti taksonomi detail teknikal penerapan parameter *Procedures*.
-- [ ] Saya paham tata guna platform referensi visual *ATT&CK Navigator*.
+- [ ] Saya memahami fungsi matriks referensi *MITRE ATT&CK*.
+- [ ] Saya menguasai perbedaan parameter *Tactics* vs *Techniques*.
+- [ ] Saya mengerti taksonomi detail penerapan *Procedures*.
+- [ ] Saya memahami kegunaan platform visual *ATT&CK Navigator*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [MITRE ATT&CK Matrix for Enterprise](https://attack.mitre.org/matrices/enterprise/) — Tabel matriks ensiklopedia intelijen arsitektur referensi taksonomi *TTPs* grup ancaman tingkat keamanan global.
+- [MITRE ATT&CK Matrix for Enterprise](https://attack.mitre.org/matrices/enterprise/) — Tabel ensiklopedia intelijen arsitektur referensi taksonomi *TTPs* global.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: Digital Forensics Basics** — *Threat Hunting* umumnya dioperasikan saat merespons aktivitas peretasan yang masih berpotensi aktif di jaringan. Jika sistem peladen operasi sudah hancur akibat eksploitasi serangan terprogram, peran penelusuran dialihkan pada ranah disiplin : **Digital Forensics**. Sesi operasi mendatang akan menguraikan secara ekstensif standar kepatuhan regulasi operasi pengolahan penyitaan keamanan *(Chain of Custody)* beserta teknik penduplikasian perlindungan aset barang bukti sistem yakni operasi *Forensic Imaging*!
+**Day 3: Digital Forensics Basics** — *Threat Hunting* umumnya dioperasikan saat insiden masih aktif. Namun, jika serangan telah selesai dan server telah terkompromi, tanggung jawab beralih pada disiplin ilmu: **Digital Forensics**. Besok, kita akan mempelajari prinsip dasar penanganan bukti digital, aturan pengelolaan barang bukti (*Chain of Custody*), dan konsep duplikasi data investigasi.
 
 ---
 

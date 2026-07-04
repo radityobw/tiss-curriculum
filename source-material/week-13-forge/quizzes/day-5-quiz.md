@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Menakar siklus kelemahan pada rutinitas transmisi *Otentikasi Kredensial Login* antara antarmuka *Frontend* dan *API Peladen*, alasan teknikal mutlak apakah yang melarang keras eksploitasi parameter rute peramban via metode `GET` (sehingga mewajibkannya dilewatkan ke bodi tersembunyi `POST`)?
-- [x] A. Dilarang mendelegasikan pengiriman pengikatan formulir login via rute metode `GET` dikarenakan sandi sensitif dan parameter *username* pendaftar akan terekspos telanjang di lintasan terbuka parameter baris *Query String URL (Address Bar)* peramban web. Ini memicu risiko fatal kerentanan sadap, bahaya perekaman pengintip, atau pembajakan lewat *History log* peramban publik.
-- [ ] B. Dilarang mendelegasikan siklus sandi mengandalkan pengiriman metode *JSON POST* lantaran merusak jaringan *API* basis relasi global .
-- [ ] C. Sandi metode jaringan peramban *PUT* diharamkan karena akan memusnahkan eksistensi logik tabel basis data tamu tanpa sisa.
-- [ ] D. Sandi tak boleh diinjeksi ke peramban *Node.js* melainkan mesti diarahkan ke skrip lokal Python OS peladen lokal klien jaringan.
+**Question:** Saat merancang sistem *API Login*, mengapa pengiriman data kredensial (seperti kata sandi) dilarang menggunakan metode HTTP `GET` dan diwajibkan menggunakan metode `POST`?
+- [x] A. Karena pada metode `GET`, data kredensial akan terlihat secara transparan menempel pada baris antarmuka *URL Address Bar* (dan terekam dalam *history browser*), sehingga memicu kerentanan untuk disadap.
+- [ ] B. Karena metode `POST` mampu merusak jaringan basis relasional *API* global yang mengirimkan JSON.
+- [ ] C. Karena pengiriman via metode `GET` akan otomatis mengeksekusi penghapusan pada tabel *database* internal.
+- [ ] D. Karena data *password* tidak boleh diterima oleh Node.js melainkan harus diarahkan ke skrip lokal Python.
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika perancang sistem Basis Data (*Database*) membidani pendirian deklarasi kerangka cetakan parameter kolom otentikasi memuat aturan penegasan kondisi `username VARCHAR(50) UNIQUE`, maka konstrain atau tameng perisai batasan `UNIQUE` tersebut mendikte eksekutor *Database Engine* guna menjegal pencatatan/akun ganda ketika ada tamu baru yang bermaksud meniru/mengklaim *username* murni yang 100% sama dengan catatan profil entitas pengenal referensial payload pendaftar lama.
+**Question:** Atribut `UNIQUE` pada perintah pembuatan kolom `username` bertugas memastikan agar tidak ada dua akun berbeda yang berhasil mendaftar menggunakan nama akun / *username* yang sama persis.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Pada tahapan verifikasi eksekusi otentikasi data login, ketika peramban API peladen mengidentifikasi kegagalan otentikasi dari tamu (misal ketika klien melampirkan tebakan varian parameter payload nilai sandi teks acak yang setelah dikomparasi ternyata tak cocok bersilangan dengan catatan sandi *hash* di Database), stempel kode penolakan akses jaringan (*HTTP Error Status Code seri 4xx*) manakah yang mesti dihantarkan guna merespons laporan galat identifikasi tak berizin (*unauthorized*) ke muka perambannya?
+**Question:** Kode status *HTTP Error* berapakah (seri 4xx) yang secara standar harus dikirimkan oleh server saat upaya login klien gagal ditautkan akibat tebakan kata sandi atau *username* yang tidak sesuai?
 **Answer:** 401 (Unauthorized).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Di bentangan rentetan fase pengerjaan arsitektur implementasi validasi pengikatan fungsi *Backend Login API*, bilamana peladen sukses memetakan validitas kecocokan *username* tamu di data SQL, metode instruksional pusaka apakah turunan modul kriptografi `bcrypt` (bukan fungsi metode `hash`) yang diletuskan spesifik untuk membandingkan kecocokan antara tebakan teks sandi murni tamu dengan hasil rekam rentetan cincangan sandi di bodi database?
+**Question:** Fungsi spesifik dari pustaka `bcrypt` manakah yang bertugas membandingkan kecocokan antara *password* (teks murni) yang diketik pengunjung saat *login* dengan data hasil *hash* yang tersimpan di dalam database?
 **Answer:** compare (atau bcrypt.compare / compareSync).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Menelaah perihal eksekusi sistem API peladen *Express*, sebutkan deklarasi pemanggilan penjaring eksekutor lapis penengah (*Middleware *) yang wajib dicangkokkan merentang mencegat instruksi lajur *HTTP Request* sebelum baris operasi *Routing* disematkan; dengan spesialisasi tugas membedah serapan konfigurasi teks pelaporan JSON kiriman dari antarmuka bodi muatan *Request Payload Body JSON* (lazim memonitor serangan muatan `POST/PUT`)!
+**Question:** Dalam kerangka kerja *Express.js*, fungsi pembantu *middleware* bawaan apakah yang wajib dipanggil sebelum rute (*routes*) dideklarasikan agar server mampu membaca bodi *request* muatan yang dikirim dalam format JSON?
 **Answer:** express.json()

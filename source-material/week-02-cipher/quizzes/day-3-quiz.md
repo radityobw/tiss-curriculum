@@ -10,7 +10,7 @@ total_questions: 5
 **Type:** Multiple Choice
 **Question:** Mengapa dokumen standar internet diterbitkan dengan penamaan RFC (*Request for Comments*)?
 - [x] A. Karena pada masa penciptaan internet, para ilmuwan mengundang diskusi dan perbaikan (komentar) dari ilmuwan lain secara terbuka ketimbang mendikte secara otoriter.
-- [ ] B. Karena dokumen tersebut masih be konsep (draft) dan belum pernah disahkan sebagai standar baku hingga hari ini.
+- [ ] B. Karena dokumen tersebut masih berupa konsep (draft) dan belum pernah disahkan sebagai standar baku hingga hari ini.
 - [ ] C. Karena RFC dibuat khusus untuk menampung keluhan pengguna internet.
 - [ ] D. Singkatan RFC sebenarnya merujuk pada *Randomly Formatted Code*, bukan *Request for Comments*.
 

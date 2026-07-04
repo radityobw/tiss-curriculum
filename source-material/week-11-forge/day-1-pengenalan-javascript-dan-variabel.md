@@ -59,7 +59,7 @@ Namun yang terpenting bagi *hacker* adalah **Operator Perbandingan** (Logika):
 
 ```javascript
 let umur = 20;
-let sudahDewasa = umur >= 18; // Hasilnya akan be Boolean: true
+let sudahDewasa = umur >= 18; // Hasilnya akan bertipe Boolean: true
 ```
 
 ---
@@ -88,7 +88,7 @@ console.log(nama + " sedang menyerang " + target + " dengan peluang " + peluangS
 ```
 Agen Rahasia sedang menyerang Sistem Utama dengan peluang 99.9%
 ```
-*(Fungsi `console.log()` adalah perintah wajib untuk mencetak tu ke dalam layar Console. Ini adalah alat bantu *debugging* terbaikmu!)*
+*(Fungsi `console.log()` adalah perintah wajib untuk mencetak teks/nilai ke dalam layar Console. Ini adalah alat bantu *debugging* terbaikmu!)*
 
 ---
 

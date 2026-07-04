@@ -10,13 +10,13 @@ total_questions: 5
 **Type:** Multiple Choice
 **Question:** Mengapa pembuat situs sangat diwajibkan menggunakan metode pengiriman POST ketimbang GET untuk formulir *login* berisikan kata sandi?
 - [x] A. Karena metode GET mengekspos semua parameter formulir langsung pada alamat URL peramban secara transparan yang menjadikannya tersimpan di riwayat (*history*) secara telanjang.
-- [ ] B. Karena metode POST secara otomatas mengeksekusi sistem *CAPTCHA*.
+- [ ] B. Karena metode POST secara otomatis mengeksekusi sistem *CAPTCHA*.
 - [ ] C. Karena metode GET tidak dapat membawa paket di atas 10 *byte* berlawanan dengan metode POST.
 - [ ] D. Karena metode POST berjalan di UDP, bukan TCP.
 
 ### Q2
 **Type:** True/False
-**Question:** Kehadiran kelas kode balas *HTTP Status* yang berawalan "4" (seperti 404 atau 403) mengindikasikan bahwa peladen (*server*) data dari situs terkait sedang terbakar atau mogok berfungsi.
+**Question:** *HTTP Status Code* yang berawalan "4" (seperti 404 atau 403) mengindikasikan bahwa *server* dari situs terkait mengalami kerusakan sistem internal.
 **Answer:** False
 
 ### Q3
@@ -26,10 +26,10 @@ total_questions: 5
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apa makna kode umpan balik *HTTP Status Code* bersimbol angka "200 OK"?
+**Question:** Apa makna *HTTP Status Code* "200 OK"?
 **Answer:** Respons berhasil atau permintaan berhasil diproses peladen tanpa ada masalah.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Standar sistem kriptografi tambahan apakah yang ditumpangkan pada HTTP demi membungkus komunikasi tersebut sehingga berganti nama menjadi HTTPS?
+**Question:** Standar kriptografi apa yang ditambahkan pada HTTP untuk mengenkripsi komunikasi sehingga menjadi HTTPS?
 **Answer:** TLS/SSL.

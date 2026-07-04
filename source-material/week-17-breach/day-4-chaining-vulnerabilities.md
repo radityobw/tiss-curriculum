@@ -10,39 +10,39 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** nalar dan filosofi eksploitasi tingkat lanjut menggunakan metode Rantai Kerentanan (*Chaining Vulnerabilities*).
-2. **Menggabungkan** dua atau lebih celah keamanan berskala kecil (seperti *XSS* & *IDOR*) menjadi satu serangan eksploitasi yang fatal.
-3. **Mengevaluasi** rekayasa eksploitasi gabungan yang dapat berujung pada *Remote Code Execution (RCE)* atau *Account Takeover (ATO)*.
+1. **Memahami** logika eksploitasi tingkat lanjut menggunakan metode Rantai Kerentanan (*Chaining Vulnerabilities*).
+2. **Menggabungkan** dua atau lebih celah keamanan berskala kecil (seperti *XSS* & *IDOR*) menjadi satu serangan yang berdampak besar.
+3. **Mengevaluasi** skenario eksploitasi gabungan yang dapat berujung pada *Remote Code Execution (RCE)* atau *Account Takeover (ATO)*.
 
 ---
 
 ## 📖 Materi Inti
 
-### Seni Merajut Eksploitasi Fatal (Vulnerability Chaining)
+### Rantai Kerentanan (Vulnerability Chaining)
 
-Seringkali, seorang *Bug Hunter* merasa pesimis ketika pada tahap awal hanya mampu menemukan celah berisiko rendah atau sepele. Contohnya penemuan *Self-XSS* (skrip berbahaya yang hanya meledak di browser penyerangnya sendiri) atau *Open Redirect* (kemampuan menipu pengguna agar berpindah URL). Program *Bug Bounty* biasanya melabeli temuan-temuan terisolasi tersebut dengan tingkat bahaya terendah (*Low/Informational Severity*).
+Seringkali, seorang *Bug Hunter* atau *Pentester* menemukan celah berisiko rendah atau celah yang sulit dieksploitasi secara langsung. Contohnya adalah penemuan *Self-XSS* (skrip XSS yang hanya tereksekusi di browser penyerangnya sendiri) atau *Open Redirect* (kemampuan mengalihkan URL). Program *Bug Bounty* biasanya melabeli temuan terisolasi ini dengan tingkat bahaya terendah (*Low/Informational Severity*).
 
-Namun, bagi pentester tingkat mahir, kerentanan yang terisolasi tersebut tidak akan dibiarkan begitu saja. Mereka akan dirakit dan digabungkan (dirantai/dijahit silang atau *Chaining*) sehingga menjelma menjadi eksploitasi tingkat *High/Critical* yang sanggup meruntuhkan server target!
+Namun, bagi pentester tingkat mahir, kerentanan yang terisolasi tersebut bisa digabungkan (dirantai atau *Chained*) untuk menghasilkan eksploitasi tingkat *High* atau *Critical*!
 
-**Chaining Vulnerabilities** merupakan seni menggabungkan dua atau lebih kelemahan kecil secara terstruktur untuk mengeksekusi satu serangan fatal yang mampu membobol sistem secara menyeluruh.
+**Chaining Vulnerabilities** adalah teknik menggabungkan dua atau lebih kelemahan keamanan secara berurutan untuk mengeksekusi satu serangan fatal yang mampu membobol sistem secara menyeluruh.
 
-### Contoh Skenario Simulasi Eksploitasi Silang (SSRF + Local XSS)
+### Contoh Skenario: SSRF + Local XSS
 
-1. **Celah 1 (Berisiko Teramat Rendah):** Anda menemukan kerentanan *SSRF* yang bisa dipakai untuk mengintip dasbor admin lokal (`127.0.0.1/admin`). Sayangnya, dasbor itu murni hanya menampilkan laporan statistik dan tidak ada aksi atau data yang bisa dicuri (*Low Severity*).
-2. **Celah 2 (Sangat Receh):** Di halaman profil Anda sendiri, *username* Anda rentan terhadap *Stored XSS*. Sayangnya, karena Anda hanya pengguna biasa, *payload XSS* tersebut hanya meledak di komputer Anda sendiri tanpa bisa dipakai menyerang pengguna lain atau Admin (*Self-XSS*).
+1. **Celah 1 (Low Severity):** Kamu menemukan kerentanan *SSRF* yang bisa dipakai untuk mengakses halaman dasbor admin internal (`127.0.0.1/admin`). Sayangnya, halaman itu hanya menampilkan teks laporan dan tidak ada tindakan sensitif yang bisa dilakukan.
+2. **Celah 2 (Low Severity):** Di halaman profilmu sendiri, kolom *username* rentan terhadap *Stored XSS*. Karena kamu hanya pengguna biasa, *payload XSS* tersebut hanya tereksekusi di komputermu sendiri tanpa bisa menyerang pengguna lain atau Admin (*Self-XSS*).
 
 **Saatnya Merantai (The Chain Execution):**
-1. Anda menyuntikkan *payload XSS* ke input *Username* Anda. Skrip ini dirakit sedemikian rupa untuk memerintahkan browser agar mengekstrak database. (Saat ini, skrip belum berhasil dijalankan karena hak akses profil Anda hanyalah pengguna biasa).
-2. Lantas, Anda mengeksploitasi celah *SSRF* tadi, memaksa server melalui `127.0.0.1/admin` untuk memuat dan merender halaman profil Anda secara paksa.
-3. Karena server memuat halaman profil Anda **secara lokal (dari dalam jaringan internal server itu sendiri)** menggunakan sesi/otorisasi milik Admin, maka *payload XSS* yang bersemayam di profil Anda akan otomatis tereksekusi! Rentetan ini sukses membajak wewenang Admin dan mengekstrak seluruh arsip data rahasia!
-4. *(Imbalan Bounty yang tadinya hanya bernilai $50, seketika melesat menjadi $5000!)*
+1. Kamu menyuntikkan *payload XSS* pencuri sesi ke input *Username* milikmu sendiri. (Saat ini, skrip tersebut tidak berbahaya bagi orang lain).
+2. Lalu, kamu memanfaatkan celah *SSRF* tadi untuk memaksa *server* (melalui `127.0.0.1/admin`) memuat halaman profilmu dari dalam jaringan internal.
+3. Karena *server* memuat halaman profilmu **secara lokal (menggunakan hak akses aplikasi/Admin internal)**, *payload XSS* yang bersemayam di profilmu akan otomatis tereksekusi dalam konteks *server*! Rentetan ini sukses mengeksekusi XSS terhadap sistem internal target.
+4. *(Imbalan temuan yang tadinya berstatus Low Severity dapat meningkat tajam menjadi Critical!)*
 
-### Contoh Kedua Eksploitasi Silang (CSRF + Account Takeover)
+### Contoh Skenario: CSRF + Account Takeover
 
-Bagaimana jika pentester tidak bisa mencuri kata sandi korban secara langsung?
-Gunakan eksploitasi *CSRF* untuk **memaksa sistem mengubah Alamat Email Korban** menjadi Email buatan Hacker tanpa sepengetahuan korban.
+Bagaimana jika penyerang tidak bisa mencuri kata sandi korban secara langsung?
+Penyerang bisa menggunakan eksploitasi *CSRF* untuk **memaksa sistem mengubah Alamat Email korban** menjadi email milik penyerang tanpa sepengetahuan korban.
 
-Begitu alamat email korban berhasil diubah di sistem (meski hacker sama sekali tidak tahu password korban), hacker tinggal membuka halaman *Login*, lalu mengeklik tombol **"Lupa Password"**. Tautan pemulihan sandi akan otomatis dikirimkan ke kotak masuk (*Inbox*) milik email Hacker! Akun korban pun sukses diambil alih secara penuh *(Account Takeover)*!
+Begitu alamat email korban berhasil diubah di *database*, penyerang tinggal membuka halaman *Login*, lalu menggunakan fitur **"Lupa Password"**. Tautan pemulihan sandi (*password reset link*) akan otomatis dikirimkan ke kotak masuk email milik penyerang! Akun korban pun berhasil diambil alih secara penuh *(Account Takeover)*.
 
 ---
 
@@ -50,57 +50,57 @@ Begitu alamat email korban berhasil diubah di sistem (meski hacker sama sekali t
 
 **Durasi**: ~10 menit
 
-Mari merakit dan menyimulasikan nalar pengujian *Chaining* di dalam benak Anda (*Mental Simulation*)!
+Mari menyimulasikan nalar pengujian *Chaining* di dalam benakmu (*Mental Simulation*)!
 
-1. Bayangkan Anda menganalisis sebuah situs yang memiliki fitur *"Upload PDF Invoice"*.
-2. Anda menemukan bahwa fitur itu rentan terhadap *IDOR*. Jika Anda merubah parameter URL `invoice_id=20`, Anda bisa melihat dokumen *Invoice* milik Admin! (Sayangnya, isi nota tersebut cuma berupa teks tagihan biasa).
-3. Namun, Anda juga menemukan celah *Stored XSS* di kolom judul PDF tersebut (karena peladen akan merender kode JavaScript jika judulnya disisipi `<script>`).
-4. **RANTAIKAN EKSPLOITASINYA!** Anda unggah *Invoice* palsu yang judulnya telah ditanami skrip *XSS (skrip pencuri Cookie)*. Lantas, Anda sengaja merakit *payload IDOR* agar halaman URL palsu tersebut tampil mentereng di Dasbor Admin.
-5. Saat Admin membuka notanya... *Bam!* Skrip XSS tereksekusi murni di browser Admin, dan Cookie-nya jatuh ke tangan Anda! 
+1. Bayangkan kamu sedang menganalisis situs yang memiliki fitur *"Upload PDF Invoice"*.
+2. Kamu menemukan fitur itu rentan terhadap *IDOR*. Jika kamu mengubah parameter URL `invoice_id=20`, kamu bisa melihat dokumen *Invoice* milik pengguna lain atau Admin.
+3. Di sisi lain, kamu juga menemukan celah *Stored XSS* di nama file PDF tersebut (server akan mengeksekusi JavaScript jika nama file disisipi `<script>`).
+4. **RANTAIKAN EKSPLOITASINYA!** Kamu unggah *Invoice* PDF palsu yang nama filenya telah ditanami *payload XSS* pencuri *Cookie*. Kemudian, kamu manfaatkan celah *IDOR* untuk mengirimkan tautan URL langsung (*direct link*) dokumen palsu tersebut ke Admin.
+5. Saat Admin membuka URL nota tersebut, skrip XSS tereksekusi di browser Admin, dan *Cookie Login* Admin berhasil kamu curi!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Apa definisi teknis dari taktik Chaining Vulnerabilities?</summary>
+<summary>❓ Apa definisi teknis dari teknik Chaining Vulnerabilities?</summary>
 
-**Jawaban:** Metodologi menggabungkan dua atau lebih celah kerentanan berskala kecil (berisiko rendah jika dieksekusi sendiri-sendiri) menjadi satu rentetan serangan yang menghasilkan dampak eksploitasi fatal (seperti Account Takeover atau RCE).
+**Jawaban:** Teknik menggabungkan dua atau lebih celah keamanan berskala kecil (berisiko rendah jika dieksekusi sendiri-sendiri) menjadi satu rentetan serangan yang menghasilkan eksploitasi fatal (seperti Account Takeover atau RCE).
 </details>
 
 <details>
-<summary>❓ Bagaimana cara agar kerentanan Self-XSS (kerentanan pop-up berbahaya yang hanya menyerang si pembuatnya sendiri) bisa dijadikan eksploitasi mematikan?</summary>
+<summary>❓ Bagaimana cara agar kerentanan Self-XSS (kerentanan XSS yang hanya menyerang pengunggahnya sendiri) bisa menjadi eksploitasi berbahaya?</summary>
 
-**Jawaban:** Kerentanan tersebut harus dirantai menggunakan celah manipulasi seperti *CSRF* atau *SSRF* guna menjebak/memaksa korban (seperti Admin) untuk membuka dan merender halaman profil milik Penyerang yang sudah disisipi XSS.
+**Jawaban:** Kerentanan tersebut dihubungkan (*chained*) dengan celah lain seperti *CSRF* atau *SSRF* untuk menjebak korban (seperti Admin atau Server internal) agar mengakses halaman yang memuat *payload XSS* tersebut.
 </details>
 
 <details>
-<summary>❓ Ketika pentester sukses mengeksploitasi CSRF pada formulir "Ganti Alamat Email" korban, insiden apa yang dapat langsung terjadi setelahnya?</summary>
+<summary>❓ Ketika pentester sukses mengeksploitasi celah CSRF pada formulir "Ganti Alamat Email" korban, insiden berbahaya apa yang dapat terjadi selanjutnya?</summary>
 
-**Jawaban:** Serangan perampasan hak akses *(Account Takeover / ATO)*, di mana peretas tinggal mengeklik tombol "Lupa Password" untuk mendapatkan link reset sandi yang akan dikirim ke email milik peretas.
+**Jawaban:** Serangan perampasan akun *(Account Takeover / ATO)*, di mana penyerang bisa menggunakan fitur "Lupa Password" untuk mendapatkan akses login penuh ke akun korban melalui email penyerang.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami logika betapa berbahayanya taktik *Chaining Vulnerabilities*.
+- [ ] Saya memahami logika teknik *Chaining Vulnerabilities*.
 - [ ] Saya fasih menjabarkan alur penggabungan *Self-XSS* dengan *SSRF*.
-- [ ] Saya mengerti cara merangkai *CSRF* menjadi *Account Takeover (ATO)*.
-- [ ] Saya paham bahwa tidak ada celah kerentanan kecil yang pantas diabaikan begitu saja tanpa dianalisis lebih lanjut.
-- [ ] Saya telah menjawab seluruh *quiz kilat*.
+- [ ] Saya mengerti cara merangkai celah *CSRF* menjadi *Account Takeover (ATO)*.
+- [ ] Saya paham bahwa celah keamanan skala rendah tidak boleh diabaikan karena dapat dirantai.
+- [ ] Saya telah menjawab seluruh *Quiz Kilat* dengan benar.
 
 ---
 
 ## 🔗 Resources
 
-- [HackerOne Hacktivity](https://hackerone.com/hacktivity) — Repositori kumpulan laporan dokumentasi peretasan *Bug Bounty* dari seluruh dunia. (Baca dan belajarlah bagaimana para spesialis merantai celah untuk meraup hadiah miliaran rupiah!).
+- [HackerOne Hacktivity](https://hackerone.com/hacktivity) — Platform *Bug Bounty* publik tempat kamu bisa membaca laporan (*writeup*) tentang bagaimana *Bug Hunter* profesional merantai celah untuk mendapatkan temuan bernilai tinggi.
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: PortSwigger XSS/CSRF Labs** — Anda telah belajar cara meracik *XSS*, menipu melalui *CSRF/SSRF*, menembus fitur *File Upload*, dan merantai seluruh kerentanan (*Chaining*). Besok, Anda akan terjun langsung ke laboratorium simulasi *PortSwigger* untuk menaklukkan tantangan kerentanan *Frontend*. Siapkan catatan *Cheat Sheet* Anda dan sikat habis semua tantangannya!
+**Day 5: Lab & Mission: PortSwigger XSS/CSRF Labs** — Kamu telah belajar tentang celah *XSS*, *CSRF*, *SSRF*, celah *File Upload*, dan cara merantai (*Chaining*) kerentanan. Besok, kamu akan terjun langsung ke laboratorium simulasi *PortSwigger Web Security Academy* untuk menaklukkan tantangan kerentanan web. Siapkan metodologi pengujianmu dan selesaikan tantangannya!
 
 ---
 

@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Perbedaan fundamental apakah yang secara teknis memisahkan fungsi layanan Git dan GitHub?
+**Question:** Apa perbedaan mendasar antara Git dan GitHub?
 - [x] A. Git adalah perangkat lunak *version control* lokal yang diinstal di komputer untuk melacak perubahan kode, sedangkan GitHub adalah layanan *platform cloud hosting* internet untuk menyimpan repositori Git agar dapat dikolaborasikan secara global.
 - [ ] B. GitHub adalah produk perangkat lunak *offline*, ketika Git adalah platform layanan internet *cloud*.
 - [ ] C. Keduanya adalah hal yang sama persis tanpa perbedaan, diciptakan oleh perusahaan yang sama.
@@ -26,7 +26,7 @@ total_questions: 5
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apa sebutan (atau akronim) untuk mekanisme pengajuan atau proposal di GitHub yang dibuat oleh pihak kontributor, dengan tujuan agar kode dari cabangnya direviu oleh *maintainer* untuk digabungkan (*merge*) ke cabang utama?
+**Question:** Apa istilah/akronim untuk fitur pengajuan perubahan kode di GitHub agar kode kita direviu dan digabungkan (*merge*) ke cabang utama oleh pemilik repositori?
 **Answer:** Pull Request (PR).
 
 ### Q5

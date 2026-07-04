@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mendirikan** menara *Web Server* HTTP instan menggunakan *Framework* Express.js.
-2. **Merancang** jalan rute penelusuran (Routing) untuk menampung *Request*.
-3. **Memahami** konsep lapisan gerbang pencegat (Middleware).
+1. **Membuat** *Web Server* HTTP secara cepat menggunakan *Framework* Express.js.
+2. **Merancang** rute (*Routing*) untuk menangani *Request* dari pengguna.
+3. **Memahami** konsep lapisan penengah (*Middleware*).
 
 ---
 
@@ -20,42 +20,42 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Express.js: Kerangka Perajut Server 
 
-Membangun web server menggunakan perintah dasar Node.js (Native HTTP) ibarat membangun mobil langsung dari balok baja dan karet cair. Sangat melelahkan dan kodenya ruwet panjang.
+Membangun *web server* menggunakan kode bawaan Node.js (Native HTTP) membutuhkan penulisan kode yang panjang dan kompleks.
 
-Solusinya? Para *hacker* Node.js menciptakan **Framework (Kerangka Kerja) bernama Express.js**. Ini adalah pabrik perakitan instan. Cukup dengan segelintir baris kode, menara servermu siap mengudara menyambut *Request* dari seluruh dunia!
+Solusinya adalah menggunakan **Express.js**, sebuah *Framework* yang sangat populer di Node.js. Dengan Express, kamu bisa membuat *server* yang siap menerima *Request* hanya dengan beberapa baris kode!
 
 ### Anatomi Rute Lalu Lintas (Routing)
 
-Ketika (browser) berkunjung mengetik URL `/login`, atau `/profil`, server harus tahu apa yang mesti dijawab untuk spesifik gang rute tersebut. Inilah yang disebut **Routing**.
+Ketika *browser* mengakses URL seperti `/login` atau `/profil`, *server* harus tahu apa yang harus dibalas untuk setiap URL tersebut. Proses mengarahkan URL ke balasan yang tepat inilah yang disebut **Routing**.
 
-Sintaks dasarnya sungguh intuitif:
-`app.METODE('ALAMAT_RUTE', (permintaan, jawaban) => {... })`
+Sintaks dasarnya adalah:
+`app.METHOD('URL_PATH', (req, res) => { ... })`
 
 Contoh di kode Node.js:
 ```javascript
 const express = require('express');
-const app = express(); // Inisiasi mesin instan
+const app = express(); // Membuat aplikasi Express
 
-// Mengatasi rute HTTP GET ke halaman beranda '/'
+// Menangani HTTP GET request ke halaman utama ('/')
 app.get('/', (req, res) => {
- res.send('Selamat datang di fitur Utama.'); 
+ res.send('Selamat datang di Halaman Utama.'); 
 });
 
-// Mengatasi rute jika pengunjung ke URL '/profil'
+// Menangani request ke URL '/profil'
 app.get('/profil', (req, res) => {
- res.send('Ini adalah data rahasia Agen 007.');
+ res.send('Ini adalah halaman Profil pengguna.');
 });
 
-// Nyalakan mesin server di pelabuhan (port) 3000
-app.listen(3000, () => console.log('Server hidup di port 3000'));
+// Menjalankan server di port 3000
+app.listen(3000, () => console.log('Server berjalan di port 3000'));
 ```
 
 ### Pos Pemeriksaan Gerbang Utama: Middleware
 
-Bagaimana jika pangkalanmu punya ratusan rute, lalu kamu butuh SATU satpam (logika) yang mengecek apakah pengunjung sudah punya kartu anggota (Login) sebelum boleh melewati rute mana pun?
+Bagaimana jika aplikasimu punya banyak rute, dan kamu butuh satu fungsi pengecekan (misal: cek apakah *user* sudah *login*) sebelum mereka bisa mengakses rute mana pun?
 
-Di Express, satpam penjaga gerbang transisi ini disebut **Middleware**.
-Middleware adalah fungsi yang *mencegat* laju pesanan (Request) di tengah jalan, mengecek sesuatu, lalu memutuskan: "Boleh lanjut" (`next()`) atau ditolak mental.
+Dalam Express, fungsi pencegat ini disebut **Middleware**.
+Middleware adalah fungsi yang berjalan di tengah-tengah antara saat *Request* datang dan saat *Response* dikirim. Middleware bisa mengecek sesuatu, lalu memutuskan: apakah proses boleh dilanjutkan (dengan memanggil `next()`) atau dihentikan.
 
 ```javascript
 // Middleware Cek Keamanan
@@ -76,67 +76,66 @@ app.use(satpam);
 
 **Durasi**: ~15 menit
 
-Mari unduh peranti Express dari bursa global dan rakit server pertamamu!
+Mari kita *install* Express dan buat *server* pertamamu!
 
-1. Buka Terminal, buat folder baru `lab-express` dan masuk `cd lab-express`.
-2. Inisiasi inventaris: `npm init -y`
-3. Unduh payload sakti (Framework Express):
+1. Buka Terminal, buat folder baru bernama `lab-express` dan masuk ke dalamnya (`cd lab-express`).
+2. Inisialisasi *project* NPM: `npm init -y`
+3. *Install framework* Express:
 ```bash
 npm install express
 ```
-4. Buat file `app.js` dan salin kode *Routing* dan *Satpam* dari bagian Materi Inti di atas ke dalam filenya. 
-5. Nyalakan mesin server! 
+4. Buat file `app.js` lalu salin kode contoh dari bagian **Routing** dan **Middleware** di atas ke dalam *file* tersebut.
+5. Jalankan *server*:
 ```bash
 node app.js
 ```
-6. Buka peramban favoritmu (Chrome/Firefox), dan ketik alamat koordinat ini:
-`http://localhost:3000`
-7. Coba juga kunjung: `http://localhost:3000/profil`
-8. Lihat di terminal aslimu, log satpam "Ada pengunjung mencurigakan..." akan dicetak saban kali browser melintasi rute tersebut!
+6. Buka *browser* (Chrome/Firefox), dan akses URL berikut: `http://localhost:3000`
+7. Coba juga akses URL: `http://localhost:3000/profil`
+8. Cek Terminalmu; kamu akan melihat pesan `log` dari Middleware setiap kali ada *request* masuk!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Esensi utama mengapa pengembang Node.js berduyun-duyun berlindung mempercayakan pembangunan aplikasi di bawah perancah <i>Framework</i> macam Express.js?</summary>
+<summary>❓ Mengapa *developer* Node.js sangat merekomendasikan penggunaan *Framework* Express.js dibandingkan kode HTTP Native bawaan Node.js?</summary>
 
-**Jawaban:** Karena *Express.js* mendelegasikan penyederhanaan abstraksi kerumitan pembangunan rutinitas dasar pendirian peladen HTTP Native yang amat mengular kodenya, menjadikannya sebatas gubahan singkat ringkas sebaris dua baris demi manajemen rute (*Routing*) nan luwes elegan.
+**Jawaban:** Karena Express.js menyederhanakan proses pembuatan *server* dan *Routing*. Kode yang sebelumnya rumit dan panjang di HTTP Native bisa ditulis secara ringkas dan rapi menggunakan Express.js.
 </details>
 
 <details>
-<summary>❓ Dalam terminologi alur sirkulasi *Backend Express*, sakral penyela transisi yang ditugaskan mencegat melintang payload lalu-lintas <i>Request</i> demi urusan semisal otentikasi login sebelum mengizinkannya tembus berlabuh pada ujung rutinitasnya adalah?</summary>
+<summary>❓ Apa nama fungsi dalam Express.js yang bertugas mencegat (*intercept*) sebuah *Request* di tengah jalan (misalnya untuk mengecek status *login*) sebelum request tersebut tiba di rute tujuan?</summary>
 
-**Jawaban:** Middleware.
+**Jawaban:** **Middleware**.
 </details>
 
 <details>
-<summary>❓ Apa tuas komando mandat sakti penutup (diwakili embel-embel sebutir fungsi khusus) yang diselipkan dipanggil kelar tugas *Middleware* guna memberi palu restu perizinan jalan tol masuk rute selanjutnya?</summary>
+<summary>❓ Fungsi apa yang harus dipanggil di dalam sebuah Middleware agar *Request* diizinkan melanjutkan perjalanannya ke rute atau Middleware selanjutnya?</summary>
 
-**Jawaban:** Titah `next()`
+**Jawaban:** Fungsi `next()`.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya cakap menguraikan andil esensial kedudukan Framework Express.js
-- [ ] Saya menguasai fondasi arsitektur perakitan Rute Lalu Lintas (`app.get()`)
-- [ ] Saya memahami logika delegasi pengamanan palang gerbang *Middleware*
-- [ ] Saya berhasil mendirikan peladen HTTP `localhost:3000` di Mini Lab
+- [ ] Saya memahami kegunaan *Framework* Express.js.
+- [ ] Saya bisa membuat *Routing* dasar menggunakan metode seperti `app.get()`.
+- [ ] Saya mengerti konsep dan fungsi dari *Middleware*.
+- [ ] Saya berhasil menjalankan *server* di `localhost:3000` pada sesi *Mini Lab*.
 - [ ] Saya sudah menjawab semua quiz kilat
 
 ---
 
 ## 🔗 Resources
 
-- [Express.js Basic Routing](https://expressjs.com/en/starter/basic-routing.html) — Lembar pedoman sah membedah lekuk-liku seni *Routing*.
+- [Express.js Basic Routing](https://expressjs.com/en/starter/basic-routing.html) — Dokumentasi resmi Express.js tentang dasar-dasar perutean (*Routing*).
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: REST API Design** — Kamu sudah bisa mencegat rute (Routing). Esok hari, kamu akan menyempurnakan bentuk struktur peruteanmu (CRUD Operations) mematuhi standardisasi pakem protokol komunikasi dunia: standar *REST API Design*, lengkap bermodalkan status perizinan sandi rahasia (`200 OK`, `404 Not Found`).
+**Day 4: REST API Design** — Kamu sudah belajar membuat rute dasar. Besok, kita akan mempelajari cara menstrukturkan rute (URL) yang baik dengan mengikuti standar internasional **REST API**, termasuk cara menyusun operasi CRUD (Create, Read, Update, Delete) yang rapi!
 
 ---
 

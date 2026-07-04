@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Berkaitan dengan standardisasi intelijen ancaman siber global, apa kepanjangan dari akronim klasifikasi ancaman *TTPs* yang diterapkan dalam ekosistem *MITRE ATT&CK*?
+**Question:** Berkaitan dengan standar pemetaan intelijen ancaman global, apa kepanjangan dari akronim klasifikasi *TTPs* yang diterapkan dalam kerangka kerja *MITRE ATT&CK*?
 - [ ] A. Target, Time, Parameter.
 - [ ] B. Technical Threat Procedures.
 - [x] C. Tactics, Techniques, and Procedures.
@@ -16,20 +16,20 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Dalam klasifikasi arsitektur TTPs, komponen *Tactics (Taktik)* mendeskripsikan penjelasan mengenai *Bagaimana (How) peretas melancarkan serangan*, sedangkan komponen *Techniques (Teknik)* menjabarkan *Mengapa (Why) peretas melakukannya*.
+**Question:** Dalam klasifikasi arsitektur TTPs, komponen *Tactics (Taktik)* mendeskripsikan *Bagaimana (How) peretas melancarkan serangan*, sedangkan komponen *Techniques (Teknik)* menjabarkan *Mengapa (Why) peretas melakukannya*.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Saat analis keamanan menelaah struktur operasi *Privilege Escalation (Eskalasi Hak Akses)*, eksploitasi fitur spesifik seperti *"Memanfaatkan kerentanan Sudo di sistem Linux"* diklasifikasikan ke dalam kategori elemen yang mana dalam TTPs?
+**Question:** Saat analis keamanan menelaah tujuan peretas untuk melakukan *Privilege Escalation (Meningkatkan Hak Akses)*, lalu menemukan bahwa metode yang digunakan adalah *"Mengeksploitasi kerentanan Sudo di Linux"*. Aktivitas mengeksploitasi kerentanan spesifik tersebut diklasifikasikan ke dalam kategori elemen yang mana dalam TTPs?
 **Answer:** Techniques (Teknik).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Aplikasi antarmuka berbasis web apakah (yang dikelola oleh organisasi MITRE) yang dimanfaatkan oleh analis untuk memetakan dan memvisualisasikan matriks pertahanan korporat secara dinamis?
+**Question:** Platform antarmuka berbasis web apakah (yang dikelola oleh organisasi MITRE) yang dimanfaatkan oleh spesialis keamanan untuk memvisualisasikan matriks pertahanan dan pemetaan ancaman secara dinamis?
 **Answer:** ATT&CK Navigator (atau MITRE ATT&CK Navigator).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Dari tiga klasifikasi taksonomi pada struktur *TTPs*, apa nama komponen terdalam yang menjelaskan rincian teknis operasional tahap demi tahap secara presisi (misal: "Grup peretas APT29 mengirimkan eksploitasi makro pada file Gaji.docx")? (Berawalan huruf P).
+**Question:** Dari tiga klasifikasi taksonomi *TTPs*, apa nama komponen yang menjelaskan rincian teknis operasional tahap demi tahap berdasarkan observasi nyata di lapangan (misal: "Grup peretas APT29 mengirimkan lampiran Gaji.docx yang disisipi skrip VBScript")?
 **Answer:** Procedures (Prosedur).

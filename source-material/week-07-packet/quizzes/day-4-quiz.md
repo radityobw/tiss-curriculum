@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Apa fungsi sejati dari operator *pipeline* (simbol `|`) di dalam ekosistem penulisan *shell command* CLI Linux?
+**Question:** Apa fungsi dari operator *pipe* (simbol `|`) di Terminal Linux?
 - [x] A. Operator ini mengambil keluaran (*output*) dari perintah di sebelah kirinya dan langsung menjadikannya sebagai masukan (*input*) untuk perintah di sebelah kanannya secara mulus tanpa membuat file perantara.
 - [ ] B. Merupakan logo kunci grafis *captcha* sandi gembok masuk administrator.
 - [ ] C. Perintah absolut guna memutus koneksi WiFi seketika untuk mencegah *hacking*.
@@ -16,17 +16,17 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Administrator jaringan umumnya memantau *file log server* untuk melihat kejadian terbaru (log mutakhir) yang terus bertambah secara *real-time* di bagian paling bawah dengan menggunakan modul/perintah `head`.
+**Question:** Administrator jaringan umumnya memantau *file log server* untuk melihat kejadian terbaru di bagian paling bawah (secara *real-time*) dengan menggunakan perintah `head`.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Perintah (*command tool*) apakah di Linux yang berfungsi layaknya alat saring canggih untuk menemukan spesifik frasa teks dari tumpukan ratusan baris log atau berkas kata?
+**Question:** Perintah apa di Linux yang berfungsi untuk mencari kata atau teks spesifik dari dalam sebuah file teks yang panjang?
 **Answer:** grep.
 
 ### Q4
 **Type:** Short Answer
-**Question:** Modul perkakas CLI apakah yang spesifik digunakan ketika penelaah keamanan siber hanya ingin melihat 10 baris pertama (*top-most*) dari teks suatu *log file* besar tanpa memuat sisanya?
+**Question:** Perintah apa yang digunakan untuk menampilkan secara spesifik hanya 10 baris pertama dari sebuah *file* teks?
 **Answer:** head (atau head -n 10).
 
 ### Q5

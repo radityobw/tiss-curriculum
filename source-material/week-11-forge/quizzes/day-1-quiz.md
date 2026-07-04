@@ -16,12 +16,12 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Jika sebuah angka numerik sengaja dituliskan di dalam tanda kutip string (misalnya `let umur = "25";`) lalu nilai variabel tersebut ditambahkan dengan sebuah angka lain (misalnya melalui operasi logika `umur + 5`), maka hasilnya akan otomatis dikalkulasi matematis memproduksi angka 30.
+**Question:** Jika nilai angka ditulis dalam tanda kutip (misalnya `let umur = "25";`) lalu ditambahkan dengan angka lain menggunakan operator `+` (misalnya `umur + 5`), hasilnya akan dijumlahkan secara matematis menjadi 30.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Jika kerangka HTML diibaratkan laksana struktur tulang atau rangka situs *web*, dan CSS memproyeksikan keelokan tata rias luar, maka komponen logis pada sistem biologis manusia apakah yang pas mewakili fungsi bahasa JavaScript?
+**Question:** Jika HTML diibaratkan sebagai kerangka tubuh manusia dan CSS sebagai kulit/pakaian, maka JavaScript berperan sebagai apa?
 **Answer:** Otot dan sistem saraf (pengendali interaksi, memori, logika, dan gerak).
 
 ### Q4
@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Komando bawaan apa (yang ditulis di dalam file *script*) yang ditugaskan sebagai layar percetakan pelacak khusus agar seorang pengembang dapat menampilkan laporan teks maupun angka inspeksi di panel tab hitam *Console Developer Tools* (F12)?
+**Question:** Fungsi bawaan JavaScript apa yang digunakan untuk mencetak teks atau nilai variabel ke dalam tab *Console* di *Developer Tools* (F12) untuk keperluan pengujian (*debugging*)?
 **Answer:** console.log()

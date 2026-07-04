@@ -112,28 +112,28 @@ Mari gabungkan semua pemahaman! Kita akan merancang verifikasi validasi pada kol
  });
 </script>
 ```
-2. Buka berkas HTML tersebut di dalam peramban penampil halaman *web*.
-3. Cobalah masuki dengan mengisikan serentetan ragam acak sembarang tebakan sandi yang salah, lalu cetuskan tombol eksekusi Akses. 
-4. Lalu perbaikilah dengan memasukkan kunci sandi orisinal bertuliskan format kapital `TISS2026`. (Perhatikan bahwa transisi perpindahan respons status tersebut dikalkulasi terjadi seketika tanpa menuntut sedikit pun proses transisi siklus memuat ulang halaman/ *loading web refresh*, murni berkat fungsi `.preventDefault()`).
+2. Buka *file* HTML tersebut di *browser*.
+3. Coba isi form dengan sandi yang salah secara acak, lalu klik tombol **Akses**.
+4. Selanjutnya, coba masukkan sandi yang benar: `TISS2026`. (Perhatikan bahwa teks dan warna pesan berubah secara seketika tanpa *browser* memuat ulang halaman / *refresh*. Ini adalah efek langsung dari `.preventDefault()`).
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Mengapa eksekusi fungsi `e.preventDefault()` amatlah esensial dan lumrah disisipkan sebagai baris logika pencegatan yang pertama setiap kali JS merancang skema prosedur intervensi terhadap pengoperasian insiden *submit* suatu form?</summary>
+<summary>❓ Mengapa `e.preventDefault()` sering dipanggil paling awal saat kita menangani *event* pengiriman (*submit*) formulir menggunakan JavaScript?</summary>
 
-**Jawaban:** Hal ini diperuntukkan menonaktifkan dan membekukan sementara waktu perilaku bawaan peramban HTML di kala elemen formulir berupaya mematuhi sifat alamiahnya mengarungi pengiriman data (*yang biasanya bakal mereload URL*). Interupsi pencegatan ini memungkinkan barisan skrip *JavaScript* bekerja secara *offline* membedah pengujian validasi atau autentikasi isi dari formulir payload tanpa terdisrupsi terputus lantaran *reload* muat ulang laman.
+**Jawaban:** Untuk mencegah sifat bawaan (*default behavior*) formulir HTML yang secara otomatis memuat ulang (*refresh*) halaman saat tombol diklik. Dengan mematikan sifat bawaan ini, skrip JavaScript kita memiliki waktu untuk memvalidasi masukan (*input*) atau mengirim datanya di belakang layar (*AJAX*) tanpa gangguan *refresh*.
 </details>
 
 <details>
-<summary>❓ Objek struktural apakah (biasanya ditandai paramater variabel `e` atau `event`) yang didelegasikan serta diteruskan secara bawaan sebagai parameter awal masukan argumen dalam *Arrow Function* oleh peladen sistem setiap terdapat tangkapan kejadian, contoh klik ataupun submit?</summary>
+<summary>❓ Apa nama *object* bawaan (biasanya disingkat `e` atau `event`) yang secara otomatis diberikan sebagai parameter saat sebuah fungsi *Event Listener* dipicu (misal saat klik atau *submit*)?</summary>
 
-**Jawaban:** Objek *Event*. Objek ini menampung paket referensi log dari kejadian interaksi tersebut yang amat informatif; contohnya merekam data perihal titik sumbu X dan Y pada layar saat *mouse* diarahkan mengeklik (koordinat), parameter penanda jenis spesifik kancing *keyboard* manakah yang baru ditekan, beserta beragam konteks kejadian pelengkap pemicunya.
+**Jawaban:** Objek *Event*. Objek ini berisi informasi lengkap mengenai interaksi yang baru saja terjadi. Contohnya koordinat X/Y dari posisi klik *mouse*, tombol spesifik mana yang baru saja ditekan pada *keyboard*, dan elemen mana yang menjadi target aksi.
 </details>
 
 <details>
-<summary>❓ Atribut properti apakah yang berfungsi menjaring (menarik keluar) ekstrak nilai susunan data karakter *string* masukan, apa pun kontennya, yang sedari awal sudah diketik oleh pengguna ke dalam sebuah rongga balok penampung isian HTML (misal `<input>`)?</summary>
+<summary>❓ Properti apa yang digunakan dalam JavaScript untuk mengambil nilai teks (isi) yang telah diketikkan pengguna ke dalam elemen input HTML (seperti `<input type="text">`)?</summary>
 
 **Jawaban:** Atribut `.value` (misalnya penulisan pada penggunaannya: `inputBarang.value`).
 </details>
@@ -158,7 +158,7 @@ Mari gabungkan semua pemahaman! Kita akan merancang verifikasi validasi pada kol
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Aplikasi To-Do List** — Waktunya unjuk keterampilan di hari akhir Minggu ke-11! Pada esok hari, kamu akan menggabungkan implementasi keseluruhan porsi eksekusi dasar penyusunan Fungsi, modifikasi memori objek DOM, serta tangkapan pemicu pemantau interaksi (Event Listener) untuk merealisasikan secara utuh kreasi program peranti lunak berbasis aplikasi *To-Do List* (Catatan Target Tugas Harian) interaktif pertama-mu. Tambahan materi juga melingkupi pemahaman media perekaman data memori peramban (*LocalStorage*)!
+**Day 5: Lab & Mission: Mempercantik Halaman Login** — Waktunya unjuk keterampilan di hari akhir Minggu ke-11! Besok, kita akan menggabungkan logika JavaScript, manipulasi DOM, dan *Event Listener* untuk membuat interaksi halaman *login* yang menarik dan responsif, sekaligus melakukan validasi form secara aman!
 
 ---
 

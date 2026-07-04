@@ -10,8 +10,8 @@ total_questions: 5
 **Type:** Multiple Choice
 **Question:** Apa bahaya keamanan utama jika *developer* merancang formulir web menggunakan metode pengiriman `HTTP GET` untuk menerima kata sandi (*password*) dari pengguna?
 - [x] A. Metode `GET` akan menempatkan seluruh variabel data masukan (termasuk kata sandi) secara terbuka (*plaintext*) pada *URL Address Bar*, sehingga berisiko mudah disadap orang lain dan akan terekam permanen di dalam *History* peramban (*browser*).
-- [ ] B. Metode ini mengakibatkan data disamarkan berlapiskan 9 gerbong enkripsi RSA yang memperlambat server.
-- [ ] C. Sinyal `GET` bakal langsung menyebabkan modem klien kelebihan muatan.
+- [ ] B. Metode ini menyebabkan data terenkripsi terlalu kuat sehingga memperlambat server.
+- [ ] C. Metode `GET` dapat menyebabkan *web server* mati mendadak.
 - [ ] D. Komputer klien tiba-tiba menutup peramban web karena diblokir oleh *antivirus*.
 
 ### Q2
@@ -26,7 +26,7 @@ total_questions: 5
 
 ### Q4
 **Type:** Short Answer
-**Question:** Pada standar HTML5, apa nama kategori dari kelas *tag* yang sengaja ditujukan untuk merepresentasikan makna spesifik dari isi kontennya (seperti elemen `<footer>` dan `<article>`) guna menghindari pemakaian `<div>` yang tidak mendeskripsikan kontennya?
+**Question:** Apa nama kategori *tag* dalam HTML5 (seperti `<footer>` dan `<article>`) yang namanya secara jelas mendeskripsikan fungsi dan makna dari isinya, berbeda dengan `<div>` yang tidak deskriptif?
 **Answer:** Semantic Tags (Tag Semantik).
 
 ### Q5

@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Mengapa layanan *GitHub Pages* dapat diandalkan oleh para pengembang untuk mempublikasikan halaman web statis (HTML dan CSS) buatan mereka agar dapat mengudara dan diakses dari seluruh internet tanpa membutuhkan biaya *hosting* server pribadi?
+**Question:** Bagaimana cara kerja GitHub Pages dalam mempublikasikan *website* statis (HTML/CSS) kita secara gratis?
 - [ ] A. Karena GitHub meminta pungutan tambahan rahasia dari lalu lintas pengguna ke penyedia internet.
 - [ ] B. Sebab GitHub secara tidak langsung menjadikan perangkat *hardware* komputermu sendiri sebagai server lokal aktif.
-- [x] C. Karena fitur ini dirancang untuk mengambil *file* web *front-end* statis langsung dari repositori cabang di GitHub, lalu menjadikannya sebagai *web server* terbuka menggunakan sub-domain resmi publik (*username.github.io*).
+- [x] C. GitHub Pages membaca kode HTML/CSS statis langsung dari repositori kita dan menampilkannya sebagai *website* publik menggunakan subdomain `username.github.io`.
 - [ ] D. Fiturnya secara keliru menautkan konfigurasi *developer* dari *platform* aplikasi internet yang lain.
 
 ### Q2
 **Type:** True/False
-**Question:** Berdasarkan prosedur urutan sinkronisasi kode di Git, sesaat sesudah *developer* menjalankan eksekusi pembaharuan lokal melalui `git commit -m`, maka data modifikasi tersebut secara spontan terunggah (*upload*) menyeberang menuju repositori awan *GitHub* tanpa perlu menekan komando peluncuran berikutnya.
+**Question:** Setelah kita menjalankan perintah `git commit -m`, kode kita akan otomatis terunggah (*upload*) ke GitHub tanpa perlu perintah tambahan lagi.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Rangkaian sintaks perintah tiga patah kata di *Git* apakah yang menduduki otoritas sebagai eksekutor penetapan atau perekaman riwayat versi kode lokal (*snapshot*) sekaligus penyisipan parameter sebuah pesan (*message*) keterangan jejak perubahan kode?
+**Question:** Perintah Git apa yang digunakan untuk menyimpan riwayat perubahan kode ke repositori lokal sekaligus menyertakan pesan/deskripsi perubahan?
 **Answer:** git commit -m
 
 ### Q4
 **Type:** Short Answer
-**Question:** Di ranah protokol operasi metode pengiriman paket interaksi data *form* berbasis *HTTP*, tipe parameter metode (*method*) apakah yang mengekspos argumen kredensial data penggunanya secara *plaintext* berderet gamblang pada tautan baris atas kolom pencarian *URL* di *browser*?
+**Question:** Metode HTTP apa yang mengirimkan data formulir (seperti kata sandi) secara terbuka dan menempelkannya langsung ke baris alamat URL *browser*?
 **Answer:** GET.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Jenis komponen pembeda spesifik (*selector*) yang mengusung hierarki seleksi CSS paling prioritas (bertanda awalan abjad sisipan pagar `#`) dan aturannya mengwajibkan untuk hanya boleh ditautkan pada satu elemen saja di dalam selembar dokumen adalah?
+**Question:** Selektor CSS apa (yang ditandai dengan simbol pagar `#`) yang memiliki prioritas tertinggi dan hanya boleh digunakan pada satu elemen unik di dalam halaman web?
 **Answer:** ID Selector.

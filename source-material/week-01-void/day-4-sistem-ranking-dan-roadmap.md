@@ -123,7 +123,7 @@ Coba CTF pertamamu! Kunjungi [picoCTF](https://picoctf.org):
 </details>
 
 <details>
-<summary>❓ Seorang anggota TISS yang sudah menyelesaikan semua rank Null Teaming (Rank 1 - Sentinel), apa langkah selanjutnya?</summary>
+<summary>❓ Seorang anggota TISS yang sudah menyelesaikan seluruh tingkatan rank di Null Teaming (Void hingga Sentinel), apa langkah selanjutnya?</summary>
 
 **Jawaban:** Mereka naik ke **L1: Operational Layer** dan memilih spesialisasi:
 

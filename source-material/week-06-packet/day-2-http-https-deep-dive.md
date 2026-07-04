@@ -93,7 +93,7 @@ Kamu baru saja membaca percakapan mentah HTTP yang terjadi di balik layar!
 </details>
 
 <details>
-<summary>❓ Kamu mencoba mengakses halaman Admin sebuah website (`/admin-dashboard`), namun layarmu memunculkan tu 403 Forbidden. Apa artinya?</summary>
+<summary>❓ Kamu mencoba mengakses halaman Admin sebuah website (`/admin-dashboard`), namun layarmu memunculkan pesan 403 Forbidden. Apa artinya?</summary>
 
 **Jawaban:** Kode **4xx** berarti *Client Error* (Kesalahan dari sisimu). Lebih spesifik, **403 Forbidden** berarti server tahu siapa kamu, halamannya benar ada, TAPI kamu **tidak memiliki izin (hak akses/otorisasi)** untuk masuk ke halaman tersebut.
 

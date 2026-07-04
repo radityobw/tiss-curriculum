@@ -68,7 +68,7 @@ Desktop Documents Downloads Music
 - **Pindah ke dalam folder anak**: 
  `cd Documents` (Maju masuk ke folder Documents).
 - **Pindah/Mundur ke folder bapak (naik 1 tingkat)**: 
- `cd..` (Titik dua kali artinya mundur 1 langkah ke atas).
+ `cd ..` (Spasi lalu titik dua kali artinya mundur 1 langkah ke atas).
 - **Pulang ke rumah (Kamar awal `/home/user`)**:
  `cd ~` (Tanda cacing/tilde artinya *home directory*).
 - **Pergi langsung ke ujung dunia (Absolute Path)**:
@@ -96,7 +96,7 @@ Kamu baru saja membuka Terminal.
 
 3. Hasil `pwd` adalah `/var/log`
 4. Perintahnya adalah `ls -la` (atau `ls -a`)
-5. Mundur 1 tingkat menggunakan `cd..`
+5. Mundur 1 tingkat menggunakan `cd ..`
 6. Pulang instan menggunakan `cd ~`
 
 </details>
@@ -147,7 +147,7 @@ Kamu baru saja membuka Terminal.
 
 ## ➡️ Besok
 
-**Day 3: Manipulasi File & Direktori** — sudah jago. Besok kita akan mulai **beraksi**! Kita akan belajar cara membuat folder baru, membuat file teks kosong, hingga menyalin dan menghapus file tanpa ampun menggunakan Terminal. 💥
+**Day 3: Manipulasi File & Direktori** — Navigasi sudah jago? Besok kita akan mulai **beraksi**! Kita akan belajar cara membuat folder baru, membuat file teks kosong, hingga menyalin dan menghapus file tanpa ampun menggunakan Terminal. 💥
 
 ---
 

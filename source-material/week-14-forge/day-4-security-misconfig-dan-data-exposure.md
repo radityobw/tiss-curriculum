@@ -10,47 +10,59 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** celah keamanan akibat kelalaian tata letak peladen (*Security Misconfiguration*) & kebocoran rahasia (*Sensitive Data Exposure*).
-2. **Mengelola** brankas variabel rahasia peladen bermodalkan fail `.env`.
-3. **Menerapkan** benteng NPM *Helmet.js* serta pengaplikasian jaring *Rate Limiting*.
+1. **Memahami** celah keamanan akibat kesalahan konfigurasi (*Security Misconfiguration*) dan paparan data sensitif (*Sensitive Data Exposure*).
+2. **Mengelola** rahasia server (seperti kunci API dan kredensial *database*) dengan aman menggunakan *environment variables* (`.env`).
+3. **Menerapkan** perlindungan *header* HTTP menggunakan *Helmet.js* dan mencegah serangan *brute-force* dengan *Rate Limiting*.
 
 ---
 
 ## 📖 Materi Inti
 
-### Dosa Kelalaian Konfigurasi
+### Kesalahan Konfigurasi (Security Misconfiguration)
 
-Seringkali, *Backend API* berhasil dibobol peretas murni karena **Salah Penyesuaian Pengaturan (Misconfiguration)**.
+Seringkali, sistem dapat dibobol bukan karena cacat pada logika kode, melainkan karena **konfigurasi yang tidak aman**.
 
-Contoh kelalaian operasional massal:
-1. Menjalankan *Database Server* (semacam MongoDB/Redis) namun administrator lalai menggemboknya menggunakan perlindungan sandi, sehingga basis data dibiarkan terbuka (default) dan dapat diakses publik secara awam.
-2. Saat server menabrak galat operasional (*HTTP Error 500*), peladen memuntahkan pelaporan jejak penumpukan eksekusi kodingan (*Stack Trace*) yang merinci error ke layar klien. Penyerang kegirangan karena letak struktur direktori, referensi modul, dan versi kerangka terekspos secara detail ke ranah publik!
+Beberapa contoh kesalahan konfigurasi yang umum:
+1. Menjalankan *database* (seperti MongoDB atau Redis) tanpa kata sandi, sehingga dapat diakses publik dengan pengaturan *default*.
+2. Membiarkan mode *debug* tetap aktif di *production*. Ketika terjadi kesalahan (*error* 500), server menampilkan *Stack Trace* yang memperlihatkan struktur folder, versi modul, dan detail *backend* kepada pengguna. Informasi ini sangat berguna bagi penyerang untuk merencanakan eksploitasi.
 
-### Tragedi Kecerobohan (Sensitive Data Exposure)
+### Paparan Data Sensitif (Sensitive Data Exposure)
 
-Kerentanan lain: Ketika *developer* lalai merakit aplikasi, dia mengetikkan kata sandi Database atau Rahasia Token JWT secara mentah-mentah (*plaintext*) bersandar langsung di naskah fail proyek `server.js`, lalu di-*Push* ke *GitHub* secara publik. 
-Pasukan pemindai Bot otomatis peretas seketika menangkap paparan kredensial tersebut dan berpeluang membobol server korporasi secara instan!
+Kerentanan lainnya adalah membiarkan informasi sensitif (seperti kata sandi *database*, API key, atau rahasia JWT) ditulis langsung secara *plaintext* di dalam kode program (`server.js`). 
+Jika *developer* secara tidak sengaja memublikasikan kode tersebut ke repositori publik seperti GitHub, *bot* milik penyerang akan segera mendeteksinya dan kredensial tersebut bisa disalahgunakan dalam hitungan menit.
 
-**Tameng Rahasia (.env):**
-Segala variabel kunci sandi gaib wajib dipisahkan lantas disekap dalam bungkus berkas rahasia terisolasi bertitel `.env` (*Environment Variables*) yang **HARAM** dinaikkan atau terunggah ke repositori kendali versi (seperti Git)!
+**Solusi: Gunakan file `.env` (Environment Variables)**
+Semua data rahasia harus dipisahkan dari kode utama dan disimpan dalam file `.env`. File ini **tidak boleh** dimasukkan ke dalam version control system (seperti Git).
 
 ```text
-# Contoh fail.env (Fail ini wajib diabaikan oleh filter.gitignore)
+# Contoh isi file .env (Harus diabaikan oleh .gitignore)
 DATABASE_PASSWORD=rahasia_tiss_2026
 JWT_SECRET=super_kunci_sakti_
 ```
-Di ekosistem Node.js, kodingan merujuk variabel tersebut diam-diam lewat instalasi bantuan modul *dotenv*:
-`const dbSandi = process.env.DATABASE_PASSWORD;`
+Di Node.js, kamu bisa mengakses nilai ini menggunakan *library* `dotenv`:
+```javascript
+const dbPassword = process.env.DATABASE_PASSWORD;
+```
 
-### Memasang Rompi Tahan (Helmet.js & Rate Limiter)
+### Perlindungan Tambahan (Helmet.js & Rate Limiter)
 
 1. **Helmet.js (Pelindung Header HTTP)**
-Kerangka *Express.js* punya rutinitas murni memamerkan atribut cap identitas versinya (Misal memuntahkan parameter *header*: `X-Powered-By: Express`). Peretas niscaya dapat melacak jejak ini lalu mengeksploitasi celah arsitektur jika menggunakan *Express* usang. Implementasi *Helmet.js* mensterilkan kelakuan pamer ini otomatis!
-`app.use(helmet());`
+   Secara default, *framework* Express.js mengirimkan *header* `X-Powered-By: Express`. Ini memberi tahu penyerang teknologi apa yang kamu gunakan. *Helmet.js* membantu mengamankan aplikasi dengan mengatur berbagai *header* HTTP terkait keamanan, termasuk menyembunyikan *header* informasi tersebut.
+   ```javascript
+   const helmet = require('helmet');
+   app.use(helmet());
+   ```
 
-2. **Rate Limiting (Tameng Anti DDoS / Brute-Force)**
-Bagaimana jika peretas membangun *Bot* yang memborbardir rute `/api/login` sejuta kali per detik untuk melumpuhkan peladenmu? Cegah dan batasi transmisi tersebut dengan modul pembatas kecepatan!
-`app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100 })); // Membatasi peladen murni melayani maksimal 100 serangan per 15 menit.`
+2. **Rate Limiting (Pencegah Brute-Force & DDoS)**
+   Untuk mencegah penyerang mengirim ribuan permintaan per detik (misalnya mencoba menebak kata sandi di rute `/api/login`), gunakan modul *Rate Limiting*.
+   ```javascript
+   const rateLimit = require('express-rate-limit');
+   const limiter = rateLimit({
+     windowMs: 15 * 60 * 1000, // 15 menit
+     max: 100 // Batasi 100 request per IP selama windowMs
+   });
+   app.use(limiter);
+   ```
 
 ---
 
@@ -58,69 +70,68 @@ Bagaimana jika peretas membangun *Bot* yang memborbardir rute `/api/login` sejut
 
 **Durasi**: ~15 menit
 
-Mari mempraktikkan pemasangan perisai *.env*!
+Mari mempraktikkan penggunaan file `.env`!
 
-1. Rakit direktori `mkdir lab-rahasia` dan masuki rutenya: `cd lab-rahasia`.
-2. Inisiasi ekosistem NPM: `npm init -y`.
-3. Pasok instalasi brankas rahasia: `npm install dotenv`
-4. Ciptakan dua fail berdampingan: `.env` dan `.gitignore`.
-5. Di fail `.env` ketikkan konfigurasi:
- `API_KEY=ZERO_COOL_HACKER`
-6. Di fail `.gitignore` deklarasikan tulisan:
- `.env` (Mencegah mesin *Git* mengunggah fail `.env` ke portal publik).
-7. Buat file `induk.js`, ketik sandi ekstraksi pustaka *dotenv*:
-```javascript
-// Memanggil modul dotenv menyusup melarutkan isi.env ke otak Node OS
-require('dotenv').config();
-
-console.log("Kunci Sakti Variabel Rahasia terekstrak: ", process.env.API_KEY);
-```
-8. Letuskan pemicu komando terminal eksekusi: `node induk.js`. Laskar kuncimu sukses diekstrak di log, dan dijamin tak bakal terdorong ke jangkauan ekspos *GitHub* berkat pagaran `.gitignore`!
+1. Buat folder baru `mkdir lab-rahasia` dan masuk ke dalamnya `cd lab-rahasia`.
+2. Inisialisasi proyek Node.js: `npm init -y`.
+3. Instal modul *dotenv*: `npm install dotenv`.
+4. Buat file `.env` dan `.gitignore`.
+5. Di dalam file `.env`, ketikkan:
+   `API_KEY=KUNCI_RAHASIA_KITA`
+6. Di dalam file `.gitignore`, ketikkan:
+   `.env`
+   *(Ini mencegah Git mengunggah file `.env` ke GitHub).*
+7. Buat file `app.js` dan ketikkan kode berikut:
+   ```javascript
+   require('dotenv').config();
+   console.log("API Key saya adalah: ", process.env.API_KEY);
+   ```
+8. Jalankan file tersebut: `node app.js`. Kunci rahasiamu akan tercetak di terminal, dan aman dari pantauan publik berkat pengaturan di `.gitignore`!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Menelaah ancaman keteledoran paparan , apa tujuan utama mengkarantina payload parameter kunci sandi API ke sarang berkas <i>.env</i> alih-alih meletakkannya tersurat di baris skrip `server.js`?</summary>
+<summary>❓ Mengapa kita harus menggunakan file <i>.env</i> untuk menyimpan data rahasia seperti API Key dan password database?</summary>
 
-**Jawaban:** Agar payload krusial kata sandi maupun aset *API Key* terisolasi dan disembunyikan kelak dari ancaman eksposur sewaktu proyek diunggah (*Push*) menuju penyimpanan sistem kontrol repositori luar semacam *GitHub*, berkat perlindungan pagar `.gitignore`.
+**Jawaban:** Agar kredensial rahasia dipisahkan dari kode sumber (source code) dan tidak ikut ter-upload ke repositori publik seperti GitHub, yang dapat dieksploitasi oleh peretas.
 </details>
 
 <details>
-<summary>❓ Pasca *Node.js* mengalami ralat eksekusi bersandi error 500, mengapa dilarang keras bagi peladen memuntahkan lapor rincian <i>Stack Trace</i> merah ke layar antarmuka peramban?</summary>
+<summary>❓ Mengapa menampilkan <i>Stack Trace</i> error ke pengguna akhir di tahap produksi (production) sangat berbahaya?</summary>
 
-**Jawaban:** Karena *Stack Trace* pelaporan galat mentah memamerkan detail struktur jejak folder letak komputer peladen, versi modul konfigurasi terinstal, hingga rentetan arsitektur alur kueri *database*, yang sejatinya menyuguhkan pedoman eksploitasi bagi analis intelijen *hacker*.
+**Jawaban:** Karena *Stack Trace* menampilkan detail internal aplikasi (seperti struktur file server, query database, versi modul, dll). Informasi teknis ini dapat membantu peretas merancang strategi serangan yang lebih akurat.
 </details>
 
 <details>
-<summary>❓ Perisai tameng modul *Helmet.js* yang diintegrasikan ke bodi gerbang *Express* murni ditugaskan untuk menangkis celah kerentanan ekspos pada komponen apa?</summary>
+<summary>❓ Apa fungsi dari <i>Helmet.js</i> pada aplikasi berbasis Express.js?</summary>
 
-**Jawaban:** Melindungi dan mensterilkan kebocoran informasi pada lapis komponen atribut *HTTP Headers*, semisal menonaktifkan deklarasi parameter penanda bawaan pamer semacam `X-Powered-By`.
+**Jawaban:** Helmet.js berfungsi mengamankan aplikasi Express.js dengan cara mengatur *HTTP headers* yang direkomendasikan untuk mencegah celah keamanan umum dan menyembunyikan informasi server (misal menghapus header `X-Powered-By`).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap pengetahuan ancaman bahaya fatal dari eksposur *Security Misconfiguration*
-- [ ] Saya paham fungsi kerangka variabel konfigurasi `.env` dan kaitannya dengan larangan `.gitignore`
-- [ ] Saya mengetahui kegunaan tameng eksekusi perisai HTTP *Helmet.js* dan *Rate Limiting*
-- [ ] Saya sukses mengeksekusi integrasi instalasi *dotenv* Kunci Rahasia di fitur *Mini Lab*
-- [ ] Saya telah menyimak tuntas seluruh rangkuman ulasan parameter pengujian *Quiz Kilat*
+- [ ] Saya memahami risiko *Security Misconfiguration* dan *Sensitive Data Exposure*.
+- [ ] Saya tahu cara memisahkan rahasia menggunakan variabel lingkungan (`.env`) dan mencegahnya bocor dengan `.gitignore`.
+- [ ] Saya memahami pentingnya menyembunyikan informasi *header* dengan *Helmet.js* dan mencegah serangan *brute-force* dengan *Rate Limiting*.
+- [ ] Saya berhasil mempraktikkan ekstraksi nilai dari file `.env` pada *Mini Lab*.
+- [ ] Saya telah menyelesaikan dan memahami jawaban dari *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [Helmet.js Docs](https://helmetjs.github.io/) — Dokumen referensi operasional perlindungan lapis *HTTP Header* di ekosistem *Express Node*.
-- [Dotenv NPM](https://www.npmjs.com/package/dotenv) — paket modul *Environment Variables Setup*.
+- [Helmet.js](https://helmetjs.github.io/) — Dokumentasi resmi untuk mengamankan *header* Express HTTP.
+- [Dotenv di NPM](https://www.npmjs.com/package/dotenv) — Modul untuk memuat *environment variables*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Securing the API** — Babak pemuncak kurikulum *Forge Rank* menjelang tiba! Kawah eksperimen pamungkas menunggumu menyusun integrasi segenap parameter benteng sandi yang digabung komprehensif; merajut tameng Injeksi fungsi mutlak `?`, sanitasi, perlindungan otorisasi *IDOR*, aktivasi instalasi pelindung header *Helmet*, restriksi penolakan peramban pembatas *Rate Limit*, lantas integrasi konfigurasi isolasi variabel `.env`. Waktunya mengunci rapat seluruh kelemahan gerbang infrastruktur peladen API TISS dan melayakkan dirimu terakreditasi promosi menuju materi peretasan sabuk *Red Team*!
+**Day 5: Lab & Mission: Securing the API** — Babak akhir untuk materi *Forge Rank* sudah di depan mata! Besok, kita akan menggabungkan semua konsep keamanan yang sudah dipelajari: *Parameterized Queries* (mencegah Injeksi), sanitasi (mencegah XSS), *authorization checks* (mencegah IDOR), serta *Helmet*, *Rate Limiting*, dan `.env` (mencegah Misconfig & Exposure). Kita akan mengamankan API TISS dari berbagai sudut celah serangan sebelum melanjutkan ke materi sabuk berikutnya.
 
 ---
 

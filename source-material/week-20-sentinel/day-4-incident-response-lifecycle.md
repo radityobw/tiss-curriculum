@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** siklus hidup kerangka operasional respons insiden keamanan (Incident Response Framework).
-2. **Menjabarkan** 6 tahapan baku standar penanganan ancaman dari SANS Institute / NIST (PICERL).
-3. **Membedakan** antara prosedur isolasi teknis (Containment) dengan mitigasi kerentanan (Eradication).
+1. **Memahami** siklus hidup kerangka kerja respons insiden keamanan (*Incident Response Framework*).
+2. **Menjabarkan** 6 tahapan standar penanganan insiden dari SANS Institute / NIST (PICERL).
+3. **Membedakan** antara prosedur penahanan sementara (*Containment*) dengan perbaikan mendasar (*Eradication*).
 
 ---
 
@@ -20,26 +20,26 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Rasionalisasi Siklus Penanganan Insiden
 
-Merespons sebuah anomali atau ancaman terkonfirmasi memerlukan prosedur yang terstandarisasi. Proses pengambilan keputusan teknis secara impulsif—seperti dengan langsung menghentikan instansi server yang bermasalah secara spontan tanpa dokumentasi bukti (logging)—bisa mengakibatkan kompromi terhadap bukti forensik digital atau malah memicu degradasi produktivitas ketersediaan sistem operasional jangka panjang yang keliru. 
+Merespons sebuah ancaman keamanan memerlukan prosedur yang terstandarisasi. Mengambil keputusan secara impulsif—misalnya langsung mematikan server yang diretas tanpa menyimpan log—bisa merusak bukti forensik digital dan menghambat investigasi. 
 
-Organisasi keamanan (SOC) yang matang selalu mengandalkan pedoman siklus hidup respons insiden yang distandardisasi oleh asosiasi seperti NIST (National Institute of Standards and Technology) atau SANS Institute. Salah satu model yang dominan di industri adalah kerangka fase 6 tahapan **PICERL**.
+Oleh karena itu, organisasi keamanan (SOC) yang matang selalu berpegang pada pedoman siklus hidup respons insiden yang distandardisasi oleh lembaga seperti NIST atau SANS Institute. Salah satu model yang paling sering digunakan di industri adalah kerangka kerja 6 tahapan **PICERL**.
 
 ### 6 Tahapan Incident Response (PICERL)
 
-Prosedur metodologi operasional ini disusun ke dalam 6 tahapan utama:
+Prosedur penanganan insiden dibagi ke dalam 6 tahapan utama:
 
 1. **Preparation (Persiapan):**
- Kegiatan dasar organisasi yang dieksekusi saat fase sistem masih normal (sebelum krisis). Meliputi penyusunan dokumen prosedural operasional keamanan (Runbook/SOP), program pendidikan kesadaran, pelaporan alat pengawasan sistem (SIEM), dan implementasi mekanisme perlindungan redundansi cadangan data rutin.
+   Fase ini dilakukan sebelum insiden terjadi. Meliputi penyusunan dokumen Standar Operasional Prosedur (SOP/Runbook), pelatihan staf, konfigurasi alat pemantauan (SIEM/IDS), dan pembuatan sistem *backup* (cadangan data) yang rutin.
 2. **Identification (Identifikasi/Deteksi):**
- Observasi saat peringatan terpicu. Analis mengkaji, melaksanakan validasi *Triase (Triage)*, hingga memverifikasi indikasi parameter ancaman spesifik (seperti IP anomali, deteksi muatan *payload* eksploitasi, hingga indikasi eksfiltrasi log jaringan) sehingga menetapkan *Security Event* tersebut tereskalasi menjadi valid *Security Incident*.
+   Fase saat peringatan keamanan terpicu. Analis melakukan validasi (*Triage*) untuk memastikan apakah anomali tersebut merupakan *False Positive* atau benar-benar *Security Incident* yang nyata. Tahapan ini juga mencakup analisis log dan penelusuran ruang lingkup insiden.
 3. **Containment (Penahanan/Isolasi):**
- Aktivitas taktis darurat yang ditujukan demi mencegah kerusakan sistem menyebar dan melakukan pembatasan propagasi ancaman tanpa menghilangkan rekaman metadata investigasi peretasan. Contoh eksekusi: Menghentikan rute *interface* perangkat koneksi jaringan peladen web (memblokir internet) namun mesin tersebut wajib dibiarkan aktif bekerja guna dilakukan pengambilan sampel bukti RAM *memory* di proses forensik selanjutnya.
-4. **Eradication (Pembersihan/Mitigasi):**
- Upaya proaktif remediasi dan restorasi terhadap asal muasal akses penyerang (kerentanan). Merupakan langkah perbaikan di lapisan arsitektur. Contoh eksekusi: Mengekstirpasi seluruh eksistensi instalasi *malware* (misal penghapusan *Web Shell*), eliminasi manipulasi kredensial peretas (*backdoors*), sekaligus mempublikasikan (*Patching*) versi kode/sistem yang aman (perbaikan terhadap kueri SQL rentan agar tidak dieksploitasi kedua kalinya).
+   Tindakan darurat jangka pendek untuk mencegah penyebaran kerusakan ke sistem lain. Contoh: Memutus koneksi internet pada server yang terinfeksi, atau mengisolasi komputer dari jaringan (tanpa mematikannya agar data di RAM tetap bisa diselidiki oleh tim forensik).
+4. **Eradication (Pembersihan/Remediasi):**
+   Upaya memperbaiki akar masalah secara permanen. Contoh: Menghapus *malware* atau *Web Shell* yang ditanam peretas, menghapus akun *backdoor*, dan menambal (*patching*) celah keamanan (misal: memperbaiki kode yang rentan *SQL Injection*).
 5. **Recovery (Pemulihan):**
- Restorasi konfigurasi sistem operasional secara menyeluruh sesuai standar arsitektur bisnis organisasi. Langkah krusial ini memerlukan jaminan kepastian validitas dari tahapan *Eradication*, restorasi volume partisi *database* dari berkas cadangan (backup), sekaligus validasi parameter monitor operasional (selama periode tertentu) yang memastikan peretas tak mendisrupsi ulang target.
+   Mengembalikan sistem yang terdampak agar bisa beroperasi kembali secara normal dan aman. Langkah ini meliputi pemulihan data dari *backup* (jika data utama rusak), serta memantau sistem secara ketat selama beberapa waktu untuk memastikan peretas tidak kembali masuk.
 6. **Lessons Learned (Pelajaran Berharga / Evaluasi Pasca-Insiden):**
- Kajian post-insiden sistematis yang menelaah akar penyebab kerentanan struktural, merunut ulang proses respons teknis para staf SOC, serta pembuatan revisi konfigurasi pencegahan dan peningkatan kompetensi analis untuk merombak parameter pengawasan di periode fase *Preparation* (sebagai bentuk umpan balik).
+   Evaluasi yang dilakukan setelah insiden selesai ditangani. Tujuannya adalah membahas apa yang salah, apa yang berhasil, dan bagaimana memperbaiki dokumentasi *Preparation* serta konfigurasi keamanan agar insiden serupa tidak terulang di masa depan.
 
 ---
 
@@ -47,51 +47,51 @@ Prosedur metodologi operasional ini disusun ke dalam 6 tahapan utama:
 
 **Durasi**: ~10 menit
 
-Mari melakukan identifikasi operasional tahapan respons penanganan insiden *PICERL*.
+Mari berlatih mengklasifikasikan aktivitas penanganan insiden ke dalam tahapan PICERL.
 
-1. Diberikan suatu skenario insiden peretasan aplikasi Web dengan eksploitasi celah tipe *SQL Injection (SQLi)* yang mengubah integrasi data produk aplikasi perusahaan.
-2. Deskripsikan aktivitas-aktivitas instruksi di bawah ini ke dalam terminologi fase respons kerangka kerja.
- - **Aktivitas 1:** Analis mengaudit rincian log Nginx dan menemukan anomali frekuensi pengiriman parameter kueri SQL berbahaya dari rentang IP asing menuju *endpoint* `/login.php`.
- - **Aktivitas 2:** Tim operasional *backend* memutakhirkan implementasi aplikasi dengan kode validasi kueri (menggunakan *Prepared Statements* dan mekanisme sanitasi *Input Parameter*) demi menutup *logic* serangan injeksi tersebut.
- - **Aktivitas 3:** Analis IT menyusun kebijakan simulasi prosedur cadangan server (DRP) setiap kuartal guna persiapan skenario peretasan server tingkat masif.
- - **Aktivitas 4:** Operator memblokir parameter masuk eksternal dari domain IP pelaku menggunakan *Web Application Firewall* (WAF) guna memutuskan koneksi peretas pada saat itu juga.
+1. Bacalah skenario insiden peretasan aplikasi web via celah *SQL Injection* di bawah ini.
+2. Klasifikasikan setiap aktivitas ke dalam tahapan respons yang tepat.
+   - **Aktivitas 1:** Analis memeriksa log Nginx dan menemukan anomali pengiriman kueri SQL berbahaya secara berulang ke *endpoint* `/login.php`.
+   - **Aktivitas 2:** Tim *Developer* mengubah kode aplikasi dengan menggunakan *Prepared Statements* untuk menambal celah injeksi SQL secara permanen.
+   - **Aktivitas 3:** Analis SOC menyusun jadwal simulasi respons insiden setiap kuartal dan memastikan prosedur cadangan server (DRP) telah diperbarui.
+   - **Aktivitas 4:** Administrator jaringan memblokir alamat IP peretas menggunakan *Web Application Firewall* (WAF) untuk memutus serangan yang sedang berlangsung.
 
-*Evaluasi Analisis Praktik:*
-- Aktivitas 1: **Identification** (Analisis bukti korelasi parameter peringatan, penelusuran validitas log kejadian insiden).
-- Aktivitas 2: **Eradication** (Menghilangkan komponen kelemahan yang dieksploitasi peretas (menambal celah injeksi SQL)).
-- Aktivitas 3: **Preparation** (Menyediakan prosedur keamanan komprehensif, latihan teknis simulasi operasional).
-- Aktivitas 4: **Containment** (Tindakan taktis darurat isolasi jaringan guna menghentikan penetrasi secara instan).
+*Kunci Jawaban Analisis:*
+- Aktivitas 1: **Identification** (Mendeteksi dan menganalisis log untuk memvalidasi insiden).
+- Aktivitas 2: **Eradication** (Menghilangkan kelemahan sistem secara permanen dengan menambal celah *SQLi*).
+- Aktivitas 3: **Preparation** (Menyusun prosedur latihan dan mempersiapkan strategi cadangan).
+- Aktivitas 4: **Containment** (Tindakan taktis untuk menahan ancaman secara instan dengan memblokir IP).
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Mengacu pada terminologi standar industri mengenai kerangka metodologi siklus hidup peretasan insiden, apakah definisi dari akronim PICERL?</summary>
+<summary>❓ Mengacu pada metodologi siklus hidup penanganan insiden dari SANS, apa kepanjangan dari akronim PICERL?</summary>
 
-**Jawaban:** Preparation (Persiapan), Identification (Identifikasi), Containment (Penahanan/Isolasi), Eradication (Pembersihan/Remediasi), Recovery (Pemulihan/Restorasi), dan Lessons Learned (Evaluasi Pembelajaran).
+**Jawaban:** Preparation (Persiapan), Identification (Identifikasi), Containment (Penahanan/Isolasi), Eradication (Pembersihan/Remediasi), Recovery (Pemulihan), dan Lessons Learned (Evaluasi Pasca-Insiden).
 </details>
 
 <details>
-<summary>❓ Dalam terminologi mitigasi taktis SOC, apa pembeda obyektif operasional dari fase teknis Containment dibandingkan fase teknis Eradication?</summary>
+<summary>❓ Apa perbedaan utama antara tindakan di fase <i>Containment</i> dengan fase <i>Eradication</i>?</summary>
 
-**Jawaban:** Fase *Containment* ditekankan pada implementasi aktivitas darurat sementara untuk mencegah perluasan eksfiltrasi data jaringan pada saat serangan berlangsung (misalnya memisahkan/memutus sambungan koneksi instansi jaringan secara isolasi fisik). Sedangkan fase *Eradication* mengacu kepada identifikasi perbaikan secara lebih mendasar melalui perombakan kode konfigurasi infrastruktur secara permanen untuk menutup akses celah agar penyusupan dari vektor tersebut tidak dapat dilakukan lagi.
+**Jawaban:** Fase *Containment* bertujuan untuk menahan ancaman sementara (misal: mengisolasi jaringan) agar tidak menyebar selama insiden berlangsung. Sedangkan fase *Eradication* adalah tindakan perbaikan permanen untuk membuang ancaman dan menambal celah (misal: menghapus malware dan *patching* kerentanan).
 </details>
 
 <details>
-<summary>❓ Pada tahap mana dari metodologi PICERL tim keamanan TI melakukan identifikasi evaluasi komprehensif tentang kekurangan/keberhasilan proses identifikasi dan respons, serta pemaparan prosedur revisi arsitektur keamanan?</summary>
+<summary>❓ Pada tahap mana tim keamanan TI berkumpul untuk mendiskusikan apa saja hal yang bisa diperbaiki dari prosedur penanganan insiden mereka agar tidak terjadi kesalahan yang sama di masa depan?</summary>
 
-**Jawaban:** Fase Lessons Learned (Pelajaran Berharga / Review Evaluasi Pasca-Insiden).
+**Jawaban:** Fase Lessons Learned (Pelajaran Berharga / Evaluasi Pasca-Insiden).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami struktur metodologi operasional siklus hidup insiden.
-- [ ] Saya mampu menguraikan definisi dari masing-masing 6 tahapan (PICERL).
-- [ ] Saya mengidentifikasi peran krusial perbedaan teknis pada langkah isolasi ancaman darurat (Containment) serta mitigasi perbaikan kerentanan dasar eksploitasi (Eradication).
-- [ ] Saya telah melakukan penentuan tahapan prosedur dalam rincian latihan Mini Lab.
+- [ ] Saya memahami struktur metodologi operasional siklus hidup insiden keamanan.
+- [ ] Saya mampu menjelaskan ke-6 tahapan standar PICERL.
+- [ ] Saya mengerti perbedaan taktis antara penahanan insiden (Containment) dan mitigasi permanen (Eradication).
+- [ ] Saya telah berlatih memetakan skenario respons insiden di sesi Mini Lab.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
@@ -104,7 +104,7 @@ Mari melakukan identifikasi operasional tahapan respons penanganan insiden *PICE
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Analisis Access Logs** — Pada akhir sesi minggu ini, Anda akan melakukan simulasi analisis pemantauan. Pada lab integratif hari ke-5, kita akan menganalisis dataset *Access Log Web Server* guna mengidentifikasi *Incident* berupa vektor injeksi dan menerapkan dokumentasi respons kerangka teknis *PICERL*.
+**Day 5: Lab & Mission: Analisis Access Logs** — Pada akhir sesi minggu ini, Anda akan melakukan simulasi pemantauan keamanan (SOC). Pada lab hari ke-5, kita akan menganalisis *dataset Access Log* dari Web Server untuk mengidentifikasi keberadaan insiden keamanan, dan menerapkan alur pelaporan investigasi log secara profesional!
 
 ---
 

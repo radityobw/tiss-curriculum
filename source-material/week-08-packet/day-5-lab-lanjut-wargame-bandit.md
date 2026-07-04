@@ -40,7 +40,7 @@ Sebelum terjun ke Wargame, mari pastikan jari-jarimu sudah luwes mengatur izin f
 3. Cek izin defaultnya: `ls -l rahasia_ku.txt` (Biasanya `-rw-r--r--`).
 4. Ubah izinnya menjadi Full Akses untuk Semua Orang (Angka keramat 777!):
  `chmod 777 rahasia_ku.txt`
-5. Cek lagi dengan `ls -l`. Kamu akan melihat izinnya berubah hijau (atau setidaknya tu `-rwxrwxrwx`).
+5. Cek lagi dengan `ls -l`. Kamu akan melihat izinnya berubah hijau (atau setidaknya teks `-rwxrwxrwx`).
 6. Sekarang, cabut semua izin untuk grup dan orang luar (Sangat Rahasia: cuma kamu yang boleh baca/tulis, yaitu kode 600):
  `chmod 600 rahasia_ku.txt`
 7. Cek dengan `ls -l`. Hasilnya pasti `-rw-------`. Selesai!

@@ -10,51 +10,51 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mengeksploitasi** kelalaian validasi pada fitur unggah berkas (File Upload).
-2. **Mensimulasikan** penyusupan cangkang belakang ke web server (*Web Shell* PHP).
-3. **Mendemonstrasikan** eksploitasi celah kontrol akses (*IDOR / Broken Access Control*) untuk mengakses data rahasia pengguna lain.
+1. **Mengeksploitasi** celah keamanan pada fitur unggah berkas (*File Upload*).
+2. **Mensimulasikan** penyusupan *Web Shell* ke *server* target untuk mendapatkan *Remote Code Execution*.
+3. **Mendemonstrasikan** eksploitasi kontrol akses (*IDOR / Broken Access Control*) untuk mencuri data pengguna lain.
 
 ---
 
 ## 📖 Materi Inti
 
-### Membajak Infrastruktur via Pintu Belakang (File Upload)
+### Membajak Server Melalui File Upload
 
-Tak banyak fitur aplikasi web yang berpotensi menghasilkan kerentanan fatal selain fitur **Unggah Dokumen (File Upload)** (misalnya fitur unggah Foto Profil atau PDF). 
-Jika pengembang sekadar memvalidasi keamanan unggahan ala kadarnya (semisal hanya mengecek ekstensi dari sisi *frontend*), pentester tidak akan mengunggah gambar *JPEG* sungguhan, melainkan akan memaksakan file berisi skrip berbahaya untuk masuk ke server!
+Salah satu fitur aplikasi web yang paling rawan dieksploitasi hingga menyebabkan *server* diambil alih sepenuhnya adalah fitur **Unggah Berkas (File Upload)** (seperti fitur *upload* Foto Profil atau PDF). 
 
-Jika backend target menggunakan bahasa pemrograman **PHP**, pentester cukup merakit file berekstensi `.php` (misal `shell.php`). Skrip ini nantinya akan memberikan fungsi untuk menjalankan perintah terminal OS server secara langsung dari browser.
+Jika pengembang hanya mengecek jenis ekstensi (*jpg/png*) dari sisi *frontend* (browser) saja, penyerang bisa mengakali pengecekan tersebut dan mengunggah *file* berisi kode *backend* (seperti PHP/ASP) ke *server*!
+
+Jika *backend* target menggunakan **PHP**, penyerang cukup merakit sebuah skrip berekstensi `.php` (misalnya `shell.php`). Skrip ini berfungsi untuk menjalankan perintah terminal (OS) secara langsung dari *browser*.
 
 **Contoh isi skrip file `shell.php` sederhana:**
 ```php
 <?php system($_GET['cmd']); ?>
 ```
 
-Ketika file `shell.php` berhasil melewati penyaring dan tersimpan di direktori server (contoh: `target.com/uploads/shell.php`), pentester tinggal membuka URL file tersebut dan mengeksekusi perintah terminal lewat parameter URL:
+Ketika *file* `shell.php` berhasil melewati filter dan tersimpan di direktori *server* (contoh: `target.com/uploads/shell.php`), penyerang tinggal membuka URL *file* tersebut dan mengeksekusi perintah terminal melalui *parameter URL*:
 `target.com/uploads/shell.php?cmd=cat /etc/passwd`
 
-*Seketika!* Server target akan merespons dengan menampilkan isi dari file sistem rahasia `/etc/passwd`. Berbekal jalan pintas ini (*Backdoor Web Shell*), pentester dapat mengeksploitasi dan mengambil alih kendali penuh atas server target!
+Hasilnya? *Server* target akan merespons dengan menampilkan isi dari *file* sistem `/etc/passwd`. Menggunakan skrip *Web Shell* ini, penyerang mendapatkan kendali jarak jauh (RCE) atas *server*!
 
-### Menelikung Tameng Penyaring Ekstensi 
+### Melewati Filter Ekstensi (Bypass Upload)
 
-Ketika pengembang memasang perlindungan *filter* di server yang mengharuskan "Hanya boleh mengunggah file JPG/PNG", pentester membalasnya dengan beberapa taktik *bypass*:
+Ketika pengembang memasang perlindungan *filter* di *backend* yang mengharuskan "Hanya boleh mengunggah file JPG/PNG", penyerang dapat menggunakan beberapa taktik *bypass*:
 
-- **Bypass Ekstensi Ganda:** Mengganti nama file menjadi `shell.php.jpg` atau menggunakan taktik injeksi Null Byte `shell.php%00.jpg`.
-- **Manipulasi MIME Type:** Menggunakan Burp Suite, pentester mencegat *Request* dan memodifikasi *header* `Content-Type: application/x-php` menjadi `Content-Type: image/jpeg` agar WAF atau filter server mengira file tersebut benar-benar adalah gambar.
+- **Bypass Ekstensi Ganda:** Mengganti nama file menjadi `shell.php.jpg` atau menggunakan trik *Null Byte Injection* `shell.php%00.jpg`.
+- **Manipulasi MIME Type:** Menggunakan Burp Suite, penyerang mencegat (*Intercept*) HTTP Request saat *upload*, lalu mengubah nilai `Content-Type: application/x-php` menjadi `Content-Type: image/jpeg` agar *Web Application Firewall (WAF)* mengira *file* tersebut adalah gambar.
 
-### Mahaguru Penyamaran : IDOR 
+### Eksploitasi IDOR (Insecure Direct Object Reference)
 
-*(Kita meninjau ulang kerentanan IDOR sebagaimana dibahas di materi sebelumnya, tapi kini dengan kacamata eksploitasi ofensif)*
+Kita pernah membahas sedikit konsep ini, namun mari lihat dari kacamata eksploitasi.
+**IDOR** adalah jenis kerentanan *Broken Access Control* yang sangat umum. Ini terjadi ketika *server* menggunakan ID atau nomor urut untuk menampilkan dokumen, namun **tidak memeriksa apakah pengguna yang sedang login berhak melihat dokumen dengan ID tersebut**.
 
-**IDOR (Insecure Direct Object Reference)** adalah kerentanan *Broken Access Control* yang terjadi ketika server menggunakan angka atau ID untuk mengakses objek/dokumen, namun sama sekali tidak memvalidasi *"Apakah pengguna yang sedang login berhak melihat objek dengan ID ini?"*.
-
-Pengguna awam mengakses nota belanja miliknya melalui tautan:
+Pengguna biasa melihat nota belanjanya melalui *URL*:
 `target.com/struk?nota_id=505`
 
-Namun, pentester dengan insting berburu kerentanan (*Bug Bounty*) hanya perlu mengubah angka pada URL tersebut menjadi angka lain:
+Namun, seorang *Bug Hunter* atau penyerang hanya perlu mencoba mengubah angka ID tersebut:
 `target.com/struk?nota_id=506`
 
-Karena server tidak melakukan pengecekan otorisasi, ia dengan patuh akan menampilkan nota belanja, nomor kartu kredit, atau data pribadi utuh milik **pengguna lain** yang seharusnya dijaga kerahasiaannya!
+Karena *server* tidak mengecek validasi kepemilikan, *server* akan mematuhi permintaan tersebut dan menampilkan nota belanja milik **pengguna lain** yang berisi data pribadi dan nomor kartu kredit!
 
 ---
 
@@ -62,63 +62,63 @@ Karena server tidak melakukan pengecekan otorisasi, ia dengan patuh akan menampi
 
 **Durasi**: ~10 menit
 
-Mari meracik ekskavasi cangkang (*Web Shell*) PHP untuk menembus target!
+Mari menyimulasikan injeksi *Web Shell* PHP!
 
-1. Kunjungi pelataran lingkungan uji *TryHackMe* atau *PortSwigger* yang dikhususkan untuk simulasi *File Upload*.
-2. Web target menuntut pengguna mengunggah file gambar (*Avatar*).
-3. Buat file teks berekstensi `.php` (misal: `avatar.php`) dan isi dengan skrip:
+1. Kunjungi lingkungan lab *PortSwigger: Web Security Academy (File Upload vulnerabilities)*.
+2. Temukan skenario di mana pengguna diminta mengunggah foto profil (*Avatar*).
+3. Buatlah sebuah *file* berakhiran `.php` (misal: `avatar.php`) dan isi dengan skrip:
    ```php
    <?php echo system('whoami'); ?>
    ```
-4. Coba unggah file tersebut. *Web merespons Gagal karena sistem memvalidasi dan menuntut format JPG!*
-5. Nyalakan Burp Suite, lalu cegat (*Intercept*) paket pengiriman file tersebut.
-6. Edit bagian `filename="avatar.php"` menjadi `filename="avatar.php.jpg"`. Sebagai alternatif, Anda bisa mengganti baris header `Content-Type` ke `image/jpeg`.
-7. Lepaskan cegatan (*Forward*)! Bila berhasil lolos, buka URL pemuatan foto tersebut.
-8. Laman foto tersebut seketika akan mencetak output dari sistem, misal: *www-data* (nama user apache/terminal peladen). Anda telah sukses mendapatkan eksekusi kueri langsung *RCE (Remote Code Execution)*!
+4. Coba unggah *file* tersebut secara normal. Web akan merespons *Error* karena *server* mengharuskan *file* berupa gambar (JPG/PNG).
+5. Nyalakan **Burp Suite**, lalu aktifkan fitur *Intercept* dan unggah ulang *file* tersebut.
+6. Pada *Burp Suite*, ubah baris *header* `Content-Type: application/x-php` menjadi `Content-Type: image/jpeg`.
+7. Teruskan (*Forward*) permintaan tersebut! Jika berhasil lolos, buka *URL* di mana foto profilmu disimpan.
+8. Halaman tersebut tidak akan menampilkan foto, melainkan mencetak teks hasil eksekusi terminal (misal: `www-data` atau `apache`). Kamu sukses mendapatkan eksekusi perintah jarak jauh (*Remote Code Execution*)!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Skrip atau program berbahaya (sering berekstensi PHP) yang diunggah ke dalam server web untuk menjalankan perintah sistem operasi (RCE) secara jarak jauh dikenal dengan istilah apa?</summary>
+<summary>❓ Skrip atau program berbahaya (sering berekstensi PHP) yang diunggah ke dalam server web untuk memberikan penyerang akses menjalankan perintah sistem operasi (RCE) dari jarak jauh dikenal dengan istilah apa?</summary>
 
 **Jawaban:** Web Shell (atau Backdoor Shell).
 </details>
 
 <details>
-<summary>❓ Ketika meluncurkan serangan bypass upload, taktik merubah nilai header `Content-Type: application/php` menjadi `Content-Type: image/jpeg` agar server mengira file tersebut sebagai gambar disebut dengan teknik apa?</summary>
+<summary>❓ Saat melakukan serangan unggah berkas, taktik mencegat request dan mengubah nilai header <code>Content-Type: application/php</code> menjadi <code>Content-Type: image/jpeg</code> agar server mengira file tersebut adalah gambar disebut dengan teknik apa?</summary>
 
 **Jawaban:** MIME Type Bypass (atau Content-Type Spoofing).
 </details>
 
 <details>
-<summary>❓ Pada kerentanan IDOR, server melakukan kelalaian fatal karena mempercayai akses dokumen hanya berdasarkan parameter URL (seperti ID), tanpa pernah mencocokkannya dengan apa?</summary>
+<summary>❓ Pada kerentanan IDOR, server melakukan kesalahan karena hanya mengambil dokumen berdasarkan nomor ID di URL, tanpa mencocokkannya dengan apa?</summary>
 
-**Jawaban:** Tanpa mencocokkannya dengan *Session Cookie* (atau otorisasi Token pengguna yang sedang login) untuk memverifikasi apakah pemilik Cookie tersebut memang berhak melihat dokumen ID tersebut.
+**Jawaban:** Tanpa mencocokkannya dengan Sesi / *Cookie* pengguna (untuk memastikan apakah pengguna yang sedang *login* memang pemilik sah dari ID dokumen tersebut).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami logika kendali *Web Shell PHP* (`system($_GET['cmd'])`).
-- [ ] Saya fasih menjabarkan siasat bypass validasi *File Upload* (MIME spoofing, Null Byte).
-- [ ] Saya paham cara memanipulasi rentetan ID untuk menemukan celah *IDOR*.
-- [ ] Saya telah menuntaskan validasi menjawab semua *quiz kilat*.
+- [ ] Saya memahami bagaimana *Web Shell PHP* (`system($_GET['cmd'])`) bekerja.
+- [ ] Saya mengetahui taktik melewati filter unggahan (*MIME spoofing, Null Byte, Double Extension*).
+- [ ] Saya paham cara mengeksploitasi celah *IDOR* dengan mengubah ID pada URL.
+- [ ] Saya telah menuntaskan evaluasi menjawab semua *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
 - [PortSwigger File Upload](https://portswigger.net/web-security/file-upload) — Laboratorium eksplorasi kerentanan bypass fitur unggahan.
-- [PayloadsAllTheThings - Upload Insecure Files](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files) — Kompilasi payload dan teknik manipulasi *File Upload*.
+- [PayloadsAllTheThings - Upload Insecure Files](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files) — Kompilasi *payload* dan trik bypass *File Upload*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Chaining Vulnerabilities** — Anda mengira bahwa menemukan kerentanan *IDOR* skala kecil atau celah peramban *Open Redirect* itu tidak berbahaya? Esok hari, kita akan meresapi seni pamungkas dari eksploitasi mahaguru: Merantai Kerentanan (*Chaining Vulns*). Anda akan belajar merajut celah kecil *XSS*, disilangkan dengan kerentanan *SSRF*, dan dipadukan dengan kelalaian *File Upload* untuk meledakkan server menjadi insiden *Remote Code Execution* berskala *Bug Bounty* jutaan rupiah!
+**Day 4: Chaining Vulnerabilities** — Kamu mungkin berpikir bahwa menemukan satu celah kecil (*Bug*) yang tidak terlalu berbahaya itu tidak bernilai. Namun besok, kita akan membahas seni eksploitasi tingkat tinggi: Merantai Kerentanan (*Chaining Vulnerabilities*). Kamu akan belajar bagaimana menggabungkan beberapa celah berisiko rendah (seperti *Open Redirect* dan celah logika bisnis) untuk menciptakan satu serangan berantai yang fatal dan menghasilkan *Remote Code Execution*!
 
 ---
 

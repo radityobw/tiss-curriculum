@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Bilamana seluruh fungsionalitas logika autentikasi sandi dicangkokkan ditanamkan ke dalam barisan *Frontend* menyingkirkan wewenang perlindungan rahasia ranah *Backend*, apa ancaman siber paling fatal yang seketika mencabik arsitektur keamanan peladen?
-- [ ] A. Proses verifikasi bakal merangkak super lambat sehingga layar peramban otomatis tertutup macet.
-- [ ] B. Server akan spontan ter-reset instalasi sistem operasinya ke pengaturan pabrik.
-- [x] C. / penganalisis penyerang amat leluasa menyadap celah membongkar kodingannya (sebatas mengeksploitasi bedil *Inspect Element/View Source*), mengekstrak rahasia mekanisme validasi dan mencederai kemurnian datanya secara transparan.
-- [ ] D. Server otomatis membanjiri komputer dengan muatan virus *Trojan*.
+**Question:** Jika seluruh logika autentikasi diletakkan di *Frontend* tanpa validasi di *Backend*, apa ancaman keamanan yang paling fatal?
+- [ ] A. Proses verifikasi menjadi sangat lambat hingga *browser* *crash*.
+- [ ] B. Server otomatis melakukan *reset factory*.
+- [x] C. Penyerang dapat melihat kode sumber (*View Source*), mengekstrak mekanisme validasi, dan memanipulasi data dengan mudah.
+- [ ] D. Server akan menginfeksi komputer pengguna dengan virus Trojan.
 
 ### Q2
 **Type:** True/False
-**Question:** Pada tradisi lajur arsitektur pengembangan peramban kekinian (*Modern Web*), *Backend* secara eksklusif dituntut membebani peladen untuk merakit antarmuka seutuhnya dari bodi HTML/CSS lantas digelontorkan mengirimkan utuh seraya payload paket JSON.
+**Question:** Pada pengembangan *Web Modern*, *Backend* bertugas merakit seluruh tampilan HTML/CSS lalu mengirimkannya ke *Frontend*.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Apabila kasta peramban antarmuka *Frontend* dikonotasikan selayaknya "Pelataran Ruang Makan Mewah Restoran", identitas perumpamaan ranah apakah yang mewakili kerasnya lalu lintas *Backend* (area tertutup tempat pengolahan masakan data rahasia)?
-**Answer:** Dapur Restoran.
+**Question:** Jika *Frontend* diibaratkan sebagai ruang makan restoran, perumpamaan apa yang paling tepat untuk menggambarkan *Backend* (tempat pengolahan data rahasia)?
+**Answer:** Dapur restoran.
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apa embel-embel lafal sandi singkatan perantara utusan (pelayan restoran) bertugas khusus mendistribusikan persembahan lalu lintas pertukaran bongkahan data antar-klien dengan server yang kerap berbalut wujud JSON?
+**Question:** Apa singkatan dari antarmuka yang bertindak seperti "pelayan restoran" untuk menjembatani pertukaran data (biasanya berformat JSON) antara klien dan *server*?
 **Answer:** API (Application Programming Interface).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Apakah nomenklatur format standarisasi wujud pengetikan payload data universal kekinian (menggantikan keusangan XML) bermodalkan ukiran kurung kurawal pembungkus bodi kunci dan nilainya?
+**Question:** Apa format pertukaran data standar yang paling umum digunakan saat ini (menggantikan XML) yang menggunakan pasangan kunci dan nilai (*key-value*)?
 **Answer:** JSON (JavaScript Object Notation).

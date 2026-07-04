@@ -16,13 +16,13 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika mencoba menembus pertahanan filter *File Upload*, seorang peretas berpotensi memanipulasi ekstensi nama berkas menggunakan trik ekstensi ganda (misal: `shell.php.jpg`) guna mengelabui penyaring naif yang hanya memvalidasi format akhiran `.jpg`.
+**Question:** Ketika mencoba menembus pertahanan filter *File Upload*, seorang penyerang dapat memanipulasi ekstensi nama berkas menggunakan trik ekstensi ganda (misal: `shell.php.jpg`) guna mengelabui penyaring yang hanya memvalidasi format akhiran `.jpg`.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Dalam pembuatan *Web Shell* PHP yang sederhana, fungsi sakti PHP apakah yang paling lazim digunakan (contoh: `...($_GET['cmd'])`) untuk menjalankan perintah terminal sistem operasi Linux secara langsung?
-**Answer:** system (atau fungsi `system()`).
+**Question:** Dalam pembuatan *Web Shell* PHP yang sederhana, fungsi PHP apakah yang sering digunakan (contoh: `...($_GET['cmd'])`) untuk menjalankan perintah terminal sistem operasi secara langsung?
+**Answer:** system() (atau fungsi system)
 
 ### Q4
 **Type:** Short Answer
@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Pada eksploitasi *IDOR*, peladen melakukan kelalaian fatal karena gagal memvalidasi kecocokan antara parameter referensi dokumen dengan pemilik asli dari objek tersebut (tanpa memeriksa *Session Cookie*). Apa kepanjangan dari akronim kerentanan IDOR tersebut?
-**Answer:** Insecure Direct Object Reference.
+**Question:** Pada eksploitasi *IDOR*, server melakukan kesalahan karena gagal memvalidasi kecocokan antara parameter permintaan dokumen dengan pemilik asli dari objek tersebut (tanpa memeriksa *Session Cookie*). Apa kepanjangan dari akronim kerentanan IDOR tersebut?
+**Answer:** Insecure Direct Object Reference

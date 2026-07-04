@@ -39,7 +39,7 @@ Setelah menyelesaikan hands-on ini, kamu akan mampu:
 
 ### Langkah 1: Akses Kursus
 1. Login ke [freecodecamp.org](https://www.freecodecamp.org)
-2. ke **Back End Development and APIs** certification
+2. Arahkan ke **Back End Development and APIs** certification
 3. Buka bagian pertama: **Managing Packages with NPM**
 
 ### Langkah 2: Kerjakan Modul NPM

@@ -16,12 +16,12 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Mengeksekusi perintah terminal `ipconfig` atau `ifconfig` selalu akan menampilkan nomor IP Publik internet komputermu yang digunakan untuk peretasan ke luar dan mustahil memperlihatkan alamat IP Privat lokal komputermu.
+**Question:** Menjalankan perintah terminal `ipconfig` atau `ifconfig` selalu menampilkan nomor IP Public komputermu dan tidak akan memperlihatkan alamat IP Private lokalmu.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Apa nama instruksi dari konsol terminal (*Command Line*) yang difungsikan untuk mencecar paket pesan "Halo" secara sekuensial pada peladen target demi menguji interaksi koneksi?
+**Question:** Apa nama perintah pada terminal (*Command Line*) yang digunakan untuk mengirim paket ICMP (pesan "Halo") ke *server* target guna menguji konektivitas?
 **Answer:** Perintah ping.
 
 ### Q4

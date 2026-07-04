@@ -89,8 +89,8 @@ Maka hak aksesnya akan berubah menjadi: `-rw-------`. Ini adalah izin standar un
 
 Ambil selembar kertas atau buka notes, dan selesaikan translasi izin file berikut ini bolak-balik (Teks <-> Angka).
 
-1. Ubah tu ini menjadi 3 digit angka oktal: `rwxr-xr-x`
-2. Ubah tu ini menjadi 3 digit angka oktal: `rw-r--r--`
+1. Ubah teks ini menjadi 3 digit angka oktal: `rwxr-xr-x`
+2. Ubah teks ini menjadi 3 digit angka oktal: `rw-r--r--`
 3. Apa wujud teks (rwx) dari perintah ini: `chmod 777 rahasia.txt`
 4. Mengapa izin `777` dianggap sebagai "Dosa Besar" di dunia *cybersecurity*?
 

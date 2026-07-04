@@ -16,12 +16,12 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Protokol DHCP bertugas memastikan kelancaran jalan koneksi diagnostik dengan senantiasa menyiarkan paket permohonan "Halo" yang berjenis Echo Request ke luar jaringan.
+**Question:** Protokol DHCP bertugas memeriksa konektivitas jaringan dengan mengirimkan pesan "Halo" (*Echo Request*) ke komputer target.
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Aplikasi pelacak diagnostik jaringan (*terminal tool*) legendaris apakah yang mengandalkan sistem sirkulasi paket protokol kesehatan ICMP?
+**Question:** Aplikasi atau *command* diagnostik jaringan apakah yang menggunakan protokol ICMP untuk menguji konektivitas?
 **Answer:** ping (atau traceroute/tracert).
 
 ### Q4

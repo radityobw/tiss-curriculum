@@ -19,53 +19,53 @@
 
 ## 📝 Rekap Minggu Ini
 
-Minggu pemuncak pamungkas di pelataran *Forge* telah berlalu. Dirimu beralih dimensi mendapuk pemahaman Peretas *(OWASP Top 10)* guna mengenali kerentanan dan menyumbatnya paripurna:
+Minggu terakhir di Rank *Forge* telah selesai. Kamu telah beralih mempelajari perspektif *Attacker* (berdasarkan OWASP Top 10) untuk memahami kerentanan dan cara mencegahnya:
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
-| Day 1 | OWASP & SQLi | Bedah bongkar mekanisme *SQL Injection* lantas tameng Kueri Berparameter `?`. |
-| Day 2 | XSS & Sanitasi | Perkenalan trinitas varian *Stored, Reflected, DOM XSS* serta larangan penggunaan parameter `innerHTML`. |
-| Day 3 | IDOR & BAC | Keculasan eksploitasi akses parameter URL ID yang tidak disinkronkan dengan otorisasi klien (*Token*). |
-| Day 4 | Kelalaian Misconfig | Menyembunyikan gembok parameter brankas rahasia `.env`, membungkus bodi *headers HTTP* menggunakan `Helmet`, dan merem badai serangan menggunakan modul batas akses `Rate Limit`. |
+| Day 1 | OWASP & SQLi | Memahami mekanisme *SQL Injection* dan menggunakan *Parameterized Queries*. |
+| Day 2 | XSS & Sanitasi | Perkenalan varian *Stored, Reflected, DOM XSS* serta praktik sanitasi HTML. |
+| Day 3 | IDOR & BAC | Bahaya akses *parameter* ID yang tidak divalidasi terhadap otorisasi (*Token*) pengguna. |
+| Day 4 | Security Misconfig | Menyembunyikan rahasia dengan `.env`, mengamankan *header HTTP* dengan `Helmet`, dan membatasi *request* dengan `Rate Limit`. |
 
 ---
 
 ## 🧪 Hands-On Lab
 
 ### Prerequisites
-- Node.js terinstal utuh.
-- Editor kode beroperasi siap pakai.
-- Modul klien API *Postman*.
+- Node.js terinstal.
+- Code editor (VS Code, dll) siap pakai.
+- Aplikasi API Client seperti *Postman* atau *Insomnia*.
 
-### Misi Hari Ini: "Operasi Benteng Pertahanan Mutlak (Patching API)"
+### Misi Hari Ini: "Patching the API"
 
-Minggu lalu kamu telah mendirikan arsitektur *API CRUD & Login* dasar yang mengandalkan fungsionalisasi peladen sandi *Bcrypt*. Sayangnya, API minggu lalu masih menyimpan serpihan lubang kelemahan fatal jika diaudit keamanannya.
+Minggu lalu kamu telah membangun API *CRUD & Login* dasar. Sayangnya, API tersebut masih memiliki celah keamanan jika diaudit.
 
-Hari ini, dirimu dituntut menyematkan sulingan lapis baja komplit membalut utuh peladen arsitekturmu secara paripurna.
+Hari ini, kamu akan mempraktikkan cara mengamankan server secara menyeluruh berdasarkan materi minggu ini.
 
-### Step 1: Merakit Sarang Perisai Terakhir
+### Step 1: Persiapan Proyek
 
-1. Bentuk direktori `mkdir lab-secure-api` lalu masuki navigasinya: `cd lab-secure-api`.
-2. Absahkan inisiasi modul: `npm init -y`.
-3. Borong instalasi perisai komplit ekosistem Node:
+1. Buat direktori `mkdir lab-secure-api` lalu masuk: `cd lab-secure-api`.
+2. Inisialisasi NPM: `npm init -y`.
+3. Instal semua dependensi yang diperlukan:
 ```bash
-npm install express sqlite3 bcrypt dotenv helmet express-rate-limit
+npm install express sqlite3 dotenv helmet express-rate-limit
 ```
 
-### Step 2: Mengukir Kodingan Arsitektur Kebal (The Unbreakable Vault)
+### Step 2: Implementasi Keamanan Backend
 
-Siapkan 2 dokumen rahasia terpisah!
+Siapkan dua file berikut.
 **Dokumen 1 (`.env`)**
 ```text
-PORT_SERVER=8080
-SANG_RAHASIA=kunci_dewa_tiss_2026
+PORT=8080
+API_KEY=kunci_rahasia_tiss
 ```
 
 **Dokumen 2 (`server.js`)**
-Salin struktur koding benteng pelindungan mutakhir ini!
+Salin dan pelajari kode *backend* aman berikut ini:
 
 ```javascript
-// 1. Memanggil bala bantuan perlindungan require('dotenv').config(); // Ekstrak variabel lingkungan
+require('dotenv').config(); // Ekstrak variabel dari file .env
 const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -74,116 +74,127 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 
 // ===============================================
-// 2. ROMPI TAMENG GLOBAL (Middleware Keamanan)
+// 1. MIDDLEWARE KEAMANAN GLOBAL
 // ===============================================
-app.use(helmet()); // Tutupi ekspos versi peladen pada Header (Misconfig Patch)
+app.use(helmet()); // Mengamankan header HTTP
 app.use(express.json()); 
 
-// Rem pembatas serangan DDOS/Brute-force (Maksimal 5 serangan per tiap 15 menit)
-const penahanSerbuan = rateLimit({
- windowMs: 15 * 60 * 1000,
- max: 5,
- message: { pesan: "Peringatan! Indikasi Serangan Terdeteksi. Santai dulu 15 menit." }
+// Membatasi request untuk mencegah Brute-force / DDoS
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 menit
+  max: 5, // Batas maksimal 5 request per IP dalam 15 menit
+  message: { pesan: "Terlalu banyak request. Silakan coba lagi setelah 15 menit." }
 });
-app.use('/api/login', penahanSerbuan); 
+// Terapkan rate limit khusus untuk rute sensitif seperti login
+app.use('/api/login', limiter); 
 
 // ===============================================
-// 3. DATABASE AMAN (Penanganan SQLite)
+// 2. SETUP DATABASE (SQLite)
 // ===============================================
-const db = new sqlite3.Database('./brankas.db');
+const db = new sqlite3.Database('./secure-db.sqlite');
 db.serialize(() => {
- db.run("CREATE TABLE IF NOT EXISTS pasukan (id INTEGER PRIMARY KEY, nama TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, nama TEXT)");
 });
 
 // ===============================================
-// 4. RUTE TANGGUH (Parameterized Queries)
+// 3. ROUTE AMAN DENGAN PARAMETERIZED QUERIES
 // ===============================================
-app.post('/api/pasukan', (req, res) => {
- const namaAgen = req.body.nama;
- 
- // Cek kelalaian hampa atribut (Cegah pelaporan Error 500 nembus ke depan)
- if(!namaAgen) return res.status(400).json({pesan: "Error 400. Nama agen tidak didefinisikan!"});
+app.post('/api/users', (req, res) => {
+  const { nama } = req.body;
+  
+  // Validasi input
+  if (!nama) {
+    return res.status(400).json({ pesan: "Bad Request. Nama tidak boleh kosong!" });
+  }
 
- // TAMENG PENANGKAL SQL INJECTION: Murni eksploitasi parameter placeholder `?`
- const pelatukAman = "INSERT INTO pasukan (nama) VALUES (?)";
- db.run(pelatukAman, [namaAgen], function(err) {
- if(err) return res.status(500).json({pesan: "Galat Sistem Internal."}); // Jejak Stack trace disembunyikan
- res.status(201).json({pesan: "Data Agen baru sukses ditambahkan!"});
- });
+  // Mencegah SQL Injection dengan Parameterized Query (?)
+  const safeQuery = "INSERT INTO users (nama) VALUES (?)";
+  db.run(safeQuery, [nama], function(err) {
+    if (err) {
+      // Menyembunyikan pesan error internal (Stack trace) dari klien
+      return res.status(500).json({ pesan: "Terjadi kesalahan pada server." }); 
+    }
+    res.status(201).json({ pesan: "Data user berhasil ditambahkan!" });
+  });
 });
 
-// Menyalakan fungsi gerbang melirik variabel.env (Atau port default 3000 jika absen)
-const PORT = process.env.PORT_SERVER || 3000;
-app.listen(PORT, () => console.log(`[BENTENG PELADEN] Beroperasi utuh di Port ${PORT}`));
+// ===============================================
+// 4. JALANKAN SERVER
+// ===============================================
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`[SECURE SERVER] Berjalan di port ${PORT}`));
 ```
 
-### Step 3: Pengujian Penetrasi Keras
+### Step 3: Pengujian
 
-1. Nyalakan server `node server.js`.
-2. Gunakan klien penembak *Postman*, berondong serangan metode POST tanpa henti ke lajur rute `http://localhost:8080/api/login` sebanyak 6 kali berturut-turut laksana serangan simulasi pelacak *Brute-Force*.
-3. Pada transmisi serangan serangan ke-6, server takkan tumbang, ia lantas mengamankan akses dengan membalas kode penolakan *429 Too Many Requests* dan memutus permintaan dari entitas peretas tersebut! Benteng *Rate Limit* berfungsi secara absolut.
+1. Jalankan server: `node server.js`.
+2. Gunakan *Postman* untuk mengirim *request POST* ke `http://localhost:8080/api/login`. 
+3. Lakukan pengiriman data (meskipun *endpoint* ini belum ada *logic*-nya, *middleware* tetap berjalan) berulang-ulang dengan cepat.
+4. Pada request ke-6, server akan menolak permintaan dengan status `429 Too Many Requests`! Ini membuktikan bahwa tameng *Rate Limit* berfungsi dengan baik.
 
 ---
 
 ## 🎯 Weekly Mission
 
-### Misi: "Manifesto Keamanan (Security Audit Report)"
+### Misi: "Security Audit Report"
 
-**Deskripsi:** Seorang arsitek pengembang (*Yellow Team / Blue Team*) sejati tidak sekadar handal merakit arsitektur kode peladen, namun juga dituntut mumpuni merilis dokumen pertanggungjawaban audit kerentanan aplikasi.
+**Deskripsi:** Seorang *developer* atau *security engineer* yang baik harus mampu mendokumentasikan temuan audit keamanan.
 
-**Tugas Mandiri:** Buat 1 fail log berekstensi Markdown (berikan penamaan spesifik `AUDIT_REPORT.md`). Di dalamnya, rangkum secara sistematis 3 kategori bahaya kerentanan web masa kini (*Pilih secara leluasa 3 pemetaan kerentanan dari daftar modul materi OWASP yang kau pelajari minggu ini, misal Injeksi, IDOR, XSS, ataupun Data Exposure*). Susun sebuah representasi format Tabel Markdown ringkas nan padat yang mengkomparasikan: 
-1) Nama Kerentanan, 2) Bahaya dan Konsekuensinya Jika Tereksekusi, 3) Metodologi Solusi Penangkal Keamanannya (seperti kueri parameter `?`).
+**Tugas Mandiri:** Buat 1 file Markdown dengan nama `AUDIT_REPORT.md`. Rangkum 3 kategori kerentanan web yang telah dipelajari minggu ini (misal: SQL Injection, XSS, dan IDOR). Susun rangkuman tersebut dalam format **Tabel Markdown** yang mencakup:
+1. Nama Kerentanan.
+2. Dampak dan Bahayanya.
+3. Solusi Pencegahannya (misal: *Parameterized Queries* untuk SQLi).
 
 **Deliverables:**
-1. Satu fail dokumen `AUDIT_REPORT.md` terangkai sempurna laksana penyusun naskah profesional arsitek aplikasi.
+1. Satu file `AUDIT_REPORT.md` yang ditulis dengan rapi dan profesional.
 
 **Kriteria Sukses:**
-- [ ] Tersedia struktural Tabel *Markdown* audit klasifikasi kerentanan di dalamnya.
-- [ ] Mencakup paparan komprehensif atas tiga penjabaran ancaman beserta pembedahan teknik solusinya.
+- [ ] Terdapat tabel Markdown yang berisi klasifikasi 3 kerentanan.
+- [ ] Tabel mencakup penjelasan kerentanan, dampaknya, dan solusi pencegahannya dengan tepat.
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Mengingat sandi perlindungan peladen membutuhkan pengikatan referensi konfigurasi, modul ekstensi NPM apakah yang perlu diinstal demi menghimpun selimut ekstrak parameter `.env`?</summary>
+<summary>❓ [MUDAH] Modul NPM apa yang digunakan untuk membaca variabel dari file <i>.env</i>?</summary>
 
-**Jawaban:** Paket peranti modul instalasi `dotenv`.
+**Jawaban:** `dotenv`.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Dari bongkahan parameter ancaman *OWASP*, tipe celah kerentanan fatal otorisasi manakah yang dapat dipicu hanya bermodalkan memodifikasi secara paksa serpihan alamat embel argumen parameter angka atribut *ID* pada URL demi meretas masuk data spesifik milik pengunjung lain?</summary>
+<summary>❓ [SEDANG] Serangan apa yang bisa dicegah dengan memastikan parameter ID pada URL divalidasi dan dicocokkan dengan data otorisasi (Token) pengguna yang sedang login?</summary>
 
-**Jawaban:** Eksploitasi kerentanan *IDOR* (*Insecure Direct Object Reference*) yang berinduk pada kategori ancaman peretasan *Broken Access Control*.
+**Jawaban:** *IDOR (Insecure Direct Object Reference)* / *Broken Access Control*.
 </details>
 
 <details>
-<summary>❓ [SEDANG] serabut pencegat operasi lapisan antarmuka peladen (*Middleware*) tameng fungsi spesifik klasifikasi apa yang niscaya dicekokkan demi meregulasi membatasi menghalau laju badai transmisi eksploitasi serangan massal tipe *DDoS* maupun tebakan instan *Brute-Force Password* secara membabi-buta tanpa rem?</summary>
+<summary>❓ [SEDANG] Middleware apa yang digunakan untuk mencegah serangan <i>Brute-Force</i> pada endpoint <i>/api/login</i> dengan membatasi jumlah *request*?</summary>
 
-**Jawaban:** fungsi pembatas jangkauan modul `rateLimit` (berasal dari integrasi ekstensi *middleware* dependensi arsitektur paket `express-rate-limit`).
+**Jawaban:** `express-rate-limit`.
 </details>
 
 <details>
-<summary>❓ [SULIT] Jelaskan benang merah argumen tabrakan parameter pencegahan celah infeksi *SQL Injection* di mana antarmuka *Backend Node.js* diwajibkan menyertakan penyusupan sintaks simbol atribut penulisan kueri parameter `?` pada sirkulasi ekstensi pelaksanaan `db.run`!</summary>
+<summary>❓ [SULIT] Bagaimana Parameterized Queries (penggunaan tanda <code>?</code> pada SQLite) dapat mencegah SQL Injection?</summary>
 
-**Jawaban:** Atribut parameter pelambangan simbol `?` berperan krusial berlaku laksana deklarasi wadah penyaringan parameter (Kueri Berparameter / *Parameterized Queries*). Logika metode operasi tersebut wewenang penafsiran dan merangkai struktur teks modifikasi input klien secara mutlak ke komponen utusan mesin *Database Driver*. Komponen *Driver* database lantas secara murni mensterilkan penanganan bongkahan masukan string sehingga terlepas meski *Hacker* mengetik barisan skrip utuh peretasan manipulasi kueri fungsi *SQL* modifikasi ganda silang (semisal sintaks kondisi eksploitasi parameter klausa Boolean *OR 1=1*), peramban eksekutor Database bakal tetap memandangnya secara pasif terisolasi layaknya rentetan bodi teks polos belaka serta mutlak menolak mengkompilasinya / mengartikannya / urung mengeksekusinya sebagai bentuk struktur fungsi aktif baris komando!
+**Jawaban:** Parameter `?` memastikan bahwa *driver database* memperlakukan input pengguna semata-mata sebagai "data", bukan sebagai "perintah SQL". Sehingga meskipun pengguna memasukkan *payload* seperti `' OR 1=1 --`, *database* tidak akan mengeksekusinya, melainkan hanya menyimpannya sebagai teks biasa.
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya sukses mengemas serta mengkarantina payload Kunci sakti dalam deklarasi `.env`
-- [ ] Saya telah merakit terusan peranti integrasi tameng perlindungan informasi arsitektur HTTP *Helmet.js*
-- [ ] Saya berhasil menerjunkan modul peredam rute akses *Rate Limiting* untuk mencekik laju eksploitasi injeksi transmisi *Brute-Force*
-- [ ] Saya kelar menuntaskan rekam uji coba pengujian simulasi penetrasi rute pelacak pasca arsitektur perlindungan diaplikasikan (*Hands-On Lab API Security Testing*)
-- [ ] Saya sukses menuntaskan kompilasi parameter perumusan tabel pembedahan 3 kerentanan OWASP untuk submisi laporan modul dokumen evaluasi (*AUDIT_REPORT.md*)
+- [ ] Saya telah berhasil menggunakan `.env` untuk menyimpan konfigurasi port.
+- [ ] Saya memahami implementasi *Helmet.js* untuk mengamankan *header HTTP*.
+- [ ] Saya telah menerapkan *Rate Limiting* untuk mencegah *Brute-Force*.
+- [ ] Saya telah menguji *rate limit* menggunakan Postman pada *Hands-On Lab*.
+- [ ] Saya telah menyelesaikan tugas `AUDIT_REPORT.md`.
 
 ---
 
 ## 💬 Diskusi Minggu Ini
 
-1. Pasca sebulan penuh dirimu secara kontinu mengukir pengalaman merancang simulasi perakitan arsitektur infrastruktur peladen rahasia terpusat *Backend Server* berhimpit tameng pengamanan di ekosistem hierarki peringkat *Forge Rank* ini, apakah secara personal benak nalurimu mendapati gairah logik yang lebih terpacu dan bergolak girang tertuju pada sirkulasi seni penyerangan parameter bedah eksploitasi pembongkaran retas celah penyerangan arsitektur keamanan fungsi aplikasi (*Taktik Offensive Red Team Pen Tester*), ataukah dirimu lebih menikmati kecenderungan parameter kepuasan menata penulisan ketahanan perakitan fungsi modul sirkulasi perbaikan serta membentengi keamanan perisai rancangan struktural *Backend* (*Metodologi Defensive Yellow/Blue Team*)?
+1. Setelah sebulan penuh fokus mempelajari pengembangan dan pengamanan *Backend* di *Forge Rank*, apakah kamu lebih tertarik pada perancangan pertahanan sistem (*Defensive/Blue Team/Developer*) atau kamu justru semakin penasaran tentang bagaimana cara membongkar dan menyerang sistem (*Offensive/Red Team*)?
 
 ---
 
@@ -191,16 +202,16 @@ app.listen(PORT, () => console.log(`[BENTENG PELADEN] Beroperasi utuh di Port ${
 
 ```
 ┌─────────────────────────────────────┐
-│ │
-│ 🎖️ THE FORGEMASTER │
-│ RANK UP! FORGE COMPLETE │
-│ "Your code is a fortress. │
-│ Your logic is unbreakable." │
-│ │
+│                                     │
+│ 🎖️ THE FORGEMASTER                  │
+│ RANK UP! FORGE COMPLETE             │
+│ "Your code is a fortress.           │
+│ Your logic is unbreakable."         │
+│                                     │
 └─────────────────────────────────────┘
 ```
 
-Selamat! Kau berhasil menamatkan rute kurikulum arsitektur sistem infrastruktur peladen *FORGE Rank*—fase terpanjang nan terpadat yang melatih kapasitas logik komputasimu merancang kerangka benteng aplikasi peranti lunak! Sekarang tiba masanya untuk merancang taktik spesifik membakar arsitektur benteng sistem pertahanan peladen rentan tersebut!
+Selamat! Kamu telah menyelesaikan *FORGE Rank*, fase yang berfokus pada pembangunan *backend* dan keamanan aplikasi. Mulai minggu depan, kita akan beralih ke pola pikir penyerang!
 
 ---
 
@@ -208,7 +219,8 @@ Selamat! Kau berhasil menamatkan rute kurikulum arsitektur sistem infrastruktur 
 
 **Minggu 15: BREACH RANK - Web Penetration Testing (Bagian 1)**
 
-Masa-masa menyusun koding murni perakitan infrastruktur pengembang (*Yellow Team*) pada zona nyaman arsitektur di pelataran lingkungan aman telah tuntas dilewati. Selamat mendarat di teritori kelam **Rank Breach (Sabuk Merah)**! Saatnya mendedikasikan membanting pergeseran parameter fungsi otak secara radikal menyelaraskan nalar insting menjadi profil agresif spesialis Peretas Aplikasi Klien tulen *(Insting Red Team Hacker Pen Tester Web Exploitation Vulnerability App Penetration Testing Component Methodology)*! Kita lantas bakal mengistirahatkan rutinitas penyusunan koding arsitektur penulisan infrastruktur skrip peladen. Bermodalkan penyediaan persenjataan ganda fungsi pisau Swiss-Army bedah peramban mutakhir peretas industri mutlak global bertitel instalasi fungsi *Burp Suite Network Interceptor Proxy Tool Web Exploitation API Test Network Component Test Platform Testing Form System Hacker Data Node Network HTTP Method Hacking Architecture Security*, dirimu siap meluncur serta diterjunkan mencekik memanipulasi merancang fungsi menahan modifikasi transmisi paket hantaran pertukaran payload arsitektur peramban jaringan *HTTP* seraya meraba eksploitasi menginfeksi menjamah letak kerentanan arsitektur situs operasi kustom parameter uji coba kompetisi retas flag simulasi *(Capture The Flag Vulnerability Cyber Simulation Challenge Vulnerable Site Hacking System Test Web Logic Network API Request Manipulation Interface)*!
+Fase membangun (*Yellow Team*) telah selesai. Selamat datang di **Rank Breach (Sabuk Merah)**! 
+Mulai minggu depan, kita akan berganti peran menjadi *Red Team* (*Hacker/Penetration Tester*). Kita tidak lagi menyusun kode server, melainkan akan menggunakan *tools* standar industri seperti **Burp Suite** untuk melakukan intersep (mencegat), memanipulasi *request* HTTP, dan mencari celah keamanan nyata melalui simulasi *Capture The Flag* (CTF). 
 
 > 🚀 *"The builder rests. The destroyer awakens."*
 

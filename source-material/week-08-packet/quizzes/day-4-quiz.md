@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Jika dalam pengecekan latar sistem kamu melacak satu peranti lunak ber-PID `1337` yang bertabiat bandel memberontak dari sistem pemberhentian paksa standar, komando palu manakah di ranah perizinan Kernel yang sangat tak mampu ditampiknya sama sekali?
+**Question:** Jika kamu menemukan sebuah program dengan PID `1337` yang *hang* dan menolak dimatikan dengan cara biasa, perintah apa yang harus digunakan untuk mematikannya secara paksa?
 - [ ] A. `exit 1337`
 - [ ] B. `sudo stop 1337`
 - [ ] C. `purge 1337`
@@ -16,20 +16,20 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Secara teknis penyajian *interface*, peranti `ps aux` menampilkan sirkulasi deretan data statistik performa secara dinamis tanpa jeda secara *Real-Time*, kontradiktif dengan perintah pemanggil layar `top` yang menampikan pindaian cetak tak bergerak layaknya *Screenshot*.
+**Question:** Perintah `ps aux` menampilkan data proses secara *Real-Time* (terus bergerak), sedangkan `top` hanya menampilkan data statis seperti sebuah *screenshot* (tak bergerak).
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Kepanjangan hakikat apakah singkatan tiga huruf PID yang sangat dijunjung sistem untuk membubuhkan pelat nomor unik ke segenap deretan alur aplikasi berjalan?
+**Question:** Apa kepanjangan dari PID (nomor identitas unik yang diberikan sistem ke setiap program yang berjalan)?
 **Answer:** Process ID (Process Identifier).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apabila manajer kelola (*systemctl*) memegang amanat memberhentikan hingga menghidupkan *service*, komando lanjutan pamungkas apa yang merestui supaya latar tertentu diprogram otomatis mengawali hidupnya ketika perangkat baru saja direstart perdana?
+**Question:** Perintah/opsi `systemctl` apa yang digunakan agar suatu *service* (misal: *web server*) bisa menyala otomatis saat komputer baru saja di-restart?
 **Answer:** systemctl enable (atau `enable`).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Demi membebaskan belenggu layar pantau taktis (yang terus bergerak dinamis) pada terminal `top` agar kursor pengetikan kembali bebas pulih (keluar), apa abjad tombol kunci yang lazim ditekankan?
+**Question:** Tombol apa yang harus ditekan di *keyboard* untuk keluar dari pantauan perintah `top` dan kembali ke *prompt* terminal biasa?
 **Answer:** Huruf q (berarti *Quit*).

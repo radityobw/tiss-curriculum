@@ -10,40 +10,40 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** urgensi investigasi pasca-insiden (Digital Forensics) dalam proses penegakan hukum dan audit kepatuhan korporasi.
-2. **Menerapkan** kaidah penanganan parameter integritas pelacakan barang bukti (*Chain of Custody*).
-3. **Mengerti** proses penciptaan salinan identik perangkat (Kloning *Forensic Imaging / Hashing*).
+1. **Memahami** urgensi investigasi pasca-insiden (Digital Forensics) dalam proses penegakan hukum.
+2. **Menerapkan** kaidah integritas barang bukti elektronik (*Chain of Custody*).
+3. **Mengerti** proses penciptaan salinan identik dari perangkat (*Forensic Imaging* & *Hashing*).
 
 ---
 
 ## 📖 Materi Inti
 
-### Metodologi Bukti Sistem Digital: Digital Forensics
+### Digital Forensics (Forensik Digital)
 
-Meskipun sistem agregasi pengawasan seperti SIEM memberikan visibilitas aktivitas jaringan yang kuat, representasi notifikasi peringatannya belum mencukupi standar regulasi (Compliance) untuk disajikan secara mutlak di muka meja persidangan peradilan. Ketika insiden menyangkut kerugian finansial material, organisasi harus beralih menuju metode formalitas pembuktian berstandar penegak hukum, yang direalisasikan pada disiplin ilmu: **Digital Forensics (Forensik Digital)**.
+Meskipun sistem pemantauan seperti SIEM memberikan visibilitas jaringan yang kuat, log peringatan (*Alerts*) saja belum cukup kuat untuk dijadikan alat bukti sah di pengadilan. Ketika insiden siber menyebabkan kerugian finansial atau pencurian data, perusahaan harus beralih ke metode investigasi formal berstandar hukum yang disebut **Digital Forensics**.
 
-Digital Forensics memuat serangkaian proses disiplin ilmu yang terstandarisasi untuk mengamankan (*Preserve*), mengidentifikasi (*Identify*), mengekstraksi (*Extract*), dan mendokumentasikan *(Document)* parameter bukti material komponen elektronik (misal *Hard Disk* atau blok Memory RAM peladen peretas), dengan tujuan utama mempertahankan integritas bukti digital (*Admissibility of Evidence*).
+Digital Forensics adalah serangkaian prosedur terstandarisasi untuk mengamankan (*Preserve*), mengidentifikasi (*Identify*), mengekstraksi (*Extract*), dan mendokumentasikan *(Document)* bukti elektronik (seperti *Hard Disk*, *Flashdisk*, atau Memori RAM komputer), dengan tujuan utama mempertahankan keabsahan barang bukti tersebut di mata hukum (*Admissibility of Evidence*).
 
-### Rantai Kepatuhan Integritas Barang Bukti: Chain of Custody
+### Integritas Barang Bukti: Chain of Custody
 
-Dalam ekosistem pelaporan audit dan hukum, keabsahan barang bukti dapat dengan seketika digugurkan apabila pembela pihak kompromi membuktikan adanya kelalaian prosedur pencatatan fisik sehingga menumbuhkan indikasi bahwa manipulasi barang bukti digital (*Data Tampering*) telah dilakukan selama masa penyitaan.
+Dalam persidangan, keabsahan barang bukti elektronik dapat dengan mudah digugurkan jika pengacara lawan bisa membuktikan adanya celah kelalaian selama penyimpanan bukti, yang membuka peluang terjadinya manipulasi data (*Data Tampering*).
 
-Sebagai tanggapan strategis mitigasi, spesialis forensik wajib mendayagunakan parameter dokumentasi historis log audit perlindungan berwujud **Chain of Custody (Rantai Kustodi)**.
-Dokumen administrasi kontrol ini menyimpan kronologis pendataan mengenai prosedur penanganan bukti:
-- Konfirmasi penanggalan (*Timestamp*) barang bukti (Contoh unit: *Laptop*).
-- Indentifikasi personel spesifik (ID spesialis) yang menyentuh, mengoperasikan, memproses akses penyitaan material komputer, serta pihak yang membedah sistem terkait.
-- Penjelasan alur fisik pengamanan pelacakan penyimpanan barang bukti (Sistem Brankas keamanan).
-Bila terdeteksi indikasi ketiadaan pemantauan (*Gap*) dalam sistem penjagaan alur kronologi pencatatan pemindahan operasi (menandakan *Chain of Custody* telah putus), maka status barang bukti otomatis kehilangan bobot integritas legal hukum.
+Untuk mencegah hal ini, spesialis forensik wajib mendokumentasikan seluruh perpindahan barang bukti menggunakan **Chain of Custody (Rantai Kustodi)**.
+Dokumen hukum ini mencatat kronologi fisik bukti:
+- Tanggal dan waktu pasti (*Timestamp*) saat bukti (misal: Laptop tersangka) disita.
+- Identitas setiap orang yang menyentuh, membawa, atau menganalisis barang bukti tersebut.
+- Lokasi penyimpanan barang bukti (misal: brankas khusus).
+Jika ada kekosongan waktu (*Gap*) yang tidak tercatat, *Chain of Custody* dianggap putus dan barang bukti otomatis kehilangan integritas legalnya.
 
-### Modifikasi Protektif Penyitaan Data: Forensic Imaging & Hashing
+### Modifikasi Protektif: Forensic Imaging & Hashing
 
-Di dunia forensik tingkat instansi, larangan terpenting yang tak bisa ditolerir analis adalah: **DILARANG MENGAKSES DAN MENYALAKAN KOMPUTER BARANG BUKTI SECARA LANGSUNG!**
+Dalam forensik digital, ada satu aturan mutlak: **DILARANG MENGAKSES ATAU MENYALAKAN KOMPUTER BARANG BUKTI SECARA LANGSUNG!**
 
-Prosedur sekadar menyalakan sistem mesin (*Booting OS*) bakal secara otomatis memodifikasi ribuan rekam metadata parameter (Timestamps), menimpa pemblokiran klaster alokasi blok penyimpan operasi data log perangkat yang secara hukum bakal mendeklarasikan manipulasi dan kerusakan status material bukti.
-Metodologi forensik mutlak yang sah adalah:
-1. **Perangkat Blokir Akses Intervensi (Write Blocker):** Implementasikan jembatan *Write Blocker* berwujud perangkat *Hardware* sebelum peladen HDD tersambung menuju workstation PC analis forensik, menggaransi bahwa pencegahan lalu lintas eksekusi perintah perombakan tulis (Write Command) 100% diputus pada alat tersebut.
-2. **Kloning Bit-Level (Forensic Imaging):** Menginisiasi proses penggandaan keseluruhan media tingkat duplikasi struktur arsitektur murni *Bit-stream copy* tanpa intervensi kompresi hilang (*Bit-by-bit Clone*, biasanya berformat *.E01* / *.dd*). Pembedahan forensik di tingkat investigasi mutlak HANYA bisa diselenggarakan penganalisis di berkas citra salinan kloning ini.
-3. **Sistem Integritas Data (Hashing):** Mengukuhkan keabsahan teknis bahwa arsip salinan salinan berkas pelacakan identik sempurna berhadapan sumber aslinya mendayagunakan perhitungan nilai arsitektur algoritma *Hash (MD5 / SHA-256)*. Berkas salinan yang mempunyai pencocokan (Match) hash terhadap alat peladen merupakan garansi keamanan mutlak persidangan valid integritas bukti.
+Menyalakan sistem operasi (*Booting*) secara otomatis akan merubah ribuan metadata *Timestamp* di dalam sistem, menulis file *log* baru, dan menghapus memori *RAM*, yang secara hukum berarti Anda telah "merusak" barang bukti.
+Prosedur forensik yang sah meliputi:
+1. **Write Blocker:** Gunakan perangkat *Hardware Write Blocker* sebagai jembatan antara *Hard disk* tersangka dan komputer Analis. Alat ini memastikan tidak ada satupun perintah tulis (*Write Command*) yang bisa masuk ke *Hard disk* bukti.
+2. **Forensic Imaging:** Analis tidak menyelidiki *Hard disk* asli, melainkan membuat salinan identik tingkat bit (*Bit-by-bit Clone*) dari perangkat tersebut tanpa kompresi (biasanya berformat `.E01` atau `.dd`). Penyelidikan hanya boleh dilakukan pada *file* salinan (*Image*) ini.
+3. **Hashing (Integritas Data):** Untuk membuktikan di pengadilan bahwa salinan (*Image*) 100% identik dengan *Hard disk* aslinya, analis menghitung nilai **Hash** (menggunakan algoritma *MD5* atau *SHA-256*) dari keduanya. Jika nilai *Hash* antara sumber asli dan salinan cocok (*Match*), maka salinan tersebut diakui sah secara hukum.
 
 ---
 
@@ -51,57 +51,58 @@ Metodologi forensik mutlak yang sah adalah:
 
 **Durasi**: ~10 menit
 
-Mari merancang simulasi konseptual arsitektur integritas forensik!
+Mari merancang simulasi konsep integritas forensik!
 
-1. Anda bertugas mengevaluasi insiden sebagai spesialis forensik. Tim insiden baru saja mengakuisisi satu blok peladen peretas *Hard Disk Drive (HDD)* 1TB terkait peretasan infrastruktur.
-2. Berpedoman pada langkah SOP keamanan standar pelacakan, analis menjalankan metode algoritma kriptografi validasi **SHA-256** ke unit sumber material HDD tersebut, lantas mengonfirmasi nilai pencetakan: `a1b2c3d4e5...`.
-3. Pekerjaan dilanjutkan dengan memproses penyalinan eksekusi *Forensic Imaging* menuju sistem instalasi klaster *Lab Server*. Sehari kemudian, Anda memproses ulang eksekusi arsitektur algoritma perhitungan hash untuk file arsip *Image* hasil duplikasi tersebut.
-4. *Pendeteksian Anomali :* Penganalisis menginspeksi hasil nilai keluaran *Hash* dari file rekaman *Image* tersebut, di mana angka struktural menunjukkan inkonsistensi keluaran nilai: `f9e8d7c6b5...`.
-5. **Kesimpulan Validasi Spesialis Forensik:** Terdapat indikasi modifikasi (Korupsi arsitektur data)! Kegagalan integritas parameter ini (*Hash Mismatch*) menyimpulkan indikasi kemungkinan terjadinya interferensi fungsi kloning tak sempurna maupun terindikasi pelanggaran tanpa modifikasi pembukaan data *Image* tanpa pencegah. Kegagalan parameter ini membatalkan legalitas data sebagai barang material persidangan.
+1. **Skenario:** Anda bertugas sebagai spesialis forensik. Tim baru saja menyita *Hard Disk Drive (HDD)* 1TB milik tersangka peretas.
+2. **Langkah 1 (Hashing Sumber):** Berdasarkan SOP, Anda segera menghitung nilai *Hash SHA-256* dari HDD asli tersebut, dan mendapatkan hasil: `a1b2c3d4e5...`.
+3. **Langkah 2 (Imaging):** Anda melakukan duplikasi (*Forensic Imaging*) dari HDD tersebut untuk membuat *file* `.E01`.
+4. **Langkah 3 (Verifikasi):** Keesokan harinya, Anda menghitung nilai *Hash* dari *file* duplikat (`.E01`) tersebut.
+5. **Pendeteksian Anomali:** Hasil *Hash* dari *file* salinan ternyata berbeda, yaitu: `f9e8d7c6b5...`.
+6. **Kesimpulan Forensik:** Terdapat indikasi kerusakan atau perubahan data (*Hash Mismatch*)! Hal ini bisa disebabkan oleh alat *Imaging* yang cacat, atau prosedur penyalinan yang tidak menggunakan *Write Blocker*. Salinan data ini otomatis batal demi hukum dan tidak bisa digunakan di persidangan.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Dalam regulasi pelacakan, berkas log pelaporan kronologi pengawasan yang mendokumentasikan log aktivitas mobilitas alat material bukti elektronik keamanan di sistem hukum penyitaan agar tak dianulir legitimasinya disebut?</summary>
+<summary>❓ Dalam investigasi siber, apa nama dokumen yang mencatat riwayat pemindahan fisik barang bukti elektronik secara kronologis agar legalitasnya di pengadilan tidak dibatalkan?</summary>
 
-**Jawaban:** Pengawasan *Chain of Custody (Rantai Kustodi)*.
+**Jawaban:** *Chain of Custody* (Rantai Kustodi).
 </details>
 
 <details>
-<summary>❓ Pada eksekusi pengerahan operasi lapangan (*Incident Response*), mengapa tindakan menyalakan sistem secara pasca penyitaan komputer target secara berlebihan tidak direkomendasikan prosedur spesialis analis forensik?</summary>
+<summary>❓ Mengapa spesialis forensik dilarang keras untuk menyalakan langsung komputer tersangka (*Booting OS*) setelah penyitaan dilakukan?</summary>
 
-**Jawaban:** Operasi menyalakan perangkat OS *(Booting)* secara inheren otomatis melaksanakan proses baca-tulis log *(Write Process)*, mengubah sistem metadata tanggal/waktu arsip (*Timestamp Modification*), serta menimpa sistem log file RAM perangkat operasi, di mana intervensi struktur material ini membatalkan legitimasi integritas status perangkat hukum.
+**Jawaban:** Proses *Booting* akan otomatis melakukan aktivitas penulisan (*Write*) ke dalam media penyimpanan, yang merubah metadata *Timestamp* dan struktur *file* sistem. Perubahan sekecil apapun pada sumber asli akan membatalkan integritas barang bukti secara hukum.
 </details>
 
 <details>
-<summary>❓ Membahas standar perlakuan duplikasi forensik, fungsi analitis kriptografi pelacak manakah (seperti algoritma <i>SHA-256</i>) yang senantiasa diproyeksikan berperan menjamin stempel integritas file bayangan arsip pelacak (Forensic Image) tak termodifikasi parameter data aslinya?</summary>
+<summary>❓ Algoritma kriptografi apa (contohnya MD5/SHA-256) yang wajib digunakan untuk memverifikasi bahwa salinan forensik (<i>Image</i>) 100% identik dengan barang bukti aslinya?</summary>
 
-**Jawaban:** Penghitungan integritas *Hashing (Hash Calculation / Fungsi Algoritma Checksum)*.
+**Jawaban:** Hashing.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami pengerahan standarisasi legalitas integritas *Digital Forensics*.
-- [ ] Saya memahami implementasi formasi log pengawasan kronologis kelola pelacakan *Chain of Custody*.
-- [ ] Saya mengetahui batasan krusial SOP penyitaan terhadap boot sistem perangkat.
-- [ ] Saya paham konsep metode duplikasi pendataan arsitektur operasi integritas *Forensic Imaging/Hashing*.
+- [ ] Saya memahami pentingnya *Digital Forensics* dalam penegakan hukum.
+- [ ] Saya mengetahui fungsi dokumen *Chain of Custody*.
+- [ ] Saya memahami alasan tidak boleh menyalakan langsung (*booting*) barang bukti elektronik.
+- [ ] Saya mengerti fungsi *Write Blocker*, *Forensic Imaging*, dan validasi *Hashing*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [NIST: Guide to Integrating Forensic Techniques](https://csrc.nist.gov/publications/detail/sp/800-86/final) — panduan referensi standar arsitektur operasi instansi *NIST* pelacak taktik forensik sistem korporasi operasi dunia.
+- [NIST: Guide to Integrating Forensic Techniques](https://csrc.nist.gov/publications/detail/sp/800-86/final) — Panduan resmi dari *NIST* (National Institute of Standards and Technology) mengenai standar prosedur penanganan insiden forensik.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Memory & Disk Forensics** — Setelah merampungkan prosedur pendataan log kloning perlindungan berkas bayangan *Forensic Imaging*, rutinitas beralih menelusuri penampang ekstraksi arsitektur *Disk Forensics* (pemulihan direktori bekas hapusan) dan pembedahan ekstraksi *Memory Forensics (RAM)* menggunakan perangkat infrastruktur analitikal perangkat perlindungan log *Volatility* guna menarik kata sandi yang disembunyikan peretas!
+**Day 4: Memory & Disk Forensics** — Setelah mengamankan salinan *Image*, langkah selanjutnya adalah membedah isinya! Besok kita akan mempelajari investigasi media penyimpanan (*Disk Forensics*) untuk mencari *file* yang sudah dihapus, serta *Memory Forensics* menggunakan alat **Volatility** untuk mengekstrak data dari memori RAM (seperti *password* yang belum sempat tersimpan ke *hard disk*).
 
 ---
 

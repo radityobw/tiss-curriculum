@@ -82,7 +82,7 @@ Buka file `cipher-final-mission.md` yang baru kamu buat, lalu isi dengan format 
 **Talk Title**: DEF CON 23 - Jayson E. Street (Steal Everything...)
 
 **Executive Summary (in English):**
-[Tulis 1-2 paragraf DALAM BAHASA INGGRIS yang merangkum apa yang dilakukan Jayson di video 10 menit tersebut. Gunakan Grammarly/Spellchecker jika perlu, tapi JANGAN pakai Google Translate full dari Indo! Cobalah berlatih merangkai kalimat sendiri].
+[Tulis 1-2 paragraf DALAM BAHASA INGGRIS yang merangkum apa yang dilakukan Jayson di video 10 menit tersebut. Gunakan Grammarly/Spellchecker jika perlu, tapi JANGAN pakai Google Translate full dari Bahasa Indonesia! Cobalah berlatih merangkai kalimat sendiri].
 
 **Key Takeaways (in English):**
 1. [Poin penting 1 yang kamu pelajari dari video]

@@ -39,9 +39,9 @@ Seluruh bidang keamanan siber dibangun di atas tiga prinsip fundamental yang dik
 |---------|------|-------------------|--------------------| 
 | **Confidentiality** | Data hanya bisa diakses oleh pihak berwenang | Data pribadi mahasiswa bocor ke publik | Enkripsi, access control, MFA |
 | **Integrity** | Data tidak bisa diubah tanpa izin | Nilai mahasiswa diubah oleh hacker | Hashing, digital signatures, checksums |
-| **Availability** | Sistem tersedia kapan pun dibutuhkan | SIAKAD down saat KRS karena DDoS | Redundancy, load balancing, backup |
+| **Availability** | Sistem tersedia kapan pun dibutuhkan | SIAKANG down saat KRS karena DDoS | Redundancy, load balancing, backup |
 
-> 💡 **Analogi kampus**: **Confidentiality** = hanya kamu yang bisa lihat transkrip nilaimu. **Integrity** = tidak ada yang bisa mengubah nilaimu secara diam-diam. **Availability** = SIAKAD bisa diakses kapan saja, termasuk saat KRS-an.
+> 💡 **Analogi kampus**: **Confidentiality** = hanya kamu yang bisa lihat transkrip nilaimu. **Integrity** = tidak ada yang bisa mengubah nilaimu secara diam-diam. **Availability** = SIAKANG bisa diakses kapan saja, termasuk saat KRS-an.
 
 ### Setiap Serangan Menyerang Minimal 1 Pilar
 

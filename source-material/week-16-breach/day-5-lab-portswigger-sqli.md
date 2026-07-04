@@ -19,14 +19,14 @@
 
 ## 📝 Rekap Minggu Ini
 
-Kapasitas teknis eksploitasi peretasan (*Red Team Exploitation*) Anda telah diuji minggu ini dengan membedah kelemahan infrastruktur basis data target:
+Kemampuan eksploitasi kamu telah diuji minggu ini dengan membedah berbagai kelemahan pada *database* target:
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
 | Day 1 | SQLi: UNION-based | Menggabungkan tabel menggunakan *UNION SELECT* dan mendeteksi jumlah kolom menggunakan *ORDER BY*. |
-| Day 2 | SQLi: Blind (Boolean & Time) | Melakukan injeksi SQL tanpa tampilan error, menggunakan respon lambat peladen untuk mengekstrak data (*Time-based SQLi*). |
-| Day 3 | SQLMap: Automated Exploitation | Menggunakan SQLMap untuk mengekstrak data otomatis via konsol (flag `--dbs`, `--tables`, `--dump`). |
-| Day 4 | Authentication Bypass | Mendobrak otentikasi login menggunakan *SQLi Bypass*, *Brute Force*, dan *Credential Stuffing*. |
+| Day 2 | SQLi: Blind (Boolean & Time) | Melakukan injeksi SQL tanpa tampilan error, menggunakan logika *True/False* atau respon lambat peladen untuk mengekstrak data (*Time-based SQLi*). |
+| Day 3 | SQLMap: Automated Exploitation | Menggunakan SQLMap untuk mengekstrak data otomatis via terminal (menggunakan argumen `--dbs`, `--tables`, `--dump`). |
+| Day 4 | Authentication Bypass | Mendobrak sistem *login* menggunakan trik *SQLi Bypass*, *Brute Force*, *Credential Stuffing*, hingga manipulasi *Session*. |
 
 ---
 
@@ -34,36 +34,36 @@ Kapasitas teknis eksploitasi peretasan (*Red Team Exploitation*) Anda telah diuj
 
 ### Prerequisites
 - Koneksi internet yang stabil.
-- Akun laboratorium di **[PortSwigger Web Security Academy](https://portswigger.net/web-security)**.
+- Akun gratis di **[PortSwigger Web Security Academy](https://portswigger.net/web-security)**.
 
 ### Misi Hari Ini: "Membantai Tembok SQL (SQLi Gauntlet)"
 
-Pada sesi ini, penggunaan *SQLMap* dilarang keras. Anda ditugaskan untuk mengeksploitasi kerentanan *SQL Injection* secara *manual* guna melatih intuisi penulisan kueri eksploitasi Anda.
+Pada sesi ini, penggunaan *SQLMap* dilarang keras. Kamu ditugaskan untuk mengeksploitasi kerentanan *SQL Injection* secara *manual* untuk melatih logika penulisan kueri SQL.
 
 ### Step 1: Lab Dasar (Bypass Login)
 1. Buka materi pembelajaran *PortSwigger SQL Injection*.
 2. Pilih lab bertajuk: **"SQL injection vulnerability in WHERE clause allowing retrieval of hidden data"** atau **"SQL injection vulnerability allowing login bypass"**.
 3. Akses halaman *Login*. 
 4. Masukkan nama pengguna: `administrator'--` dan kosongkan kata sandi.
-5. Klik *Login*. Anda akan berhasil masuk! Tanda `--` memerintahkan server untuk membuang pengecekan kata sandi di backend.
+5. Klik *Login*. Kamu akan berhasil masuk! Tanda `--` memerintahkan *database* untuk mengabaikan pengecekan kata sandi di sistem *backend*.
 
-### Step 2: Lab Mahaguru (UNION Column Enumeration)
+### Step 2: Lab Menengah (UNION Column Enumeration)
 1. Pilih lab bertajuk: **"SQL injection UNION attack, determining the number of columns returned by the query"**.
 2. Klik kategori produk, misal `/filter?category=Gifts`.
-3. Injeksi kueri pada parameter URL untuk menebak jumlah kolom tabel sasaran:
+3. Injeksi kueri pada parameter URL untuk menebak jumlah kolom:
  - `?category=Gifts' ORDER BY 1--`
  - `?category=Gifts' ORDER BY 2--`
- - Lanjutkan terus hingga server merespons dengan *Internal Server Error*. Jika error muncul pada `ORDER BY 4--`, artinya tabel tersebut persis memiliki 3 kolom.
-4. Lanjutkan ekskavasi dengan mencari tahu tipe data masing-masing kolom menggunakan `'a'`:
+ - Lanjutkan terus hingga *server* merespons dengan *Internal Server Error*. Jika *error* muncul pada `ORDER BY 4--`, artinya tabel aslinya memiliki persis 3 kolom.
+4. Lanjutkan mencari tahu tipe data (mencari kolom yang bisa menampung teks) menggunakan karakter `'a'`:
  - `?category=Gifts' UNION SELECT NULL, 'a', NULL--`
 
-### Step 3: Puncak Klasemen (Ekstraksi Arsip Sandi!)
+### Step 3: Puncak Tantangan (Ekstraksi Kata Sandi!)
 1. Buka lab bertajuk: **"SQL injection UNION attack, retrieving data from other tables"**.
-2. Lakukan pendeteksian jumlah kolom seperti pada Langkah 2.
-3. Setelah jumlah kolom diketahui (misal 2 kolom). 
-4. Ekstrak data tabel *users*: 
+2. Lakukan pencarian jumlah kolom seperti pada Langkah 2.
+3. Setelah jumlah kolom diketahui (misal 2 kolom) dan keduanya bisa memuat *string*, kamu bisa mencuri data.
+4. Ekstrak data dari tabel *users*: 
  `?category=Gifts' UNION SELECT username, password FROM users--`
-5. Halaman web akan membeberkan baris `administrator` berserta kata sandinya. Salin kata sandi tersebut, lalu masuk ke halaman *Login* untuk menyelesaikan lab!
+5. Halaman web akan membeberkan baris data pengguna `administrator` berserta kata sandinya. Salin kata sandi tersebut, lalu gunakan untuk *Login* demi menyelesaikan lab!
 
 ---
 
@@ -71,71 +71,71 @@ Pada sesi ini, penggunaan *SQLMap* dilarang keras. Anda ditugaskan untuk mengeks
 
 ### Misi: "Buku Catatan Penaklukan (SQLi Writeups)"
 
-**Deskripsi:** Pentester profesional selalu mendokumentasikan taktik eksploitasi mereka dalam format *Proof of Concept* (PoC) secara komprehensif.
+**Deskripsi:** *Pentester* profesional selalu mendokumentasikan langkah eksploitasi mereka ke dalam laporan *Proof of Concept* (PoC) yang komprehensif.
 
-**Tugas Mandiri:** Selesaikan **Minimal 3 Lab SQL Injection** dari *PortSwigger*. Buat manuskrip dokumentasi (di GitHub atau Notion) yang merangkum metodologi Anda dalam menaklukkan setiap lab tersebut (*Writeup* / *PoC*).
+**Tugas Mandiri:** Selesaikan **Minimal 3 Lab SQL Injection** dari *PortSwigger*. Buat catatan (di GitHub atau Notion) yang merangkum caramu menaklukkan setiap lab tersebut (*Writeup* / *PoC*).
 
 **Deliverables:**
-1. Satu dokumen Markdown bernama `SQLI_WRITEUPS_PORTSWIGGER.md`.
-2. Dokumen memuat 3 judul lab *PortSwigger* dengan rincian:
+1. Buat satu dokumen Markdown bernama `SQLI_WRITEUPS_PORTSWIGGER.md`.
+2. Dokumen harus memuat 3 judul lab *PortSwigger* yang berhasil kamu selesaikan, beserta:
  - **Tujuan Lab** (Misal: Melakukan bypass login situs).
- - **Langkah Eksploitasi** (Catat urutan logika injeksi dan *payload* yang diaplikasikan).
+ - **Langkah Eksploitasi** (Catat urutan logika injeksi dan *payload* kueri yang kamu gunakan).
  - **Screenshot** (Tangkapan layar konfirmasi keberhasilan lab dengan tulisan *'Solved'*).
 
 **Kriteria Sukses:**
 - [ ] 3 Lab SQLi berhasil ditaklukkan (status *solved*).
 - [ ] Dokumen memuat rincian *payload* injeksi yang terbukti berhasil.
-- [ ] Dokumentasi ditulis secara teknikal analitis, merincikan alur fungsi penggabungan *UNION SELECT*.
+- [ ] Dokumentasi ditulis secara teknikal dan analitis, merincikan logika dari kueri *SQLi* yang digunakan.
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Pada taktik UNION SQLi, perintah SQL apakah yang digunakan secara iteratif (1, 2, 3, dst.) untuk menebak jumlah kolom tabel sasaran?</summary>
+<summary>❓ [MUDAH] Pada teknik UNION SQLi, perintah SQL apakah yang dikirimkan secara berurutan (1, 2, 3, dst.) untuk menebak jumlah kolom tabel asli?</summary>
 
-**Jawaban:** Kueri `ORDER BY` (contoh: `' ORDER BY 1--`).
+**Jawaban:** Perintah `ORDER BY` (contoh: `' ORDER BY 1--`).
 </details>
 
 <details>
-<summary>❓ [MUDAH] Sebutkan alat open-source berbasis Python yang digunakan oleh pentester untuk mengeksploitasi kerentanan SQL Injection secara otomatis!</summary>
+<summary>❓ [MUDAH] Apa nama *tools* open-source berbasis Python yang populer digunakan oleh *Pentester* untuk mengeksekusi kerentanan SQL Injection secara otomatis?</summary>
 
 **Jawaban:** SQLMap.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Saat pentester berhadapan dengan target Blind SQLi yang sama sekali tidak menampilkan error atau perubahan tampilan, perintah SQL jenis apa yang disisipkan untuk memaksa peladen menunda respons (delay) sebagai bentuk konfirmasi?</summary>
+<summary>❓ [SEDANG] Pada skenario Blind SQLi di mana aplikasi web sama sekali tidak menampilkan error atau perubahan di layar, perintah SQL jenis apa yang bisa digunakan untuk memastikan *database* memproses kueri penyerang?</summary>
 
-**Jawaban:** Perintah *Time-based delay injection* seperti `SLEEP(10)` atau `pg_sleep(10)`.
+**Jawaban:** Perintah *Time-based delay injection* seperti `SLEEP(10)` atau `pg_sleep(10)` untuk memaksa *database* menjeda proses (sehingga waktu *loading* web akan melambat).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Serangan apa yang mengeksploitasi formulir otentikasi dengan mencoba ulang kredensial (username/password) asli hasil kebocoran database perusahaan lain yang sudah diretas sebelumnya?</summary>
+<summary>❓ [SEDANG] Serangan apa yang menggunakan kombinasi *username* dan *password* dari kebocoran data (*data breach*) lama di perusahaan lain, untuk mencoba *login* secara paksa ke situs web target saat ini?</summary>
 
 **Jawaban:** Credential Stuffing.
 </details>
 
 <details>
-<summary>❓ [SULIT] Mengapa pentester harus menggunakan karakter sepasang setrip `--` pada akhir payload SQLi UNION seperti `' UNION SELECT username, password FROM users--`?</summary>
+<summary>❓ [SULIT] Mengapa kita perlu menambahkan karakter sepasang setrip `--` pada akhir payload SQLi seperti `' UNION SELECT username, password FROM users--`?</summary>
 
-**Jawaban:** Sepasang karakter `--` (atau `#` pada MySQL) difungsikan sebagai instruksi *Comment Out* dalam SQL. Karakter ini sangat esensial untuk membatalkan (mengomentari) sisa-sisa perintah SQL orisinal dari developer backend yang tertulis setelah titik injeksi, sehingga mencegah terjadinya *Syntax Error*.
+**Jawaban:** Sepasang karakter `--` (atau `#` pada MySQL) berfungsi sebagai *Comment Out* (komentar) dalam bahasa SQL. Fungsinya adalah untuk mengabaikan / membatalkan semua sisa perintah SQL asli yang ditulis oleh *developer* di *backend* (setelah titik injeksi), sehingga kueri SQL tidak *error* (Syntax Error).
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya telah membedah eksploitasi *SQLi UNION-based*.
-- [ ] Saya fasih menjabarkan perbedaan *Blind SQLi (Boolean & Time-based)*.
-- [ ] Saya mampu mendemonstrasikan pengoperasian *SQLMap* (termasuk fungsi `--dump`).
-- [ ] Saya memahami teknik serangan *Authentication Bypass*.
-- [ ] Saya telah menyelesaikan *Weekly Mission* dengan mengumpulkan naskah `SQLI_WRITEUPS_PORTSWIGGER.md`.
+- [ ] Saya memahami teknik eksploitasi *UNION-based SQLi*.
+- [ ] Saya bisa menjelaskan konsep *Blind SQLi (Boolean & Time-based)*.
+- [ ] Saya mampu mendemonstrasikan perintah dasar *SQLMap* (termasuk `--dump`).
+- [ ] Saya memahami mekanisme *Authentication Bypass* dan bahaya celah *Session*.
+- [ ] Saya telah menyelesaikan *Weekly Mission* dengan menyusun dokumen `SQLI_WRITEUPS_PORTSWIGGER.md`.
 
 ---
 
 ## 💬 Diskusi Minggu Ini
 
-1. Sesudah mengeksplorasi serangan *UNION SQL Injection* yang manual, dan membandingkannya dengan alat otomatis *SQLMap*, metode manakah yang terasa lebih menegangkan bagimu? Mengapa seorang pemula sangat diharamkan untuk bergantung murni pada *SQLMap* tanpa memahami teori logika manual di baliknya?
+Setelah merasakan betapa melelahkannya mencari celah *SQL Injection* secara manual dan membandingkannya dengan kemudahan otomatisasi dari *SQLMap*, mengapa menurutmu sangat penting bagi seorang pemula untuk tetap mempelajari dan menguasai *SQLi* secara manual sebelum boleh menggunakan *tools* otomatis?
 
 ---
 
@@ -143,16 +143,16 @@ Pada sesi ini, penggunaan *SQLMap* dilarang keras. Anda ditugaskan untuk mengeks
 
 ```
 ┌─────────────────────────────────────┐
-│ │
-│ 🎖️ THE SQL ARCHITECT │
-│ Week 16 Complete │
-│ "Where there is an input, │
-│ there is a way." │
-│ │
+│                                     │
+│        🎖️ THE SQL ARCHITECT          │
+│          Week 16 Complete           │
+│      "Where there is an input,      │
+│          there is a way."           │
+│                                     │
 └─────────────────────────────────────┘
 ```
 
-Selamat! Operasional pengujian kerentanan *SQLi* telah Anda selesaikan secara sempurna di minggu ini!
+Selamat! Eksploitasi kerentanan *SQL Injection* telah berhasil kamu pelajari minggu ini!
 
 ---
 
@@ -160,7 +160,7 @@ Selamat! Operasional pengujian kerentanan *SQLi* telah Anda selesaikan secara se
 
 **Minggu 17: Web Exploitation — XSS, CSRF & Beyond**
 
-Kita telah sukses membobol jantung peladen (*Database Backend*)! Di minggu depan, serangan bakal diarahkan ke kerentanan sisi klien (*Frontend Client-Side*). Kita akan menyisipkan kode berbahaya langsung ke dalam situs korban melalui **Cross-Site Scripting (XSS)** untuk mencuri *Cookie* otentikasi, merangkainya dengan **CSRF** untuk memanipulasi profil pengguna, dan diakhiri dengan manuver tingkat tinggi **File Upload Vulnerability** untuk menanam *Webshell Backdoor* di server!
+Kita telah sukses membobol server *Backend* (*Database*)! Minggu depan, kita akan beralih menyerang sisi korban/pengunjung web (*Client-Side*). Kamu akan belajar cara menyisipkan kode berbahaya ke dalam halaman web untuk mencuri *Cookie* orang lain menggunakan teknik **Cross-Site Scripting (XSS)**. Kamu juga akan belajar cara memaksa pengguna melakukan aksi tanpa disadari melalui **CSRF**, dan diakhiri dengan menanam program peretas (*Webshell Backdoor*) langsung ke server menggunakan **File Upload Vulnerability**!
 
 > 🚀 *"The database bleeds. Now, corrupt the client."*
 

@@ -21,7 +21,7 @@ total_questions: 5
 
 ### Q3
 **Type:** Short Answer
-**Question:** Apa nama ekstensi tambahan pada Visual Studio Code yang direkomendasikan untuk melihat hasil langsung dari penu teks berekstensi.md?
+**Question:** Apa nama ekstensi tambahan pada Visual Studio Code yang direkomendasikan untuk melihat hasil langsung dari file teks berekstensi .md?
 **Answer:** Markdown Preview Enhanced.
 
 ### Q4

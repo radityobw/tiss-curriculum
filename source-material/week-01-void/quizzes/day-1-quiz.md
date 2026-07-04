@@ -16,7 +16,7 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Kerugian global akibat kejahatan diperkirakan mencapai lebih dari $10.5 triliun per tahun, yang menjadikannya ancaman finansial masif di era digital.
+**Question:** Menurut data [Cybersecurity Ventures](https://cybersecurityventures.com/cybercrime-damage-costs-10-trillion-by-2025/), kerugian global akibat kejahatan siber diperkirakan mencapai lebih dari $10.5 triliun per tahun, yang menjadikannya ancaman finansial masif di era digital.
 **Answer:** True
 
 ### Q3

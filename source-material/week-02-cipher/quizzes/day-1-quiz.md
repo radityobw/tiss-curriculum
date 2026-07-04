@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Bahasa apa yang menjadi standar (mencakup 99%) dalam penu dokumentasi teknis, laporan kerentanan, dan ujian sertifikasi internasional keamanan siber?
+**Question:** Bahasa apa yang menjadi standar (mencakup 99%) dalam penulisan dokumentasi teknis, laporan kerentanan, dan ujian sertifikasi internasional keamanan siber?
 **Answer:** Bahasa Inggris.

@@ -10,54 +10,56 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** anatomi arsitektur serangan parameter aplikasi web *SQL Injection* tingkat lanjut berbasis taktik manipulasi kueri sandi `UNION`.
-2. **Mengekstraksi** data rahasia silang memori parameter basis data menggunakan pendekatan analisis *Column Enumeration*.
-3. **Mensimulasikan** serangan manual penarikan struktur payload arsip tabel tersembunyi secara tanpa asistensi peranti pelacak penyerang otomatis.
+1. **Memahami** cara kerja serangan *SQL Injection* tingkat lanjut yang menggunakan perintah `UNION`.
+2. **Mengekstraksi** data rahasia dari *database* menggunakan teknik *Column Enumeration*.
+3. **Mensimulasikan** serangan *UNION-based SQLi* secara manual tanpa menggunakan *tools* otomatis.
 
 ---
 
 ## 📖 Materi Inti
 
-### Memasuki Ruang Pembantaian (Web Exploitation)
+### Memasuki Ruang Eksploitasi (Web Exploitation)
 
-Minggu sebelumnya Anda telah menuntaskan tahapan pengintaian letak pemetaan celah (*Reconnaissance*). Mulai tahap ini, kita mengeksploitasi arsitektur rentan tersebut! Kita menginisiasi eksekusi melalui vektor arsitektur kerentanan peladen fundamental: **SQL Injection (SQLi)**.
+Di minggu sebelumnya, kamu telah menyelesaikan tahapan pengumpulan informasi (*Reconnaissance*). Mulai tahap ini, kita akan melakukan eksploitasi! Kita akan mulai dengan salah satu kerentanan web paling fundamental dan berbahaya: **SQL Injection (SQLi)**.
 
-Pada modul pelatihan *Forge Rank*, Anda telah mempelajari simulasi eksploitasi parameter halaman *Login* berbekal muatan iterasi injeksi logika dasar `' OR 1=1 --`. Pendekatan eksploitasi parameter itu sekadar taktik pembuka konsep awal pemula. Hari ini, Anda ditugaskan membedah teknikal eksploitasi penetrasi tingkat lanjut: **UNION-based SQL Injection**. 
+Pada Rank *Forge*, kamu telah belajar melakukan *bypass login* menggunakan *payload* sederhana seperti `' OR 1=1 --`. Hari ini, kita akan mempelajari teknik eksploitasi yang lebih mematikan, yang dapat digunakan untuk mencuri seluruh isi *database*: **UNION-based SQL Injection**. 
 
-### Menggabung Tabel Paksa (UNION SELECT)
+### Menggabungkan Tabel (UNION SELECT)
 
-Asumsikan Anda menelusuri katalog peladen toko daring. Saat memilih parameter filter "Kemeja", URL aplikasi berinteraksi menjadi respons:
+Bayangkan kamu sedang mengunjungi sebuah toko *online*. Saat kamu memilih kategori "Kemeja", URL aplikasi mungkin terlihat seperti ini:
 `https://toko.com/produk?kategori=kemeja`
 
-Di belakang operasi sistem, peladen basis data mengeksekusi kueri pencarian arsitektur :
+Di belakang layar, *database* akan menjalankan kueri (perintah SQL) pencarian seperti ini:
 `SELECT nama, harga FROM tabel_produk WHERE kategori = 'kemeja'`
 
-Jika peladen lalai karena membiarkan payload masukan pengguna (*user input*) melintas tanpa validasi penapisan karakter tanda kutip (*sanitization*), penganalisis dapat menyeludupkan kueri operator peladen SQL *UNION*. Perintah deklarasi *UNION* di arsitektur SQL mengemban krusial perintah struktural menggabungkan (*append*) ekstraksi dua antarmuka tabel independen ke dalam satu tampilan hasil visual.
+Jika parameter input (*user input*) tersebut tidak disaring dengan benar (*sanitization*), seorang penyerang dapat menyisipkan perintah SQL tambahan bernama `UNION`. Perintah `UNION` dalam SQL digunakan untuk menggabungkan hasil dari dua perintah `SELECT` yang berbeda ke dalam satu tabel hasil.
 
-Bagaimana jika kita menyelewengkan struktur tabel *Produk* guna mengangkut lantas memaparkan tabel rahasia *Sandi Pengguna (Users)*?
+Bagaimana jika kita menggabungkan hasil pencarian produk kemeja dengan hasil pencarian dari tabel *users* (yang berisi *username* dan *password*)?
 
-Penyerang menginisiasi parameter kueri muatan pada URL:
+Penyerang dapat memasukkan *payload* ke dalam URL:
 `https://toko.com/produk?kategori=kemeja' UNION SELECT username, password FROM users --`
 
-Kueri pada SQL peladen akan dipaksa terangkai bertumpuk menjadi konfigurasi:
+Kueri yang dieksekusi oleh *database* akan menjadi:
 `SELECT nama, harga FROM tabel_produk WHERE kategori = 'kemeja' UNION SELECT username, password FROM users --'`
 
-Seketika, antarmuka layar peramban aplikasi web niscaya tidak lagi sebatas memajang item Kemeja, melainkan memuntahkan paparan rekaman entitas tabel rahasia yang mencakup kompilasi sandi dan parameter *Username* milik jajaran administrator sistem ke hadapan publik!
+Hasilnya? Halaman web tersebut tidak hanya akan menampilkan daftar kemeja, tetapi juga akan membocorkan daftar *username* dan *password* dari tabel `users` ke layar!
 
 ### Syarat Struktural UNION (Column Enumeration)
 
-Metode penetrasi injeksi sandi gabungan ini memiliki restriksi peladen mutlak. Syarat eksekusi peramban parameter komando sintaks fungsi tabel `UNION` adalah: **Kueri injeksi gabungan mutlak diwajibkan mengusung jatah ukuran dimensi jumlah kolom tabel yang sejajar dan presisi identik selaras dengan tabel eksekusi laman orisinal!**
+Metode serangan ini memiliki satu syarat mutlak: **Kueri `UNION SELECT` yang disisipkan harus memiliki jumlah kolom yang SAMA PERSIS dengan kueri aslinya!**
 
-Jika tabel kueri orisinal *produk* difungsikan memanggil konfigurasi dimensi data 2 kolom (*nama*, *harga*), maka sintaks injeksi parameter tebakan tebakan spesialis mutlak harus berukuran presisi 2 kolom.
+Jika kueri aslinya memanggil 2 kolom (`nama`, `harga`), maka *payload* injeksi kita juga harus memanggil tepat 2 kolom.
 
-Apabila jumlah kolom kueri target tidak diketahui, *hacker* mengeksploitasinya berbasis pengaplikasian metode tebakan enumerasi iteratif evaluasi **ORDER BY** atau pengerahan kueri injeksi hampa operator *NULL Enumeration*:
-`' ORDER BY 1 --` (Peramban normal merespons aman)
-`' ORDER BY 2 --` (Peramban respons normal aman)
-`' ORDER BY 3 --` (Memantik respons galat *Syntax ERROR!* Berarti hitungan dimensi tabel aslinya sebatas memanggil 2 balok parameter kolom).
+Jika kita tidak tahu berapa jumlah kolom aslinya, kita harus menebaknya. Proses menebak jumlah kolom ini disebut **Column Enumeration**. Ada dua cara umum: menggunakan `ORDER BY` atau `NULL`.
 
-Sesudah hitungan dimensi dikonfirmasi 2 kolom, spesialis penganalisis langsung mengirimkan parameter muatan kueri payload pencaplokan ekstrak sasaran tabel :
-`' UNION SELECT null, database() --` (Mengetahui identitas nama peladen basis data)
-`' UNION SELECT username, password FROM users --` (Mengekstraksi utuh arsip sandi admin peladen).
+Contoh menggunakan `ORDER BY`:
+- `' ORDER BY 1 --` (Web merespons normal)
+- `' ORDER BY 2 --` (Web merespons normal)
+- `' ORDER BY 3 --` (Web menampilkan pesan galat *Error*! Ini berarti tabel aslinya hanya memiliki 2 kolom).
+
+Setelah mengetahui bahwa ada 2 kolom, penyerang bisa langsung melakukan pencurian data:
+- `' UNION SELECT null, database() --` (Untuk mengetahui nama *database* yang sedang digunakan).
+- `' UNION SELECT username, password FROM users --` (Untuk mencuri data *user*).
 
 ---
 
@@ -68,57 +70,57 @@ Sesudah hitungan dimensi dikonfirmasi 2 kolom, spesialis penganalisis langsung m
 Mari menyimulasikan analisis kerentanan pemetaan jumlah dimensi tabel peladen kueri secara manual!
 
 1. Kunjungi pelataran lingkungan lab kompetisi *Bug Bounty*: [PortSwigger Academy: SQL Injection](https://portswigger.net/web-security/sql-injection).
-2. Anda menargetkan sebuah modul kueri rentan. Anda mendeteksi kerentanan aplikasi peladen pada injeksi parameter fungsi sandi kueri `id=1'`.
-3. Anda melacak jumlah kolom peladen via *NULL Enumeration*:
- `id=1' UNION SELECT NULL--` (Situs respons ralat parameter Error)
- `id=1' UNION SELECT NULL,NULL--` (Situs respons ralat parameter Error)
- `id=1' UNION SELECT NULL,NULL,NULL--` (Situs Tampil Normal tanpa peringatan ralat kueri!)
-4. Analisis penugasan tersebut menyatakan bahwa Anda sukses mendeduksi (*Enumeration*) parameter hitungan bahwa laman web peladen itu terkonfigurasi memanggil spesifik dimensi tabel berukuran tepat *3 kolom*.
-5. Langkah krusial akhir berpusat pada pengeksekusian letupan parameter serangan ekstraksi sandi: `id=1' UNION SELECT username, password, email FROM users--`!
+2. Temukan modul *SQL Injection* dasar yang memiliki kerentanan pada URL (misalnya pada parameter kategori produk).
+3. Cobalah mencari jumlah kolom menggunakan teknik *NULL Enumeration*:
+ - `kategori=Gifts' UNION SELECT NULL--` (Situs error)
+ - `kategori=Gifts' UNION SELECT NULL,NULL--` (Situs error)
+ - `kategori=Gifts' UNION SELECT NULL,NULL,NULL--` (Situs tampil normal tanpa *error*!)
+4. Dari percobaan tersebut, kamu mengetahui bahwa tabel aslinya memiliki **3 kolom**.
+5. Langkah selanjutnya, kamu bisa mengekstrak data dari tabel lain dengan *payload* seperti: `kategori=Gifts' UNION SELECT username, password, email FROM users--`!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membedah anatomi sintaks kueri *SQL*, apakah fungsi penugasan komando deklarasi <i>UNION</i> pada sirkulasi bahasa peramban Basis Data?</summary>
+<summary>❓ Dalam bahasa SQL, apa fungsi dari perintah <i>UNION</i>?</summary>
 
-**Jawaban:** fungsi sintaks SQL `UNION` ditugaskan demi menggabungkan lantas mencaplok (*append*) dua atau lebih bentangan layar pemaparan hasil tabel independen peramban kueri `SELECT` peladen (yang tidak terkait satu sama lain) ke dalam satu parameter antarmuka hasil laporan baris struktur visual tunggal (*Result Set*).
+**Jawaban:** Fungsi `UNION` digunakan untuk menggabungkan hasil dari dua perintah `SELECT` (atau lebih) ke dalam satu hasil tampilan tabel (*Result Set*).
 </details>
 
 <details>
-<summary>❓ Ketika meluncurkan serangan eksploitasi serangan kueri tingkat mahaguru tipe parameter serangan *UNION-based SQLi*, syarat fisik macam apa yang mutlak tidak boleh dilanggar pentester agar penugasan komando arsitektur kueri tabel gabungan *SQL* yang disisipkan tersebut tidak berakhir menabrak dan membenturkan peringatan deteksi ralat arsitektur respons *Syntax Error* peladen?</summary>
+<summary>❓ Apa syarat mutlak yang harus dipenuhi agar serangan <i>UNION-based SQL Injection</i> bisa berhasil dan tidak memicu pesan galat (<i>Error</i>)?</summary>
 
-**Jawaban:** Formulasi injeksi tabel sisipan peretasan ekstensi (hasil deklarasi gabungan parameter kueri injeksi sasaran `UNION SELECT` milik penganalisis penyerang) dipastikan mutlak untuk pengaturan arsitektur parameter jatah hitungan dimensi kesetaraan **jumlah pemanggilan kolom yang presisi identik ukurannya** selaras meniru hasil keluaran ukuran cetakan baris tabel `SELECT` laman orisinal peladen target sasaran.
+**Jawaban:** Jumlah kolom pada kueri `UNION SELECT` yang disisipkan oleh penyerang harus **sama persis** dengan jumlah kolom pada kueri aslinya.
 </details>
 
 <details>
-<summary>❓ Demi meraba-raba (*Enumeration*) kegelapan hitungan konfigurasi parameter sasaran penugasan payload letak dimensi dimensi jumlah payload ukuran tabel kuantitas tiang kolom peladen sasaran kueri mangsa, tebakan fungsi SQL spesifik jenis apakah yang diimplementasikan diluncurkan penyerang penganalisis secara beruntun lantas dimodifikasi terus perlahan membesar dengan pola iterasi sekuensial menebak urutan nilai pengindeksan hitungan parameter sandi indeks mulai dari pengikatan sandi parameter indeks angka batas dimensi hitungan indeks struktur *1*, lantas dinaikkan perlahan *2*, membesar ke indeks struktur hitungan indeks *3*, dan urutannya begitu seterusnya dipaksa menanjak secara dinamis hingga aplikasi web pada arsitektur mesin instalasi peladen mendadak mogok merespons terhenti lantas mutlak memuntahkan jeritan peringatan pemberitahuan ralat respons sandi *Error* peramban SQL?</summary>
+<summary>❓ Teknik apa yang digunakan oleh penyerang dengan cara menginjeksi perintah seperti <code>' ORDER BY 1 --</code>, <code>' ORDER BY 2 --</code>, secara berurutan hingga menemukan <i>error</i>, untuk menebak jumlah kolom pada tabel target?</summary>
 
-**Jawaban:** Kueri analisis baris fungsi eksekutor instruksional pengurutan *ORDER BY* (dicontohkan melalui rangkaian injeksi berformat `' ORDER BY 1 --`, `' ORDER BY 2 --`, dan seterusnya).
+**Jawaban:** *Column Enumeration* (menggunakan *ORDER BY*).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap pengetahuan teknis identifikasi pembeda eksploitasi *Login Bypass SQLi* sederhana dengan analisis *UNION-based SQLi* yang mutakhir
-- [ ] Saya fasih menjabarkan prasyarat kesetaraan jumlah kolom kueri sintaks *UNION*
-- [ ] Saya sanggup menelusuri enumerasi pemetaan hitungan parameter arsitektur fungsi jumlah payload struktur baris tiang memori kolom tabel peladen (*Column Enumeration*) berbekal adopsi implementasi ekskavator utusan sandi tebakan fungsi *ORDER BY* maupun sandi fungsi sisipan data *NULL*
-- [ ] Saya sukses memahami tahapan pembongkaran tebakan payload tabel arsip rahasia administrator instalasi *Mini Lab*
-- [ ] Saya telah menuntaskan validasi evaluasi ulasan pelaporan *Quiz Kilat* dengan penyerapan materi memadai
+- [ ] Saya memahami cara kerja serangan *UNION-based SQLi*.
+- [ ] Saya mengerti syarat jumlah kolom yang harus sama saat menggunakan *UNION*.
+- [ ] Saya paham cara melakukan *Column Enumeration* (menggunakan *ORDER BY* atau *NULL*).
+- [ ] Saya telah membaca dan memahami skenario eksekusi *UNION SQLi* di *Mini Lab*.
+- [ ] Saya telah menjawab pertanyaan di *Quiz Kilat* dengan benar.
 
 ---
 
 ## 🔗 Resources
 
-- [PortSwigger UNION Attacks](https://portswigger.net/web-security/sql-injection/union-attacks) — Panduan lab komprehensif mengurai peretasan peladen arsitektur aplikasi berbasis *SQL UNION*.
+- [PortSwigger UNION Attacks](https://portswigger.net/web-security/sql-injection/union-attacks) — Panduan teori dan praktik (Lab) komprehensif mengenai peretasan aplikasi web menggunakan *SQL UNION*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 2: SQL Injection Blind (Boolean & Time)** — Apa jadinya bila perlindungan situs membentengi paras layar halamannya sehingga hasil tebakan fungsi kueri modifikasi ekstraksi arsip tabel sasaran sintaks operasi eksploitasi peramban gabungan *UNION*-mu sama sekali TIDAK DITAMPILKAN di paras antarmuka layar pelaporan? Inilah jenis peretasan tingkat mahir yang diistilahkan **Injeksi Buta (Blind SQLi)**. Esok hari, Anda akan diajarkan fungsi parameter murni mengeksekusi ekstraksi pencurian arsip peladen data walau layar buta membisu, dengan meraba pelaporan mengandalkan evaluasi sinyal arsitektur tebakan instruksi penahanan algoritma jeda kelambatan peramban eksekutor peladen sasaran parameter *Time-based Blind*!
+**Day 2: SQL Injection Blind (Boolean & Time)** — Apa yang terjadi jika situs target memiliki kerentanan SQLi, tetapi **tidak pernah menampilkan hasil** dari kueri *database* ke layar halaman web? Apakah kita masih bisa mencuri datanya? Jawabannya: BISA! Teknik ini disebut **Injeksi Buta (Blind SQLi)**. Besok, kamu akan mempelajari cara mencuri data *database* walaupun layar tidak menampilkan hasil kueri apa pun, yaitu dengan memanfaatkan respons *True/False* (*Boolean-based*) dan jeda waktu (*Time-based*).
 
 ---
 

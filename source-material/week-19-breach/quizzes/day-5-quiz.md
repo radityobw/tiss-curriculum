@@ -8,7 +8,7 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Di arsitektur penu laporan , apa yang dinobatkan laksana mahkota yang diletakkan di halaman paling muka laporan demi dibaca petinggi korporat (tanpa memuat kalimat teknis)?
+**Question:** Dalam struktur laporan profesional (*Pentest Report*), bagian manakah yang ditempatkan di halaman paling depan agar dapat dibaca langsung oleh eksekutif korporat (tanpa memuat jargon teknis IT)?
 - [x] A. Ringkasan Eksekutif (Executive Summary).
 - [ ] B. *CVSS v3.1*.
 - [ ] C. *Proof of Concept* visual (PoC).
@@ -16,20 +16,20 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Pada pengujian manipulasi <i>Penetration Testing</i>, dokumen laporan (Pentest Report) dipuja layaknya jembatan yang mengubah vandalisme merusak menjadi pundi-pundi dolar informasi bisnis yang bernilai taksiran perusahaan.
+**Question:** Dokumen laporan (*Pentest Report*) adalah jembatan yang menerjemahkan aktivitas teknis peretasan menjadi informasi yang memiliki nilai bisnis, memungkinkan perusahaan untuk menindaklanjuti dan memperbaiki postur keamanan mereka.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Ketika meluncurkan kalkulasi insiden siber *CVSS*, apa singkatan dari kalkulator *Common Vulnerability*... apa?
+**Question:** Apa kepanjangan dari CVSS (kalkulator standar metrik penentu tingkat keparahan suatu kerentanan)?
 **Answer:** Common Vulnerability Scoring System (CVSS).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika penganalisis menenggak ekstraksi bukti serangan, visual tangkapan layar (Screenshot) dari rahim aplikasi bedil apa (yang diutus mencegat *Request/Response*) yang dilampirkan di dokumen laporan *PoC*?
+**Question:** Saat menyusun dokumen laporan *PoC* (Proof of Concept), tangkapan layar (*Screenshot*) dari alat intersepsi *proxy* apa yang paling sering dilampirkan untuk membuktikan modifikasi *Request/Response* HTTP?
 **Answer:** Burp Suite (Burp Suite Repeater / Intruder).
 
 ### Q5
 **Type:** Short Answer
-**Question:** Di penutupan laporan , seksi bagian (berawalan huruf 'R') apakah yang menguraikan resep obat Koding (seperti *Prepared Statement*) bagi pengembang korporasi?
+**Question:** Di bagian akhir laporan, bagian apakah yang bertugas memberikan rekomendasi solusi teknis (seperti penggunaan *Prepared Statement*) kepada tim pengembang korporasi untuk menambal celah keamanan?
 **Answer:** Remediation (Remediation Advice / Mitigation).

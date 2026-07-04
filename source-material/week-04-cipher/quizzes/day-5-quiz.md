@@ -16,7 +16,7 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Pada struktur penu *Bug Report*, bagian *Remediation* (Rekomendasi) bertujuan menjelaskan alat apa saja yang kamu gunakan saat meretas (seperti Nmap atau BurpSuite).
+**Question:** Pada struktur penulisan *Bug Report*, bagian *Remediation* (Rekomendasi) bertujuan menjelaskan alat apa saja yang kamu gunakan saat meretas (seperti Nmap atau BurpSuite).
 **Answer:** False
 
 ### Q3

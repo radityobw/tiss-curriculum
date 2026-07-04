@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Mengkaji dan arsitektur *Burp Suite Community Edition*, kasta portswigger apakah yang secara digembok (berwarna abu-abu) yang secara mutlak mengharamkan pemakaiannya kecuali penganalisis menebus lisensi *Professional*?
-- [x] A. *Burp Scanner* (*Automated Vulnerability Scanner*), yakni peranti yang didapuk sanggup melacak menyusuri seluruh rute hierarki situs (*Crawl*) lantas mengebomnya eksploitasi otomatis guna mencari kerentanan *SQLi/XSS*.
+**Question:** Pada versi *Burp Suite Community Edition*, fitur utama apa yang sengaja dinonaktifkan (dikunci/berwarna abu-abu) dan hanya tersedia bagi pengguna lisensi *Professional*?
+- [x] A. *Burp Scanner* (*Automated Vulnerability Scanner*), yakni fitur yang berfungsi untuk melacak seluruh struktur situs web (*Crawl*) dan melakukan eksploitasi otomatis guna mencari kerentanan seperti *SQLi* dan *XSS*.
 - [ ] B. *Repeater*.
-- [ ] C. Sandi *Proxy Intercept*.
-- [ ] D. tombol *Open Browser*.
+- [ ] C. Fitur *Proxy Intercept*.
+- [ ] D. Fitur *Open Browser*.
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika spesialis meluncurkan serangan eksploitasi peretasan arsitektur *Extensions*, penganalisis mahaguru menyambangi bursa *BApp Store* guna mengunduh modifikasi pihak ketiga (seperti *Logger++*) demi menambal keterbatasan bawaan orisinal *Burp*.
+**Question:** Pentester dapat memperluas kemampuan bawaan *Burp Suite* dengan mengunduh dan memasang modifikasi atau plugin pihak ketiga (seperti *Logger++* atau *Autorize*) melalui fitur *BApp Store*.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Di operasi serangan manipulasi ekstensi, apa gelar nama ekstensi (*BApp Store*) yang dipuja niscaya sanggup mendeteksi kerentanan silang *IDOR / Broken Access Control* secara otomatis dengan menyuapkan parameter *Cookie* akun hak rendah di belakang layar ?
+**Question:** Apa nama ekstensi populer dari *BApp Store* yang sering digunakan untuk mendeteksi kerentanan *IDOR / Broken Access Control* secara otomatis, dengan cara memutar ulang permintaan HTTP di latar belakang menggunakan *Cookie* milik pengguna berhak akses rendah?
 **Answer:** Autorize.
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika penganalisis menuntut ketelitian deteksi lalu-lintas komunikasi *HTTP* yang murni melampaui kemampuan arsitektur bawaan tab *HTTP History*, ekstensi bungkusan *BApp Store* berawalan tu `Logger...` apakah yang diutus laksana CCTV pencatat rekam ?
+**Question:** Jika seorang pentester membutuhkan sistem pencatatan (*logging*) lalu lintas HTTP yang jauh lebih detail, komprehensif, dan rinci melampaui tab *HTTP History* bawaan Burp Suite, ekstensi dari *BApp Store* apa yang harus ia pasang?
 **Answer:** Logger++.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Bila penganalisis menghendaki laju serangan *Brute Force* yang arsitekturalnya ratusan kali berlipat ganda lebih bengis dan secara cepat menyayat ketimbang payload bawaan orisinal *Intruder*, ekstensi apakah (berawalan kata *Turbo*) yang ia pasang dan delegasikan ?
+**Question:** Jika seorang pentester membutuhkan alat serangan *Brute Force* otomatis yang memiliki performa dan kecepatan eksekusi ratusan kali lipat lebih cepat daripada fitur bawaan *Intruder*, ekstensi pihak ketiga (berawalan *Turbo*) apa yang sering digunakan?
 **Answer:** Turbo Intruder.

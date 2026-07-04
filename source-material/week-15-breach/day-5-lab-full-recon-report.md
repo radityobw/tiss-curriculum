@@ -19,134 +19,134 @@
 
 ## 📝 Rekap Minggu Ini
 
-Rangkaian keterampilan komprehensif terkait teknik pengumpulan intelijen (*Red Team Recon*) telah berhasil Anda kuasai dalam silabus materi minggu ini:
+Rangkaian keterampilan komprehensif terkait pengumpulan intelijen (*Reconnaissance*) telah berhasil kamu pelajari minggu ini:
 
 | Hari | Topik | Key Takeaway |
 |------|-------|-------------|
-| Day 1 | Pentest Methodology | Membedah dan merumuskan kerangka standar 5 fase PTES dan *OWASP WSTG*. |
-| Day 2 | Passive Reconnaissance | Mengumpulkan profil target berbasis ketersediaan jejak sumber data terbuka (*OSINT, WHOIS, Google Dorking, Shodan*). |
-| Day 3 | Active Reconnaissance | Meluncurkan iterasi deteksi gerbang port sasaran menggunakan `Nmap` dan membongkar penempatan direktori tersembunyi via fungsi pelacak `Gobuster/Ffuf`. |
-| Day 4 | Fingerprinting | Mengekskavasi arsitektur turunan *Subdomain* (*Amass/Sublist3r*) dan mengidentifikasi adonan tumpukan teknologi perangkat lunak instalasi peladen (*Wappalyzer*). |
+| Day 1 | Pentest Methodology | Memahami 5 fase standar *Pentesting* (PTES) dan panduan OWASP WSTG. |
+| Day 2 | Passive Reconnaissance | Mengumpulkan informasi tanpa menyentuh server target (*OSINT, WHOIS, Google Dorking, Shodan*). |
+| Day 3 | Active Reconnaissance | Melakukan *port scanning* menggunakan `Nmap` dan mencari direktori tersembunyi menggunakan `ffuf` / `Gobuster`. |
+| Day 4 | Fingerprinting | Mencari *Subdomain* tersembunyi dan mengidentifikasi teknologi di balik sebuah *website* menggunakan `Wappalyzer`. |
 
 ---
 
 ## 🧪 Hands-On Lab
 
 ### Prerequisites
-- sistem operasi lingkungan pengujian (distro Kali Linux/Ubuntu WSL/Parrot OS).
-- Konfigurasi koneksi stabil arsitektur *VPN* menuju portal lab *TryHackMe*.
-- Instalasi perangkat pelacak terminal : `nmap`, `ffuf` (atau `gobuster`), serta pelacak ekstensi *Wappalyzer*.
+- Sistem operasi Linux (Kali Linux, Ubuntu, atau WSL).
+- Koneksi VPN yang stabil ke platform *TryHackMe*.
+- Instalasi alat: `nmap`, `ffuf` (atau `gobuster`), dan ekstensi `Wappalyzer`.
 
-### Misi Hari Ini: "Operasi Sapu Bersih (Full Recon Cycle)"
+### Misi Hari Ini: "Siklus Pengintaian Utuh (Full Recon Cycle)"
 
-Pada sesi praktikum ini, Anda secara mutlak difokuskan untuk mempraktikkan siklus pengintaian utuh (*Reconnaissance*) layaknya operasi penganalisis profesional, mendata pemetaan kerentanan infrastruktur sasaran yang kelak bakal menjadi parameter modal eksekusi krusial bagi tahapan eksploitasi peretasan minggu berikutnya. Dilarang keras meluncurkan eksekusi eksploitasi pembobolan (*belum saatnya*).
+Pada sesi praktikum ini, kamu akan mempraktikkan seluruh siklus *Reconnaissance* untuk memetakan kerentanan infrastruktur target. Data yang kamu kumpulkan hari ini akan menjadi modal untuk eksploitasi di minggu berikutnya. **Dilarang keras melakukan eksploitasi sistem (belum saatnya!).**
 
-### Step 1: Inisiasi Uji (TryHackMe)
+### Step 1: Inisiasi Lab (TryHackMe)
 
-1. Akses portal *platform* kompetisi keamanan [TryHackMe](https://tryhackme.com/). (Pastikan konektivitas terminal transmisi OpenVPN-mu menancap sukses tervalidasi).
-2. Carilah simulasi infrastruktur mesin gratisan tipe web, semisal lab peladen bertitel **"RootMe"**, **"Bounty Hacker"**, atau **"Basic Pentesting"**.
-3. Klik eksekusi instruksional tombol *Start Machine* lantas dokumentasikan catatan payload Alamat IP mesin sasaran tersebut. (Sebagai contoh, asumsikan payload IP-nya adalah `10.10.x.x`).
+1. Akses platform [TryHackMe](https://tryhackme.com/) dan pastikan koneksi OpenVPN kamu sudah aktif.
+2. Cari ruangan (*room*) simulasi gratis yang fokus pada eksplorasi web, misalnya **"RootMe"** atau **"Basic Pentesting"**.
+3. Klik tombol *Start Machine* dan catat Alamat IP target yang diberikan (misalnya `10.10.x.x`).
 
-### Step 2: Percobaan Pemindaian Aktif (Nmap)
+### Step 2: Pemindaian Aktif (Nmap)
 
-1. Buka antarmuka aplikasi terminal komando di sistem OS pengujian Anda.
-2. Luncurkan eksekusi perintah pemindaian aktif interogasi port `Nmap` guna memetakan arsitektur terbuka:
+1. Buka terminal di sistem Linux kamu.
+2. Jalankan pemindaian port menggunakan Nmap untuk melihat layanan apa saja yang terbuka:
  ```bash
  nmap -sC -sV -oN hasil_scan.txt 10.10.x.x
  ```
- *(definisi parameter komando: `-sC` Nmap untuk menjalankan skrining deteksi bawaan (default scripts), `-sV` ditugaskan spesifik membongkar deteksi terawang nama aplikasi dan versinya, lantas fungsi `-oN` mendikte Nmap agar cetakannya mutlak direkam dan ditumpahkan penyimpanannya ke format fail bernama `hasil_scan.txt` agar dokumentasi laporannya kelak terarsip valid)*.
+ *(Penjelasan parameter: `-sC` menjalankan skrip default Nmap untuk mencari info tambahan, `-sV` mendeteksi versi layanan/aplikasi yang berjalan, dan `-oN hasil_scan.txt` akan menyimpan hasil pemindaian ke dalam sebuah file).*
 
-### Step 3: Inspeksi Sidik Jari Teknologi (Wappalyzer)
+### Step 3: Identifikasi Teknologi (Wappalyzer)
 
-1. Bilamana pemindaian arsip payload pelaporan Nmap merestui penemuan port HTTP terbuka semisal layanan port `80`, segeralah lakukan inspeksi antarmuka visual peladen. Buka kueri URL `http://10.10.x.x` pada aplikasi peramban Anda.
-2. Klik fungsi ekstensi pelacak `Wappalyzer` di sudut perambanmu! 
-3. Catat pembongkaran identitas peladennya. Apakah ini dirakit bersandar web server *Apache*? Bersi *PHP* berapakah ia? Adakah cap platform bawaan *WordPress* atau *Node.js* yang menempel?
+1. Jika hasil Nmap menunjukkan bahwa port HTTP (80) terbuka, segera buka *browser* dan kunjungi alamat `http://10.10.x.x`.
+2. Klik ekstensi `Wappalyzer` di *browser* kamu.
+3. Catat teknologi apa saja yang digunakan server tersebut. Apakah menggunakan *Apache*? *PHP* versi berapa? Apakah ada CMS seperti *WordPress*?
 
-### Step 4: Menghajar Folder Rahasia (Directory Fuzzing)
+### Step 4: Mencari Direktori Tersembunyi (Directory Fuzzing)
 
-1. Mengingat payload tampilan visual antarmuka beranda situs seringkali tidak mengekspos keberadaan letak berkas konfigurasi peladen vital secara langsung pada referensi kueri wajar, lakukan inisiasi pemindaian tebakan iterasi masif ekskavasi direktori rahasia menggunakan alat paksa parameter *ffuf* atau alternatif serumpun *gobuster*!
+1. Halaman utama sering kali tidak menampilkan letak halaman sensitif (seperti panel admin). Gunakan `ffuf` atau `gobuster` untuk menebak direktori tersembunyi:
  ```bash
- # Contoh sintaks komando eksekusi memori ffuf:
+ # Menggunakan ffuf:
  ffuf -w /usr/share/wordlists/dirb/common.txt -u http://10.10.x.x/FUZZ
 
- # Alternatif pengujian kueri jika menggunakan gobuster:
+ # Menggunakan gobuster:
  gobuster dir -u http://10.10.x.x -w /usr/share/wordlists/dirb/common.txt
  ```
-2. Pantau layar kalkulasi berhamburan. Jika muncul balasan pelaporan parameter log keberhasilan respons penemuan peladen berstatus valid *HTTP 200* atau *301* untuk nomenklatur `/admin`, `/panel`, atau `/uploads`, tandai status keberhasilan deteksi payload lokasi arsip arsip tersebut, lalu bubuhkan dokumentasi catatannya.
+2. Perhatikan hasilnya. Jika kamu mendapatkan respons dengan status `HTTP 200` atau `301` untuk halaman seperti `/admin`, `/panel`, atau `/uploads`, catat temuan tersebut.
 
 ---
 
 ## 🎯 Weekly Mission
 
-### Misi: "Laporan Pengintaian Siluman (Reconnaissance Report)"
+### Misi: "Menyusun Reconnaissance Report"
 
-**Deskripsi:** Kompetensi esensial dan fundamental yang divaluasi setinggi-tingginya dalam ruang lingkup pelacakan operasi kerentanan profesional dan industri *Bug Bounty* bukan terletak semata-mata pada kemampuan serampangan penguasaan letupan meriam eksploitasi, melainkan pada objektivitas perumusan pelaporan profesionalisme dokumentasi (*Reporting*)! Seluruh serpihan log temuan penelusuran arsitektur di ekosistem mesin Lab sasaran hari ini tidak diperkenankan lenyap diabaikan. 
+**Deskripsi:** Kemampuan yang sangat dihargai dari seorang *Pentester* profesional atau *Bug Bounty Hunter* bukanlah sekadar bisa meretas, melainkan kemampuannya dalam membuat pelaporan (*Reporting*) yang jelas, objektif, dan terstruktur. Jangan biarkan semua data yang kamu kumpulkan hari ini hilang begitu saja.
 
-**Tugas Mandiri:** Kompilasi seluruh rentetan eksekusi pemindaian pengujian parameter *Nmap*, integrasi laporan pengintaian fungsi serapan ekstensi arsitektur *Wappalyzer*, serta tangkapan hasil validasi direktori tersembunyi iterasi pelacak ekskavasi *Ffuf/Gobuster* yang telah direkam barusan, kemudian susun ke dalam format manuskrip draf pelaporan.
+**Tugas Mandiri:** Kumpulkan seluruh hasil pemindaian *Nmap*, identifikasi teknologi dari *Wappalyzer*, dan daftar direktori tersembunyi dari *ffuf* ke dalam satu laporan tertulis.
 
 **Deliverables:**
-1. Menyusun dokumen berbasis pelaporan *Markdown* bertajuk `RECON_REPORT_THM.md` (atau simpan laporannya terdokumentasi mandiri di repositorimu).
-2. isi paparan manuskrip wajib mencakup cakupan poin-poin struktural arsitektur sasaran, meliputi: 
- - **Target IP** (Payload informasi log IP Sasaran TryHackMe)
- - **Open Ports & Services** (Paparan deteksi *Nmap*)
- - **Web Technology Stack** (Paparan identitas tumpukan perangkat *Wappalyzer*)
- - **Hidden Directories Found** (Pembeberan direktori terekspos log *Ffuf/Gobuster*)
- - Kesimpulan singkat penganalisis: "Berdasarkan rangkuman paparan fungsi pelacakan porta layanan rentan dan versi usang aplikasi peladen yang terekspos tersebut, metodologi vektor eksploitasi kerentanan manakah yang paling dianalisis dan direkomendasikan pengujiannya sebagai fokus utama peretasan pembongkaran mesin target di siklus arsitektur tahap berikutnya?"
+1. Buat dokumen *Markdown* bernama `RECON_REPORT_THM.md`.
+2. Dokumen laporan harus mencakup poin-poin berikut:
+ - **Target IP** (IP dari mesin TryHackMe).
+ - **Open Ports & Services** (Hasil dan versi layanan dari Nmap).
+ - **Web Technology Stack** (Hasil deteksi Wappalyzer).
+ - **Hidden Directories Found** (Daftar direktori tersembunyi dari ffuf/Gobuster).
+ - **Kesimpulan & Rekomendasi:** "Berdasarkan port dan layanan yang terbuka, celah mana yang paling menarik untuk dieksploitasi pada tahap berikutnya?"
 
 **Kriteria Sukses:**
-- [ ] Sanggup menuntaskan pemindaian *Nmap* utuh serta menelurkan rahim perekaman dokumentasi cetakan file sandi `-oN`.
-- [ ] Sukses mempreteli lokasi penempatan sarang fail URL arsip log sasaran yang tersembunyi berbasis serangan *Gobuster/Ffuf*.
-- [ ] Lahirnya manuskrip ringkasan draf dokumen komprehensif terstruktur berekstensi pelaporan log *.md* pengintaian.
+- [ ] Berhasil menjalankan pemindaian *Nmap* secara menyeluruh dan menyimpan hasilnya dalam file.
+- [ ] Menemukan direktori tersembunyi menggunakan *Gobuster* atau *ffuf*.
+- [ ] Membuat dokumen pelaporan (*Markdown*) yang rapi dan terstruktur.
 
 ---
 
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Mengingat implementasi fase arsitektur operasi transmisi <i>Active Reconnaissance</i> yang berisiko krusial serta memicu rekam radar kebisingan pendeteksian pada perisai pertahanan target, perizinan sandi legalitas prasyarat mutlak apakah yang wajib disepakati validasinya sebelum peluncuran peranti interogasi penganalisis (semacam perintah instruksional Nmap) dikomandokan lantas dieksekusi peluncurannya?</summary>
+<summary>❓ [MUDAH] Mengingat <i>Active Reconnaissance</i> sangat bising dan mudah terdeteksi, dokumen apa yang wajib disetujui dan ditandatangani sebelum <i>Pentester</i> diizinkan melakukan pemindaian (seperti menggunakan Nmap)?</summary>
 
-**Jawaban:** Dokumen pakem landasan otorisasi pengikatan persetujuan mandat legal wewenang otentikasi *Rules of Engagement (RoE)* dan formulir kontrak persetujuan resmi empunya aset sasaran.
+**Jawaban:** Rules of Engagement (RoE) / Kontrak persetujuan resmi.
 </details>
 
 <details>
-<summary>❓ [MUDAH] Pada rumusan fungsionalisasi siklus metodologi pengujian arsitektur <i>Pentesting</i>, nomenklatur gelar tahapan tahap absolut nomor berapakah yang secara difokuskan penggunaannya bagi pencetakan perumusan payload penu naskah rekomendasi remediasi laporan komplit penambalan kepada direksi organisasi ketika tahap verifikasi penetrasi pembobolan kerentanan kelak tuntas diselesaikan?</summary>
+<summary>❓ [MUDAH] Dari 5 fase <i>Pentesting</i>, fase manakah yang berfokus pada penyusunan dokumen hasil temuan dan rekomendasi perbaikan untuk pihak perusahaan?</summary>
 
-**Jawaban:** Tahapan kelima (pamungkas), yakni *Post-Exploitation & Reporting*.
+**Jawaban:** Fase kelima, yaitu *Post-Exploitation & Reporting*.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Ketika peretas kueri sasaran eksekusi perintah pelacakan pemindai <i>Nmap</i>, peranan imbuhan payload deklarasi ekstensi operator <i>flag</i> `-sV` dipatrikan guna memenuhi penugasan penelusuran arsitektur pelaporan pembongkaran interogasi parameter apa?</summary>
+<summary>❓ [SEDANG] Apa fungsi dari parameter (<i>flag</i>) `-sV` pada saat menjalankan perintah Nmap?</summary>
 
-**Jawaban:** Melakukan interogasi payload instruksional ekstraksi parameter identitas pendeteksian pengenalan *Service Version* (Membaca merek jenis layanan aplikasi perangkat lunak penjaga port aktif sasaran, lengkap disertai ekstrak penelusuran versi rentan semacam laporan balasan 'Apache versi 2.4.29').
+**Jawaban:** Untuk mendeteksi *Service Version* (Mencari tahu nama dan versi spesifik dari aplikasi/layanan yang berjalan di port tersebut, misal: Apache 2.4.29).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Titah sintaks penelusuran ekstrak parameter sakti operator <i>Google Dorking</i> filterisasi arsitektur manakah yang dieksekusi ketika agen intelijen membatasi ekstraksi penemuannya murni eksklusif diarahkan khusus sebatas mengekskavasi paparan dokumen bungkusan bertipe berkas berekstensi log PDF?</summary>
+<summary>❓ [SEDANG] Pada <i>Google Dorking</i>, operator apa yang digunakan jika kita hanya ingin mencari file dengan ekstensi PDF?</summary>
 
-**Jawaban:** Operator penyaring ekstensi atribut *filetype:pdf*.
+**Jawaban:** `filetype:pdf`
 </details>
 
 <details>
-<summary>❓ [SULIT] Jelaskan formulasi letak persekutuan korelasi arsitektur penyusunan operasi pemusnahan sasaran yang secara konseptual antara keberhasilan efisiensi eksekusi tahap temuan pemetaan iteratif meraba arsitektur tautan direktori web rahasia (*Directory Bruteforcing*) berbasis eksekutor sandi *ffuf/gobuster*, kemudian disilang rantai penyambutannya divalidasi inspeksi fungsi analisis pelaporan deteksi tumpukan parameter eksekutor *Wappalyzer*!</summary>
+<summary>❓ [SULIT] Bagaimana penggunaan alat <i>Directory Fuzzing (ffuf/Gobuster)</i> dan <i>Technology Fingerprinting (Wappalyzer)</i> saling melengkapi untuk membantu peretas menemukan celah secara presisi?</summary>
 
-**Jawaban:** Ketika parameter analisis fungsi tebakan pelacak paksa iterasi *ffuf* menabrak situs sasaran lantas mendeteksi rute payload lokasi tersembunyi fail direktori aplikasi peladen rahasia target (misal rute url sasaran `/admin` atau portal rute log masuk konfigurasi peladen), penemuan eksistensi status *200 OK* pada alamat URL tersebut belum membuahkan landasan senjata eksploitasi peladen parameter kueri serangan komprehensif apa pun. Penganalisis wajib segera mengerahkan payload fungsi pembedahan arsitektur ekstensi peramban deteksi *Wappalyzer* guna mengakses dan mengunjungi peramban gerbang lokasi direktori sasaran temuan `/admin` tersebut guna mengidentifikasi teknologi perangkat lunak peramban apa yang melapisinya. Jika temuan ekstraksi analisis parameter detektor pelaporan *Wappalyzer* menerawang status identitas arsitektur bahwasanya platform portal pengoperasian admin spesifik tersebut dibangun berbasis versi arsitektur *CMS (Content Management System)* peladen usang yang rentan eksploitasi kerentanan publik (misal deteksi arsitektur kerangka *WordPress v4.0.0*), peretas sontak mengantongi rumusan senjata penelusuran kerentanan instan pustaka publik untuk membantai arsitektur laman otentikasi rahasia sasaran itu tanpa wajib membuang rentetan usaha trial and error menebak arsitektur kerentanan serangannya secara manual buta. Rantai paduan integrasi penelusuran intelijen keduanya menghasilkan alur peta analisis eksploitasi peretasan sistem sadap yang presisi mematikan!
+**Jawaban:** Alat *Fuzzing* (seperti ffuf) membantu menemukan halaman rahasia (seperti `/admin`) yang disembunyikan. Namun, hanya menemukan halaman tersebut belum cukup untuk melakukan serangan. Dengan menggunakan *Wappalyzer* pada halaman `/admin` yang baru ditemukan, peretas dapat mengetahui *software* atau CMS versi berapa yang berjalan di sana (misalnya WordPress versi 4.0.0). Berbekal informasi direktori dan versi CMS tersebut, peretas bisa langsung mencari *Exploit* spesifik untuk versi itu, tanpa harus repot menebak-nebak (trial and error) kerentanan apa yang mungkin ada.
 </details>
 
 ---
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya meresapi pedoman PTES fase daur hidup *Pentesting* absolut
-- [ ] Saya mengantongi penguasaan eksekusi intaian senyap operator *Google Dorking*
-- [ ] Saya mendemonstrasikan pemicu keras pemindaian port peladen arsitektur sasaran *Nmap*
-- [ ] Saya fasih menginisiasi iterasi pembongkaran direktori web peramban letak URL tersembunyi *Ffuf/Gobuster*
-- [ ] Saya sanggup membidani perakitan penyusunan kompilasi draf laporan *RECON_REPORT_THM.md* yang merangkum keseluruhan saripati parameter operasi intelijen mingguan (*Weekly Mission*).
+- [ ] Saya memahami 5 fase metodologi *Pentesting* (PTES).
+- [ ] Saya bisa melakukan pengintaian pasif menggunakan *Google Dorking*.
+- [ ] Saya bisa menjalankan *port scanning* menggunakan *Nmap*.
+- [ ] Saya bisa mencari direktori tersembunyi menggunakan *ffuf/Gobuster*.
+- [ ] Saya telah menyusun laporan pengintaian (`RECON_REPORT_THM.md`) di sesi *Weekly Mission*.
 
 ---
 
 ## 💬 Diskusi Minggu Ini
 
-1. Sesudah mengoperasikan analisis ekskavasi sumber data publik sumber arsitektur data *OSINT* dan *WHOIS* pada pengujian tahapan Pengintaian Pasif, seberapa krusial kesadaran yang terbangun dalam batin teknikalmu ihwal bahaya penelusuran penempatan informasi arsitektur privasi aplikasi milik peladen pribadimu sendiri yang barangkali selama ini tanpa disadari dibiarkan terekspos serta terpublikasi rawan menganga berceceran meresap jejaknya tanpa pelindungan otorisasi sandi akses pada konfigurasi peramban infrastruktur awan data *search engine* internet publik dunia?
+Setelah mempelajari *Passive Reconnaissance* dan menyadari betapa mudahnya mencari informasi melalui *OSINT* dan *Google Dorking*, apakah kamu khawatir ada data pribadimu (atau data dari aplikasimu) yang secara tidak sengaja terindeks dan terekspos di internet publik?
 
 ---
 
@@ -154,16 +154,16 @@ Pada sesi praktikum ini, Anda secara mutlak difokuskan untuk mempraktikkan siklu
 
 ```
 ┌─────────────────────────────────────┐
-│ │
-│ 🎖️ THE SILENT OBSERVER │
-│ Week 15 Complete │
-│ "To conquer a fortress, │
-│ first you map every stone." │
-│ │
+│                                     │
+│     🎖️ THE SILENT OBSERVER          │
+│       Week 15 Complete              │
+│     "To conquer a fortress,         │
+│   first you map every stone."       │
+│                                     │
 └─────────────────────────────────────┘
 ```
 
-Selamat! Rekonstruksi parameter arsitektur fase awal tahapan *Reconnaissance* telah Anda rampungkan paripurna!
+Selamat! Kamu telah menguasai keseluruhan fase pengumpulan intelijen (*Reconnaissance*)!
 
 ---
 
@@ -171,7 +171,7 @@ Selamat! Rekonstruksi parameter arsitektur fase awal tahapan *Reconnaissance* te
 
 **Minggu 16: Web Exploitation — Injection Attacks**
 
-Waktu pengintaian usai! Segala peta intelijen infrastruktur pemindaian laporan *Nmap* serta analisis struktur pengintaian detektor *Wappalyzer* sasaran yang direkonstruksi minggu ini kelak berfungsi menjadi pedoman strategis di ransel payload payload operasimu! Bersiap menanggalkan status observasi statis dan sambutlah pengujian eksekusi parameter pembuktian teknis sebagai spesialis arsitektur peretasan! Minggu depan secara utuh dialokasikan sebagai siklus murni **Minggu Serangan (Web Exploitation)**. Kita bakal terjun membongkar serta menyuntik eksploitasi parameter memanipulasi peladen arsitektur struktur modifikasi Database kueri percobaan simulasi kerentanan mutlak modifikasi serangan *SQL Injection* tingkat lanjut (*UNION-based & Blind SQLi*), menyeludupkan payload mesin penetrasi otomasi andalan pakar industri *SQLMap*, hingga meracik rekayasa meruntuhkan gerbang validasi otentikasi login mutlak sistem tanpa perlu menebak sandi *(Authentication Bypass Attack Method Execution Tool SQL Architecture Vulnerability Method Security Penetration Payload Operation Security Injection Testing)*!
+Waktu untuk mengintai telah usai! Semua data dari Nmap, Wappalyzer, dan Ffuf yang kamu kumpulkan minggu ini akan menjadi "senjata" utamamu. Minggu depan adalah **Minggu Serangan (Web Exploitation)**. Kita akan langsung membongkar aplikasi web melalui serangan injeksi (*SQL Injection*). Kamu akan belajar tentang *UNION-based & Blind SQLi*, menggunakan *tool* otomasi industri bernama **SQLMap**, dan meretas form *login* tanpa perlu menebak kata sandi (*Authentication Bypass*)!
 
 > 🚀 *"The reconnaissance is over. The breach begins."*
 

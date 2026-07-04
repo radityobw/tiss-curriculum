@@ -16,12 +16,12 @@ total_questions: 5
 
 ### Q2
 **Type:** True/False
-**Question:** Saat membenihkan bom gema detektor semisal `ping` dalam rongga skrip intelijen (*recon*), peretas idealnya diharamkan menyelipkan batasan berapapun agar bom gema meluncur abadi tak pernah reda sehingga server sasaran meledak kepenuhan *bandwidth* selamanya (skrip lancar aman).
+**Question:** Saat membenihkan bom gema detektor semisal `ping` dalam rongga skrip intelijen (*recon*), peretas idealnya tidak diperbolehkan menyelipkan batasan berapapun agar bom gema meluncur abadi tak pernah reda sehingga server sasaran meledak kepenuhan *bandwidth* selamanya (skrip lancar aman).
 **Answer:** False
 
 ### Q3
 **Type:** Short Answer
-**Question:** Peranti detektif terjemahan bawaan pabrik CLI (berdinas laksana *DNS Resolver* portabel) manakah yang secara jitu dikerah melokalisasi mutasi nama maya laman persembunyian komersial (`google.com`) menetas terbedah menampakkan jejeran nomor letak titik koordinat server (*IP Address*)?
+**Question:** Peranti detektif terjemahan bawaan pabrik CLI (berdinas seperti *DNS Resolver* portabel) manakah yang secara jitu dikerah melokalisasi mutasi nama maya laman persembunyian komersial (`google.com`) menetas terbedah menampakkan jejeran nomor letak titik koordinat server (*IP Address*)?
 **Answer:** `host`.
 
 ### Q4

@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mengkoneksikan** peladen antarmuka aplikasi *Node.js/Express* milikmu secara langsung ke gerbang *Database*.
-2. **Mengeksekusi** pengiriman kueri operasi instruksional bahasa data SQL melalui perantara program skrip *backend*.
-3. **Mengenal** sekilas penjabaran konsep dan fungsi arsitektur dari integrasi modul lapisan abstraksi *ORM (Object-Relational Mapping)*.
+1. **Mengkoneksikan** aplikasi *Node.js/Express* milikmu secara langsung ke *Database*.
+2. **Mengeksekusi** kueri SQL melalui kode *backend*.
+3. **Mengenal** sekilas konsep *ORM (Object-Relational Mapping)*.
 
 ---
 
@@ -20,50 +20,52 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Komunikasi Lintas Sistem: Driver Database
 
-Node.js dan layanan penyimpanan Database SQL (seperti MySQL, PostgreSQL, maupun varian SQLite portabel) sejatinya merupakan dua arsitektur proses entitas program independen yang beroperasi terpisah di level sistem operasi komputermu. Node.js secara bawaan tidak mendesain dukungan logik guna mengenali dan membaca ataupun memproses sintaks eksekutor kueri *SQL* secara mandiri.
-Agar kerangka server API berbasis *Node.js* sukses mentransmisikan surat payload kueri perintah operasi manipulasi basis data SQL menuju ke gerbang eksekutor *Database*, ia mutlak membutuhkan modul penghubung penengah (seorang perantara logik) yang didefinisikan secara khusus sebagai antarmuka pustaka **Database Driver** (maupun *Database Client Library*).
+Node.js dan Database SQL (seperti MySQL, PostgreSQL, atau SQLite) adalah dua program yang beroperasi secara terpisah. Secara bawaan, Node.js tidak bisa langsung membaca atau mengeksekusi perintah *SQL*.
 
-Untuk integrasi peladen basis data dengan fungsionalitas portabel ringan berjenis *SQLite*, kita akan mengeksploitasi fungsi perantara *Driver* SQL populer yang ditarik dari distribusi gudang modul pustaka *NPM* bernama `sqlite3`.
+Agar server API berbasis *Node.js* bisa mengirimkan perintah SQL ke *Database*, kita membutuhkan sebuah modul penghubung perantara yang disebut **Database Driver** (atau *Database Client Library*).
 
-Alur kerangka konseptual mekanismenya beroperasi rasional dan tertata:
-1. Skrip *Backend Node.js* memanfaatkan pustaka *Driver* untuk membangun koneksi perutean pipa memori ke *file database* di *storage OS*.
-2. Skrip merakit kueri parameter pembentukan susunan spesifikasi SQL berbasis parameter format teks atau sintaks bahasa data (contoh pembentukan: `SELECT * FROM arsip_data`).
-3. string kueri SQL tersebut lantas didelegasikan dan ditembakkan menyeberang via perantara koneksi eksekutor modul konektor *Driver*.
-4. *Database Engine SQL* peladen sasaran yang mengeksekusinya akan otomatis memproses, menyortir rekaman pelaporan, kemudian meluncurkan balasan (yang diterjemahkan secara dinamis oleh *Driver* menjadi susunan tipe himpunan parameter fungsi logik tipe data struktur turunan *JavaScript: Array of Objects*). Array kembalian ini kelak akan ditangkap oleh fungsi Node, dibungkus secara otentik sebagai stempel format respon spesifik JSON, untuk lantas disuguhkan kepada layar peramban API pihak klien!
+Untuk menghubungkan Node.js dengan database *SQLite*, kita akan menggunakan pustaka *Driver* populer dari *NPM* yang bernama `sqlite3`.
+
+Alur kerja mekanismenya adalah sebagai berikut:
+1. Kode *Node.js* menggunakan *Driver* untuk membuka koneksi ke file database.
+2. Kode merakit perintah SQL dalam format teks (contoh: `SELECT * FROM arsip_data`).
+3. Teks kueri SQL tersebut dikirimkan ke database melalui *Driver*.
+4. *Database Engine* memproses kueri tersebut, lalu mengirimkan hasilnya kembali. *Driver* akan otomatis menerjemahkan hasil ini menjadi format data JavaScript (*Array of Objects*), yang kemudian bisa dikirim oleh server Node sebagai respon JSON ke klien.
 
 ### Sintaks Eksekusi Kueri di Node.js
 
-Berikut adalah penjabaran implementasi kodingan instalasi *Node.js* untuk menginisialisasi pengikatan basis data (menggunakan eksekutor *Driver sqlite3*):
+Berikut adalah cara menggunakan *Driver sqlite3* di *Node.js* untuk menginisialisasi database:
 
 ```javascript
-// 1. Memanggil dan Memuat Penghubung Modul Driver (Via Inisiasi NPM Module)
+// 1. Memanggil modul Driver dari NPM
 const sqlite3 = require('sqlite3').verbose();
 
-// 2. Tancapkan fungsi pembukaan rute koneksi agar merujuk keberadaan letak file database pada storage harddisk direktori
+// 2. Membuat koneksi ke file database
 const db = new sqlite3.Database('./fitur.db');
 
-// 3. Mengeksekusi pengiriman pengiriman kueri pelacakan kueri pencarian SQL pada peladen memanfaatkan deklarasi rute panggil fungsi parameter array driver `.all`
+// 3. Mengeksekusi pencarian SQL menggunakan metode `.all`
 db.all("SELECT * FROM arsip_data", [], (error, hasilTarikData) => {
- if (error) {
- throw error;
- }
- // Parameter tangkapan variabel 'hasilTarikData' (array) saat ini format rupa kembaliannya telah ditransformasikan tuntas menjadi kumpulan objek JavaScript Array murni bersarang siap diolah!
- console.log(hasilTarikData); 
+  if (error) {
+    throw error;
+  }
+  // Variabel 'hasilTarikData' (array) akan berisi sekumpulan objek JavaScript yang siap diolah!
+  console.log(hasilTarikData); 
 });
 ```
 
 ### Lapisan Abstraksi Database: Pengenalan ORM (Object-Relational Mapping)
 
-Di tingkatan operasional industri sistem rekayasa perangkat lunak sesungguhnya, rutinitas pengembang mengetik rentetan rincian rumit format mentah kueri panjang teks SQL di berbagai penjuru sebaran barisan komponen Node.js secara langsung rutin menimbulkan pemicu celah rawan ralat ketik yang memborbardir galat eror sintaks data. Belum lagi kueri string SQL murni umumnya cenderung sulit dipelihara dan di-refactor ulang pada skala aplikasi korporat raksasa.
-Untuk mengatasi kemelut pengelolaan kueri, perancang melahirkan arsitektur jurus konversi abstrak berlapis yang dikenal sebagai peranti *ORM (Object Relational Mapper)* (contoh pustaka *NPM framework ORM* kelas global masyhur: *Prisma*, *Sequelize*, dan *TypeORM*).
+Di industri pengembangan perangkat lunak sesungguhnya, menulis kueri SQL mentah berulang kali di dalam kode Node.js sangat rawan *typo* (salah ketik) dan sulit untuk di-maintain (dipelihara) pada aplikasi skala besar.
 
-Dibandingkan menulis fungsi modifikasi pemanggilan secara konvensional laksana string mentah ini:
+Untuk mengatasinya, para *developer* sering menggunakan lapisan abstraksi yang dikenal sebagai **ORM (Object-Relational Mapping)** (contoh *framework ORM* populer di NPM: *Prisma*, *Sequelize*, dan *TypeORM*).
+
+Dibandingkan menulis fungsi pencarian SQL mentah secara manual:
 `SELECT * FROM staf WHERE divisi_id > 20`
 
-Arsitektur kerangka abstrak *ORM* memungkinkan pemrogram untuk mengalkulasi operasi pelacakan serupa secara elegan melalui panggilan susunan penulisan bahasa fungsi logik objek JS yang semata, semisal:
+*ORM* memungkinkan pemrogram untuk mengambil data secara elegan melalui pemanggilan metode objek JavaScript, semisal:
 `Staf.findMany({ where: { divisi_id: { gt: 20 } } })`
 
-struktur pustaka arsitektur operasi logik *ORM* kelak memfasilitasi peladen secara latar belakang (*under the hood*) bekerja menerjemahkan susunan fungsi logika spesifikasi log JS rapi elegan ini terotomasi merajut balutan perwajahan pembentuk perisai ke dalam kerangka bentuk komando kueri SQL tulen (*raw SQL queries*).
+*ORM* akan bekerja di balik layar (*under the hood*) untuk secara otomatis menerjemahkan kode JavaScript yang elegan tersebut menjadi perintah SQL murni (*raw SQL queries*).
 
 ---
 
@@ -71,88 +73,89 @@ struktur pustaka arsitektur operasi logik *ORM* kelak memfasilitasi peladen seca
 
 **Durasi**: ~15 menit
 
-Mari rancang rakit tautan database lokal mutakhir pertamamu di alam instalasi rute peramban skrip *Node.js*!
+Mari kita buat koneksi database lokal pertamamu di skrip *Node.js*!
 
-1. Buka rute jendela spesifikasi Terminal antarmuka peladen komandormu, lantas deklarasikan penciptaan sarang baru `mkdir lab-node-sql`, kemudian masuk navigasikan lajurnya `cd lab-node-sql`.
-2. Gelar deklarasi rilis operasi eksekutor *package* repositori awal via `npm init -y`.
-3. Pasang instalasi ekstrak pustaka penghubung konektor Driver database modul SQLite:
+1. Buka Terminal, buat folder baru `mkdir lab-node-sql`, lalu masuk ke folder tersebut `cd lab-node-sql`.
+2. Inisialisasi proyek Node.js dengan perintah `npm init -y`.
+3. Instal *Driver* database SQLite:
 ```bash
 npm install sqlite3
 ```
-4. Rakit fail *JavaScript* bernama spesifik `induk.js`, lantas sematkan padanan sandi pengikatan arsitektur operasi ini ke dalam parameternya:
+4. Buat file `induk.js`, lalu masukkan kode berikut:
 
 ```javascript
 const sqlite3 = require('sqlite3').verbose();
 
-// Tahapan memanggil dan merancang database (Sistem akan secara otomatis menyisipkan deklarasi kerangka cetakan penciptaan wujud file lokal berlabel nama 'rahasiatiss.db' jika penyimpanannya terbukti absen dari direktori!)
+// Tahapan memanggil dan merancang database (Sistem akan membuat file 'rahasiatiss.db' jika belum ada)
 const db = new sqlite3.Database('./rahasiatiss.db');
 
-// Rangkaian sandi deklarasi sirkulasi penyelarasan pengeksekusian pengikatan rentetan kueri secara runut beruntun (serialize)
+// Rangkaian perintah SQL yang dijalankan berurutan (serialize)
 db.serialize(() => {
- // Bangun Tabel data operasional payload db.run("CREATE TABLE IF NOT EXISTS pasukan (info TEXT)");
+  // Bangun Tabel (jika belum ada)
+  db.run("CREATE TABLE IF NOT EXISTS pasukan (info TEXT)");
 
- // Suntik operasi rute memuat muatan array sisipan referensi payload (Parameterized Query / Prepared Statement)
- const pelatukInsersi = db.prepare("INSERT INTO pasukan VALUES (?)");
- pelatukInsersi.run("Anggota Tim Validasi");
- pelatukInsersi.run("Anggota Tim Auditor Jaringan");
- pelatukInsersi.finalize(); // Mengakhiri/meringkus pemicu sirkuit memori operasional Statement peluncur fungsi injeksi data memori RAM peladen
+  // Menyiapkan operasi INSERT menggunakan statement (Parameterized Query)
+  const pelatukInsersi = db.prepare("INSERT INTO pasukan VALUES (?)");
+  pelatukInsersi.run("Anggota Tim Validasi");
+  pelatukInsersi.run("Anggota Tim Auditor Jaringan");
+  pelatukInsersi.finalize(); // Mengakhiri statement
 
- // Mengekstraksi fungsi pelaporan rekam log lantas Tampilkan hasil sulingan muatan di layar tampilan konsol penampang output peladen Node
- db.each("SELECT rowid AS id, info FROM pasukan", (err, hasilData) => {
- console.log(`[LAPORAN REKAMAN EKSTRAKSI DATA BARIS SQLITE] ID Payload: ${hasilData.id} -> ${hasilData.info}`);
- });
+  // Mengeksekusi kueri SELECT dan menampilkan hasilnya ke konsol
+  db.each("SELECT rowid AS id, info FROM pasukan", (err, hasilData) => {
+    console.log(`[LAPORAN SQLITE] ID: ${hasilData.id} -> ${hasilData.info}`);
+  });
 });
 
-// Menutup gerbang parameter pembukaan aliran sambungan komunikasi peladen ke memori database agar efisiensi terawat!
+// Menutup koneksi database agar efisiensi terjaga
 db.close();
 ```
-5. Eksekusi penggerak lajur instruksi operasi terminal peladenmu: `node induk.js`
-6. Penampang tampilan layarmu seketika niscaya menampilkan dan mendisplai log deretan umpan pelaporan payload balasan spesifik hasil pengolahan penyuntingan rekaman baris penulisan tabel di piringan Database SQLite lokal (*rahasiatiss.db* diproduksi, diisi tabel lantas dikueri dengan sempurna oleh Node)!
+5. Jalankan skrip di terminal: `node induk.js`
+6. Terminalmu akan menampilkan hasil ekstraksi data dari tabel di dalam database SQLite lokal (file `rahasiatiss.db` telah sukses diproduksi, diisi data, dan dikueri melalui Node)!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Ketika skrip antarmuka aplikasi operasional *Node.js Backend* menuntut pendelegasian otoritas untuk merilis pembukaan koneksi pertukaran perintah kueri menyambangi arsitektur pintu penyimpanan memori SQL (*SQL Database System*), modul peranti khusus berwujud apakah (yang lazim ditebus diinstal dari repositori bursa penyedia pasokan pusat perpustakaan peladen *NPM*) yang menduduki esensi jabatan guna menjembatani sarana transmisi jalur perintah komunikasi integrasi lintas antar kedua sistem arsitektur tersebut?</summary>
+<summary>❓ Modul perantara apa (yang biasanya diinstal dari NPM) yang berfungsi untuk menjembatani komunikasi antara kode Node.js dengan sistem Database SQL?</summary>
 
-**Jawaban:** integrasi penyediaan jembatan ekstensi *Driver Database* (alias Pustaka *Database Connector Module*, misal referensi peranti pustaka fungsi arsitektur instalasi `sqlite3`, perantara driver logik koneksi perutean pustaka antarmuka `pg` untuk relasi pertautan integrasi pengolahan memori *PostgreSQL Engine Database Server*, atau modul pengaitan jembatan parameter eksekutor *Driver Application Node Programming Module Interface Data Fetching Connection Database Socket Interface Network Parameter Client MySQL Protocol Logic MySQL Module Adapter Logic SQL Database Backend MySQL Library Protocol Binding Database Connector* `mysql2`).
+**Jawaban:** *Database Driver* (contoh: `sqlite3`, `pg` untuk PostgreSQL, atau `mysql2` untuk MySQL).
 </details>
 
 <details>
-<summary>❓ Pasca pundi-pundi kumpulan parameter data peladen *SQL Database Engine Storage* memproses pengerjaan dan mengekstrak balasan tuntas untuk menanggapi pengikatan eksekusi kueri antarmuka instruksional pencarian data dari Node `SELECT`, wujud struktur abstraksi pengelompokan format pemetaan pengenalan data bawaan (secara konseptual pemrograman operasional *native data struct type* di mesin) berjenis apa yang niscaya sukses dihidangkan dikonversi mendarat ke variabel referensi tangkapan payload kembalian memori logik pelaksana fungsi peramban modul eksekutor *Driver Javascript Node*?</summary>
+<summary>❓ Dalam bentuk format tipe data apakah struktur kembalian (hasil respons) dari database SQL akan diterjemahkan oleh *Driver* saat ditangkap oleh variabel di dalam JavaScript Node.js?</summary>
 
-**Jawaban:** Transformasi data SQL ke bahasa Node (berwujud koleksi parameter pengelompokan struktur data) senantiasa secara standar dideklarasikan ke bentuk format himpunan berjenis ***Array of Objects*** (Di mana tiap objek JS tersebut merepresentasikan parameter pengikatan spesifik utuh atas satu *record* jejak rincian sel rekaman pelaporan spesifik di pelataran baris lajur fungsi kolom tabel).
+**Jawaban:** ***Array of Objects*** (Di mana setiap satu *object* merepresentasikan satu baris / *record* hasil dari tabel SQL).
 </details>
 
 <details>
-<summary>❓ Apa padanan dari penamaan akronim logik operasional integrasi sirkulasi komponen arsitektur peladen berlabel *ORM*, di mana struktur *ORM* ini dihajatkan fungsinya secara spesifik menimpa kelamnya sintaks perutean penulisan penyusunan argumen kueri fungsi SQL statis untuk berganti wajah beralih fungsi direpresentasikan menjadi lapisan perumusan logika pemrograman elegan orientasi objek di sisi ekosistem perakitan modul proyek pemrograman peladen Backend mutakhir?</summary>
+<summary>❓ Apa kepanjangan dari akronim *ORM*, yaitu lapisan abstraksi yang memungkinkan pengembang menulis kueri SQL menggunakan kode JavaScript berorientasi objek yang lebih rapi?</summary>
 
-**Jawaban:** Konsep integrasi parameter objek perantara fungsionalitas tersebut merujuk pada pengalamatan identifikasi payload *ORM* merupakan sandi penyingkatan arsitektur dari penyusutan terma arsitektur klasifikasi antarmuka fungsi: **Object-Relational Mapping (ORM)**.
+**Jawaban:** **Object-Relational Mapping (ORM)**.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami relasi esensial fungsi logik peran instalasi dependensi perantara *Database Driver* yang menjembatani konversi instruksi interupsi lintas peladen SQL. 
-- [ ] Saya sukses menguji serangan eksekusi *Request Payload Server Application Architecture System Execution Endpoint Connection Driver DB Driver Storage DB Initialization Command SQLite Architecture Parameter Command SQLite Driver Architecture Fetch Request Initialization* pada fungsi ekstraksi sintaks penelusuran ekstrak barisan operasional aplikasi perantara eksekutor pustaka fungsi komando instalasi log instalasi *NPM sqlite3 Module Node Middleware JS Syntax Database Configuration System SQLite Architecture Binding API Controller Node* dari *Node CLI*.
-- [ ] Saya meninjau penjabaran ringkas perihal konsep perumusan struktur lapisan kerangka abstraksi relasi *ORM (Object-Relational Mapping Framework)*.
-- [ ] Saya kelar menuntaskan rekam log instalasi modul eksekutor memori pemetaan rekam memori operasional database tabel *DB Engine Storage Engine SQL Data Creation Insertion Persistence Command Binding Initialization Module SQL Driver Query Result Binding Initialization Memory* parameter memori *SQLite DB Configuration Logic* dalam pengerjaan *Mini Lab Node-SQL*.
-- [ ] Saya menyelesaikan pendalaman kaji ulas pendalaman arsitektur konsep penguasaan logik harian di pengujian evaluasi peramban singkat (*Quiz Kilat*).
+- [ ] Saya memahami peran dari *Database Driver* untuk menjembatani Node.js dan SQL. 
+- [ ] Saya sukses menjalankan koneksi *sqlite3* melalui skrip Node.js di terminal.
+- [ ] Saya memahami konsep lapisan abstraksi *ORM (Object-Relational Mapping)*.
+- [ ] Saya telah menuntaskan praktik *Mini Lab Node-SQL*.
+- [ ] Saya telah meninjau ulasan materi di *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [NPM: sqlite3 Documentation](https://www.npmjs.com/package/sqlite3) — Dokumentasi ekstensif sah resmi penyediaan integrasi peramban operasional konfigurasi penataan instruksi *Node HTTP SQL Driver System Setup Network SQL Library Database Database API Query Binding SQLite Package Initialization Configuration Guide Application Syntax API Documentation* memfasilitasi parameter instalasi lajur pemanggilan sinkronis / asinkronis di dalam operasi paket pustaka log dependensi API pustaka `sqlite3`.
-- [Prisma ORM Intro](https://www.prisma.io/) — (Pembacaan Alternatif Eksternal Opsional) Tilik serta selami arsitektur penulisan integrasi lapisan konseptual paras abstraksi kerangka *Software Database Relational Abstraction Mapping Software Framework Configuration Software Backend Logic Data Parameter Abstraction Library System Backend Infrastructure Abstraction API Software Model Data Architecture Middleware ORM Type Persistence Abstraction ORM Architecture Library Persistence Mapping System Backend Tool Developer System API* (Pustaka ORM) tersohor dan sangat modern implementasinya di berbagai *stack* proyek korporat rekayasa industri terkini.
+- [NPM: sqlite3 Documentation](https://www.npmjs.com/package/sqlite3) — Dokumentasi resmi penggunaan *Driver* `sqlite3` untuk Node.js.
+- [Prisma ORM Intro](https://www.prisma.io/) — (Opsional) Tinjauan dokumentasi *Prisma*, salah satu framework *ORM* modern yang sangat populer di industri saat ini.
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: Authentication & Password Security** — integrasi relasi penyimpanan payload tabel database arsip pengingat berhasil tuntas dirakit operasionalnya! Di eksekusi harian esok, tantangan pengikatan keamanan fungsionalitas perutean bakal membentang mendesak dituntaskan arsitekturnya. Kita menugaskan penyusunan parameter rekayasa proteksi operasi kontrol log peramban log perisai pengawasan fungsionalitas integrasi peladen (*Application Authentication System Request Control Endpoint Firewall Endpoint Parameter Web App Protection Authorization Layer Role Web Software Authorization App Web Interface Verification Auth Logic Logic*). Kita membedah dua varian mekanisme otorisasi perutean: Sistem *Session-based Memory Login Verification* eksekutor server log dan kerangka sistem modern antarmuka jaringan payload log fungsi identitas nir-status klien token API pertukaran parameter eksekutor *JWT Session ID API Parameter Application Security Verification Network Interface JWT Token Authorization Endpoint Server Backend Web App JWT Logic*. Tak tertinggal, merajut kelengkapan fitur pengerjaan parameter persandian perlindungan otentik lebur kriptografis cincang (*Hashing*) algoritma modul pertahanan memori pengaman peladen perutean sandi enkripsi rute jaringan arsitektur *Node Password Cipher Hashing Library Bcrypt API Configuration Application Hash Software Crypto Hashing Security*!
+**Day 4: Authentication & Password Security** — Kemampuan menghubungkan Node.js dengan database sudah kamu kuasai. Besok, kita akan menyelami sistem keamanan login. Kita akan membedah konsep *Session-based Authentication* versus *Stateless JWT (JSON Web Token)*, serta menerapkan teknik kriptografi *Hashing* menggunakan modul `bcrypt` agar kata sandi pengguna tidak disimpan secara telanjang (*plaintext*) di dalam database.
 
 ---
 

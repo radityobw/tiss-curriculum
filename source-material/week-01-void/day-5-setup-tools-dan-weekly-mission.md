@@ -158,7 +158,7 @@ VS Code terbuka dengan sukses dan extension Markdown terinstall.
 
 ## 📋 Weekly Checklist
 
-- [ ] Saya bisa menjelaskan peran TISS, cybersecurity, dan 3 utama
+- [ ] Saya bisa menjelaskan peran TISS, cybersecurity, dan 3 pilar utama
 - [ ] Saya memahami CIA Triad dan etika dasar (White Hat vs Black Hat)
 - [ ] Saya paham roadmap perjalanan 24 minggu (120 hari) ke depan
 - [ ] Saya sudah menyelesaikan Hands-On Lab (Setup GitHub, TryHackMe, VS Code)

@@ -93,7 +93,7 @@ Mari rapikan form dari Day 3 dengan kekuatan CSS Flexbox dan bedah menggunakan D
 </style>
 ```
 3. Simpan dan buka di peramban. Form loginmu kini akan berada persis di tengah layar dengan tampilan elegan!
-4. Tekan **F12**, masuk ke tab **Network**. Centang tu "Preserve log".
+4. Tekan **F12**, masuk ke tab **Network**. Centang opsi "Preserve log".
 5. Isi form asal-asalan, lalu klik tombol Daftar. 
 6. Lihat di tab Network! Surat pengiriman data (POST) milikmu tertangkap di sana!
 
@@ -126,7 +126,7 @@ Mari rapikan form dari Day 3 dengan kekuatan CSS Flexbox dan bedah menggunakan D
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami empat utama dalam anatomi Box Model
+- [ ] Saya memahami empat lapisan utama dalam anatomi Box Model
 - [ ] Saya mengetahui hierarki selektor (Class `.` vs ID `#`)
 - [ ] Saya memahami fungsi sakti dari `display: flex`
 - [ ] Saya berhasil menangkap proses POST di tab Network via Mini Lab

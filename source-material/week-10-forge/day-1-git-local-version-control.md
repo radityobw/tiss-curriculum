@@ -55,7 +55,7 @@ Berikut adalah siklus sehari-hari menggunakan Git di komputermu (tanpa butuh int
 
 ### Percabangan (Branching) & Merging
 
-Fitur paling mematikan dari Git adalah **Branching**. 
+Fitur paling penting dan berguna dari Git adalah **Branching**.
 
 Bayangkan kamu sedang membuat website utama (`main` branch) yang sudah stabil. Tiba-tiba kamu ingin mencoba merombak desain (eksperimen). Daripada merusak yang sudah stabil, kamu membuat cabang (branch) baru.
 

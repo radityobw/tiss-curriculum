@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Di ranah perburuan ekskavasi kerentanan *Web*, alternatif arsitektur manakah gubahan ordo *OWASP* yang ditahbiskan selaku penantang sepadan (100% Gratis) yang membebaskan peretas dari jeratan mahalnya biaya lisensi logis *Burp Scanner Professional*?
-- [x] A. *OWASP ZAP (Zed Attack Proxy)*, peranti pemindai otomatis (*Automated Vulnerability Scanner*) yang secara logis bebas membedah kelalaian eksploitasi *SQLi/XSS* murni tanpa pungutan bea berlangganan .
+**Question:** Alat bantu apakah buatan komunitas OWASP yang sering digunakan sebagai alternatif (100% Gratis) bagi pentester yang tidak memiliki lisensi berbayar *Burp Scanner Professional*?
+- [x] A. *OWASP ZAP (Zed Attack Proxy)*, perangkat *Proxy* dan pemindai otomatis (*Automated Vulnerability Scanner*) yang mampu mendeteksi kerentanan seperti *SQLi* dan *XSS* secara gratis.
 - [ ] B. *OWASP Mutillidae*.
-- [ ] C. Mesin *PortSwigger Community*.
-- [ ] D. Kumpulan pencarian *Shodan*.
+- [ ] C. *PortSwigger Community*.
+- [ ] D. *Shodan*.
 
 ### Q2
 **Type:** True/False
-**Question:** Ketika meluncurkan serangan eksploitasi pemindaian <i>Nikto</i> di lingkungan arsitektur terminal , penganalisis memanggil mesin pemindai purba tersebut demi memburu ekskavasi kelalaian peladen tata letak payload konfigurasi (<i>Security Misconfigurations</i>) semacam absensi perisai pelindung <i>Security Headers</i> atau arsitektur versi instalasi <i>Apache</i> yang telah uzur .
+**Question:** Pemindai berbasis terminal bernama *Nikto* digunakan khusus untuk mendeteksi kelalaian konfigurasi *server* (*Security Misconfigurations*), seperti ketiadaan *Security Headers*, direktori sensitif yang terbuka, atau penggunaan versi *software* (*Apache/PHP*) yang sudah usang.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Di ranah peretasan operasi manipulasi kecepatan kilat (arsitektur *Fuzzing*), apa nama peranti gubahan bahasa *Golang* (berawalan huruf f) yang diagungkan laksana serigala alat tebakan parameter ratusan kali detik ?
+**Question:** Apa nama perangkat *Fuzzing* berbasis bahasa *Golang* (berawalan huruf f) yang terkenal dengan kemampuannya melontarkan ribuan *payload Brute-force* ke parameter web dengan kecepatan sangat tinggi?
 **Answer:** Ffuf (Fuzz Faster U Fool).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Ketika penganalisis menenggak eksekusi ekstraksi <i>Nikto</i> guna menembak peladen sasaran, peringatan arsitektur apa yang senantiasa dilanggar oleh Nikto perihal kepatuhan kesunyian sehingga membuatnya amat tidak disarankan digunakan pada operasi <i>Passive Recon</i> ?
-**Answer:** Nikto melanggar kesunyian karena gempurannya amat sangat **bising (Noisy)** dan niscaya memicu ledakan alarm *Firewall/IDS* peladen seketika.
+**Question:** Mengapa pemindai *Nikto* sangat TIDAK disarankan untuk digunakan pada tahap *Passive Reconnaissance* (Pengintaian Pasif)?
+**Answer:** Karena *Nikto* sangat bising (*Noisy*) dan agresif dalam mengirimkan *request*, sehingga akan langsung memicu peringatan pada sistem *Firewall* atau IDS target.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Bila penganalisis menuntut paduan taktik percobaan , pemindai apakah (gubahan ordo OWASP) yang jamak dikawinkan digabung kombinasinya laksana *Scanner* logis otomatis penyayat sebelum dieksploitasi manual di bodi *Burp Repeater*?
+**Question:** Pemindai otomatis buatan OWASP apakah yang sering digabungkan penggunaannya dengan *Burp Suite*, di mana pemindai tersebut melakukan pemindaian massal awal, lalu temuan celahnya diuji secara manual menggunakan *Burp Repeater*?
 **Answer:** OWASP ZAP (ZAP).

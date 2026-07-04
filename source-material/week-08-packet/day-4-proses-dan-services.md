@@ -98,7 +98,7 @@ Buka Terminal WSL/Mac/Linux kamu. Mari kita berlatih menjadi Sniper Proses!
 4. Di output yang muncul, kamu akan melihat kolom kedua berisi angka (Misal: `4052`). Itu adalah **PID**.
 5. Bertindaklah sebagai sniper. Bunuh penidur itu!
  `kill -9 [Nomor_PID_Tadi]`
-6. Buka kembali jendela Terminal pertamamu. Kamu akan melihat tu *"Killed"* (Terbunuh) dan terminalmu kembali merespons! 
+ 6. Buka kembali jendela Terminal pertamamu. Kamu akan melihat teks *"Killed"* (Terbunuh) dan terminalmu kembali merespons! 
 
 Selamat, kamu baru saja mengeksekusi program pertamamu di Linux!
 

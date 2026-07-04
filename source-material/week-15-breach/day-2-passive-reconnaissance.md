@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Memahami** konsep pengumpulan intelijen Pengintaian Pasif (*Passive Reconnaissance*) dalam rutinitas ekstraksi tanpa terdeteksi.
-2. **Mengekstraksi** data catatan publik kepemilikan sasaran menggunakan *WHOIS* dan interogasi rekam logis *DNS*.
-3. **Mengeksploitasi** identifikasi sumber data informasi terbuka bermodalkan arsitektur parameter *OSINT* (*Google Dorking* & mesin pencari *Shodan*).
+1. **Memahami** konsep *Passive Reconnaissance* (Pengintaian Pasif) untuk mengumpulkan informasi tanpa terdeteksi oleh target.
+2. **Mengekstraksi** data kepemilikan domain dan infrastruktur menggunakan *WHOIS* dan *DNS lookup*.
+3. **Mengeksploitasi** sumber data terbuka (OSINT) menggunakan teknik *Google Dorking* dan mesin pencari *Shodan*.
 
 ---
 
@@ -20,27 +20,29 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Seni Mengintai Tanpa Menyentuh
 
-Fase **Reconnaissance (Pengintaian Intelijen)** dalam arsitektur operasional peretasan terbelah menjadi dua kategori utama eksekutor: *Aktif* dan *Pasif*.
-Pengumpulan intelijen pasif (**Passive Recon**) ibarat mengumpulkan profil sasaran menggunakan ketersediaan arsip data publik yang terbuka dan terdokumentasikan secara eksternal (*Open Source Intelligence / OSINT*). Mesin server infrastruktur web sasaran target niscaya tidak akan pernah membunyikan alarm maupun mencatat jejak (log) alamat *IP address* milikmu, karena metode eksploitasi intelijen ini dilaksanakan mutlak tanpa pernah mendelegasikan pengiriman kueri atau parameter interaksi transmisi paket eksekusi langsung yang membentur alamat antarmuka peladen sasaran.
+Fase **Reconnaissance (Pengumpulan Intelijen)** terbagi menjadi dua: *Active* dan *Passive*.
+Pengumpulan intelijen pasif (**Passive Recon**) berarti kita mencari informasi target menggunakan sumber publik yang sudah tersedia di internet (*Open Source Intelligence / OSINT*). 
 
-Sebagai penguji penetrasi yang mumpuni, kamu dituntut merangkai payload analisis kelemahan intelijen semata bermodalkan jejak dan remah informasi kelalaian eksposur payload dokumentasi yang dibiarkan terekspos berceceran bebas pada arsip ekosistem mesin pencari awan publik internet.
+Dalam fase ini, kita **tidak pernah** mengirimkan *request* atau paket jaringan secara langsung ke server target. Akibatnya, server target tidak akan mencatat alamat IP kita di log mereka, dan sistem keamanan target tidak akan membunyikan alarm peringatan.
+
+Sebagai penguji penetrasi, kamu akan mencari data sensitif yang tidak sengaja terekspos ke publik oleh pihak developer atau administrator.
 
 ### Senjata Pengintaian Pasif
 
 1. **WHOIS & DNS Lookup**
- Kala sebuah entitas mendaftarkan lisensi administrasi sewa tautan *Domain* (seperti konfigurasi `target.com`), pihak administrator dipersyaratkan melampirkan payload data otentik mencakup nama penyewa, surel korespondensi operasional, dan nomor fungsionalitas telepon. Kamu bisa mengekstrak ekspos detail kepemilikan tersebut via panggilan kueri `whois target.com` di layar peramban terminal! Untuk membedah peramban email maupun informasi arsitektur *server* alamat sasaran penyangga peladen mereka, penganalisis menyayat rekam konfigurasi parameter *DNS* menggunakan kueri instruksional seperti `dig` atau instruksi kueri `nslookup`.
+   Saat seseorang mendaftarkan *domain* (misalnya `target.com`), mereka harus menyertakan data administrasi seperti nama, email, dan nomor telepon. Kamu bisa melihat data ini menggunakan perintah `whois target.com` di terminal. Untuk mencari tahu alamat IP server atau rincian DNS (seperti server email), kamu bisa menggunakan perintah seperti `dig` atau `nslookup`.
 
 2. **Google Dorking (Operator Canggih Mesin Pencari)**
- Mesin peramban indeks publik Google nyatanya merupakan salah satu senjata alat penganalisis *OSINT* paling mumpuni jikalau analis sanggup memformulasikan komposisi perakitan sintaks kueri *Google Dork* (*Google Hacking Database*). Kamu mampu memanipulasi pelacak untuk menemukan payload indeks direktori ekskavasi *file* laporan berformat arsip rahasia (semisal PDF), payload sandi koneksi *database* yang rentan terekspos, hingga kerentanan memori laman antarmuka portal *login* administrator tersembunyi kelalaian yang secara pasrah tidak dikonfigurasi proteksi pengecualian pengindeksan konfigurasi web direktori *robot.txt*.
- - `site:target.com` (Filter pembatas kueri secara spesifik cuma diarahkan penelusurannya di domain situs target yang disasarkan)
- - `filetype:pdf` (Membatasi rincian hasil unduhan agar semata memuat ekstensi dokumen publik laporan PDF)
- - `inurl:admin` (Memindai letak alamat URL peladen yang pada arsitekturnya mengandung kata *admin*)
+   Google adalah salah satu alat OSINT terkuat jika kamu tahu cara menyusun kueri pencariannya (*Google Hacking Database / Google Dorking*). Kamu bisa menginstruksikan Google untuk memfilter dokumen rahasia, *file* konfigurasi, atau halaman *login admin* yang secara tidak sengaja terindeks.
+   - `site:target.com` (Membatasi pencarian hanya pada domain spesifik tersebut).
+   - `filetype:pdf` (Mencari file dengan ekstensi tertentu, misalnya PDF).
+   - `inurl:admin` (Mencari URL yang memiliki kata "admin" di dalamnya).
 
-3. **Shodan (Mesin Pencarinya Peretas Keras)**
- Jika arsitektur mesin peramban Google diarahkan murni meraba dan mengindeks dokumentasi teks konten eksternal web halaman situs, maka peramban instalasi basis data khusus bernama **Shodan** berfokus pada pelacakan operasi mesin fisik arsitektur internet! Shodan memindai peladen *router* jaringan instalasi peranti sasaran, sistem pemantauan pengikatan IP kamera CCTV terbuka, perangkat operasional peladen pengikatan *web server*, dan memajang rincian pemetaan terbuka port perangkat lunak konfigurasi servis komponen versi peladen yang kadaluarsa telanjang dada ke penjuru publik tanpa fungsi otentikasi login apa pun.
+3. **Shodan (Mesin Pencarinya Hacker)**
+   Jika Google mencari dan mengindeks *website*, **Shodan** mengindeks perangkat keras yang terhubung ke internet. Shodan memindai *router*, kamera CCTV, server *database*, dan *web server* di seluruh dunia. Kamu bisa melihat port apa saja yang terbuka dan *software* versi berapa yang digunakan oleh target, tanpa perlu melakukan *scanning* sendiri secara langsung.
 
 4. **theHarvester**
- bedil terminal pengikatan pelacak andalan yang terintegrasi di distribusi mesin OS *Kali Linux* ini bertugas secara siluman menyisir otomatis arsitektur repositori pencari pihak ketiga (Google, LinkedIn, Bing) demi menyaring dan memetakan ratusan penemuan alamat kontak surel email karyawan target korporasi! Direktori email inilah yang kelak dipilah guna dimanfaatkan penganalisis sasar peluncuran operasional serangan metode pemancingan fana manipulatif (*Social Engineering / Phishing*).
+   Ini adalah alat bawaan *Kali Linux* yang secara otomatis menyisir mesin pencari (Google, LinkedIn, Bing, dll) untuk mengumpulkan ribuan alamat *email* karyawan dari domain target. Data *email* ini sangat berharga untuk tahap serangan rekayasa sosial (*phishing*).
 
 ---
 
@@ -48,60 +50,60 @@ Sebagai penguji penetrasi yang mumpuni, kamu dituntut merangkai payload analisis
 
 **Durasi**: ~15 menit
 
-Ayo mulai mengimplementasikan ekstraksi jubah intaian siluman penganalisis dan merangkai filter logis penelusuran via parameter sintaks *Google Dorking*!
+Mari mempraktikkan teknik pencarian *Google Dorking*!
 
-1. Buka mesin indeks pencari [Google](https://www.google.com).
-2. Bayangkan kamu ditugaskan selaku auditor keamanan domain target `tiss.or.id` guna menelusuri apakah peladen membiarkan dokumentasi arsip laporan PDF mereka tercecer ke publik indeks peramban. Ketikkan mantra kueri penelusuran Dork ini:
- `site:tiss.or.id filetype:pdf`
- (Catatan Logis: Jika penelusuran menyatakan nihil/kosong, coba implementasikan uji pemetaan instansi publik kampus luringmu sendiri, misal `site:ui.ac.id filetype:pdf confidential`).
-3. Coba inisiasikan manuver perburuan penemuan rute letak laman portal otentikasi *login* administrator situs yang dibiarkan terekspos peramban tanpa sengaja:
- `site:target-kampusmu.ac.id inurl:login OR inurl:admin`
-4. Jelajahi juga pengujian mesin peramban khusus instalasi [shodan.io](https://www.shodan.io/). Pada kotak antarmuka penelusurannya, isikan kueri nama wilayah kota lokasimu (misal `city:"Jakarta"`). Kamu akan disajikan pemaparan rincian port jaringan terbuka, kamera, serta servis rentan peladen di wilayah tersebut yang meronta telanjang dipetakan Shodan!
+1. Buka [Google](https://www.google.com).
+2. Bayangkan kamu sedang mengaudit domain `tiss.or.id` dan ingin melihat apakah ada dokumen PDF yang terekspos. Ketikkan kueri ini:
+   `site:tiss.or.id filetype:pdf`
+   *(Catatan: Jika hasilnya kosong, kamu bisa mencoba dengan domain universitas atau instansi publik lainnya).*
+3. Coba cari halaman *login* yang mungkin disembunyikan menggunakan kueri kombinasi:
+   `site:target-kampusmu.ac.id inurl:login OR inurl:admin`
+4. Selanjutnya, buka [shodan.io](https://www.shodan.io/). Di kotak pencarian, masukkan nama kotamu, misalnya `city:"Jakarta"`. Kamu akan melihat berbagai perangkat, server, dan *port* terbuka yang terindeks secara bebas di internet!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Dalam terminologi pemisahan prosedur intelijen keamanan siber, parameter konseptual mendasar apakah yang secara empiris memisahkan kategori pendekatan ekskavasi Pengintaian Pasif (*Passive Recon*) bilamana dikomparasikan dengan klasifikasi eksekusi Pengintaian Aktif (*Active Recon*)?</summary>
+<summary>❓ Apa perbedaan mendasar antara <i>Passive Reconnaissance</i> dan <i>Active Reconnaissance</i>?</summary>
 
-**Jawaban:** Pada tahapan *Passive Recon*, penganalisis sebatas mengekstrak agregasi repositori profil intelijen target menggunakan kumpulan data pihak ketiga publik terbuka (Google, Shodan, WHOIS) secara mutlak tanpa mengirimkan *Request/Packet* ping secara langsung ke arah infrastruktur peladen aslinya, sehingga sistem keamanan sasaran niscaya nihil menyadari kedatangan penganalisis karena ketiadaan interaksi catatan log masuk IP pengunjung di mesin mereka. Sebaliknya, pendekatan payload *Active Recon* menghunjamkan eksekusi transmisi transmisi pemindaian (scan probe) yang murni menabrak serta berinteraksi logis dengan konfigurasi mesin *server* target secara langsung yang mana sangat rentan terekam pengamatan log pertahanan serta niscaya berisiko tinggi membangkitkan alarm pelaporan jaringan sasaran.
+**Jawaban:** *Passive Recon* mengumpulkan informasi melalui sumber pihak ketiga (seperti Google dan WHOIS) tanpa mengirim *request* langsung ke server target, sehingga IP kita tidak tercatat. Sedangkan *Active Recon* berinteraksi dan mengirim paket jaringan secara langsung ke server target, yang dapat terekam oleh sistem keamanan target dan memicu alarm.
 </details>
 
 <details>
-<summary>❓ Deklarasi payload instruksional operator filter sakti pemetaan arsitektur kueri pencarian ekstensif (*Google Dorking*) macam apakah pada algoritma fungsi mesin peramban Google yang diaplikasikan eksklusif guna memastikan pembatasan hasil pelaporan penelusuran informasi hanya dipusatkan secara eksklusif berorientasi mengerucut pada lingkup eksekusi satu alamat situs *domain* organisasi sasaran spesifik (sebagai contoh, murni memusatkan pencarian ke arsip direktori peladen situs jaringan target `tiss.or.id`)?</summary>
+<summary>❓ Operator <i>Google Dorking</i> apa yang digunakan untuk membatasi pencarian hanya pada satu domain tertentu?</summary>
 
-**Jawaban:** Penggunaan payload parameter kueri operator penyaring ekstensi penyaringan `site:` (contoh penulisannya: `site:tiss.or.id`).
+**Jawaban:** Operator `site:` (contoh: `site:tiss.or.id`).
 </details>
 
 <details>
-<summary>❓ Ketika arsitektur penugasan algoritma peramban Google murni memusatkan fungsionalitasnya untuk menelusuri serta merayapi pengindeksan data teks tautan dan pelaporan situs antarmuka halaman web aplikasi awan semata, instalasi mesin peramban data perangkat peranti intelijen spesialis apakah yang lazim diandalkan jajaran penganalisis peretas *OSINT* guna mendedikasikan ekstraksi pengintaian logik letak pemetaan kerentanan pemindaian parameter konfigurasi interaksi mesin port peladen perangkat keras IoT nyata (laksana membongkar CCTV terbuka tanpa keamanan kata sandi, instalasi router rentan, dan memaparkan versi aplikasi server kadaluarsa yang dibiarkan terekspos terkoneksi daring sejagat ranah bumi eksternal internet)?</summary>
+<summary>❓ Mesin pencari apa yang digunakan secara khusus untuk memetakan perangkat IoT (seperti CCTV dan Router) serta infrastruktur <i>port/service</i> yang terhubung ke internet?</summary>
 
-**Jawaban:** Shodan (Mesin spesialis data peramban *Search Engine for Internet of Things/IoT and Cyber Devices*).
+**Jawaban:** Shodan.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya telah menyerap perumusan kerangka klasifikasi pemisahan Pengintaian Pasif (*Passive Recon*) dalam koridor peretasan etis
-- [ ] Saya sukses mempraktikkan penarikan ekstraksi pemetaan informasi rekam administrasi empunya domain via kueri instruksi terminal *WHOIS*
-- [ ] Saya mahir memformulasikan dan mengirimkan instruksi parameter sintaks kueri spesifik peramban *Google Dorking*
-- [ ] Saya telah menuntaskan simulasi eksplorasi ekskavasi intelijen *Dorking OSINT* di instalasi panduan operasional kerangka parameter *Mini Lab*
-- [ ] Saya sukses mengulas hasil pengujian rangkuman modul *Quiz Kilat* dengan penyerapan evaluasi yang representatif
+- [ ] Saya memahami konsep Pengintaian Pasif (*Passive Recon*) dan OSINT.
+- [ ] Saya tahu cara menggunakan perintah `WHOIS` untuk mendapatkan informasi domain.
+- [ ] Saya telah mempraktikkan *Google Dorking* menggunakan operator `site:`, `filetype:`, dan `inurl:`.
+- [ ] Saya mengetahui fungsi mesin pencari *Shodan*.
+- [ ] Saya telah menyelesaikan dan memahami jawaban dari *Quiz Kilat*.
 
 ---
 
 ## 🔗 Resources
 
-- [Google Hacking Database (GHDB)](https://www.exploit-db.com/google-hacking-database) — Gudang pusat dokumentasi repositori *Google Dorking* mutakhir yang dioptimalkan untuk membedah spesifikasi paparan fail sensitif peladen sistem.
-- [Shodan.io](https://www.shodan.io/) — peramban OSINT referensi pemetaan rincian eksekutor mesin perangkat keras jaringan yang terhubung bebas ke awan internet.
+- [Google Hacking Database (GHDB)](https://www.exploit-db.com/google-hacking-database) — Arsip lengkap berbagai *payload Google Dorking* untuk mencari celah dan file sensitif.
+- [Shodan.io](https://www.shodan.io/) — Mesin pencari khusus untuk perangkat keras dan *port* yang terhubung ke internet.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: Active Reconnaissance** — Selesai sudah alokasi tahap awal rutinitas pengumpulan parameter intelijen di mana kamu mengeksploitasi data OSINT publik dari jarak jauh tanpa terdeteksi! Esok hari, lepaskan sejenak atribut manipulasi mode senyapmu! Kita beralih mengeksekusi tahapan yang niscaya mendebarkan dan mengharuskan izin otorisasi legalitas mutlak; rutinitas perburuan yang sarat serangan bising menabrak target peladen, fase **Active Reconnaissance**. Kita akan mempersiapkan peluncuran parameter serangan deteksi eksploitasi peramban aktif murni menyapu ketersediaan layanan pada pintu port peladen arsitektur operasional bermodalkan bedil pemindai industri **Nmap**, serta turut menggempur paksa jalur arsitektur ekskavasi pembongkaran direktori iteratif paksaan (*Directory Bruteforcing*) untuk membedah penempatan fail URL tersembunyi (*Hidden Interface Asset URL File Path Extraction Attack Method Tool Execution Strategy Module Recon*) situs target merujuk penggunaan instalasi peramban alat *Gobuster* / *Ffuf*!
+**Day 3: Active Reconnaissance** — Setelah mengumpulkan informasi pasif dari sumber publik, besok kita akan beralih ke tahap **Active Reconnaissance**. Kita akan berinteraksi langsung dengan server target menggunakan alat andalan peretas: **Nmap**, untuk memindai port dan layanan yang terbuka. Selain itu, kita juga akan belajar menemukan *file* dan direktori yang disembunyikan di dalam *web server* menggunakan teknik *Directory Bruteforcing* (dengan *tools* seperti Gobuster atau Ffuf). Bersiaplah untuk serangan yang lebih agresif!
 
 ---
 

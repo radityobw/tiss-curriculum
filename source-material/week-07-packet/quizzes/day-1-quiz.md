@@ -8,8 +8,8 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Secara fundamental dan teknis di balik layar piranti lunak, entitas tunggal apakah yang secara esensial menyandang nama sejati "Linux"?
-- [x] A. Hanya be Kernel (mesin inti jembatan OS).
+**Question:** Secara teknis, apa sebenarnya yang dimaksud dengan "Linux"?
+- [x] A. Hanya sebuah *Kernel* (inti mesin/jembatan OS).
 - [ ] B. Adalah data eksklusif militer PBB.
 - [ ] C. Kumpulan peranti lunak antivirus grafis (*GUI*) berlisensi khusus komersial.
 - [ ] D. Adalah mesin bahasa virtual penjalan kode Javascript.
@@ -31,5 +31,5 @@ total_questions: 5
 
 ### Q5
 **Type:** Short Answer
-**Question:** Secara teknis dan sumber daya komputer, apa landasan krusial mengapa peladen awan (*cloud server*) skala perusahaan besar jarang atau tak pernah menyediakan antarmuka interaksi visual *mouse* (*GUI/Desktop*) bagi administrator?
-**Answer:** Penggunaan mode terminal teks/konsol (*Headless* atau *CLI*) menghemat performa prosesor serta RAM server secara masif, dan jauh lebih leluasa diotomatisasi melalui bahasa kode *script*.
+**Question:** Mengapa *cloud server* di perusahaan besar jarang menggunakan antarmuka grafis (GUI) dan lebih memilih mode teks (CLI)?
+**Answer:** Karena antarmuka teks/CLI (*Headless*) jauh lebih hemat memori (RAM) dan CPU, serta lebih mudah diotomatisasi menggunakan *script*.

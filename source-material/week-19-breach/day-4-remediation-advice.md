@@ -10,36 +10,36 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membedakan** peran penguji keamanan (*Red Team*) berhadapan dengan tanggung jawab penambal (*Blue Team*).
-2. **Meracik** naskah saran perbaikan (<i>Remediation Advice</i>) yang <i>Actionable</i>.
-3. **Mengeksploitasi** standar industri (OWASP) laksana referensi mitigasi.
+1. **Membedakan** peran penguji keamanan (*Red Team/Pentester*) dan tanggung jawab pertahanan/penambal (*Blue Team/Developer*).
+2. **Meracik** naskah saran perbaikan (<i>Remediation Advice</i>) yang bersifat praktis dan bisa langsung dieksekusi (<i>Actionable</i>).
+3. **Menggunakan** referensi standar industri keamanan (seperti panduan OWASP) untuk menyusun rekomendasi mitigasi.
 
 ---
 
 ## 📖 Materi Inti
 
-### Menjelma Konsultan (Mitigation)
+### Menjelma Konsultan Solusi (Mitigation)
 
-Seorang penguji keamanan (*Attacker/Pentester*) dihormati karena ketajamannya menemukan celah. Namun seorang Profesional Konsultan dihargai mahal karena kepiawaiannya memberikan solusi untuk menambal lubang yang dirobeknya itu.
-Bagian terakhir laporan <i>Pentest</i> memuat **Remediation & Mitigation (Saran Perbaikan)**.
+Seorang pentester dihormati karena ketajamannya menemukan celah. Namun, seorang konsultan keamanan profesional dihargai mahal karena kepiawaiannya memberikan solusi untuk menambal celah tersebut.
+Bagian penting terakhir dalam laporan <i>Pentest</i> adalah **Remediation & Mitigation (Saran Perbaikan / Mitigasi)**.
 
-Tanpa saran perbaikan, korporat (Developer) bakal meraba dalam kegelapan tak tahu cara menambal celah <i>SQL Injection</i> yang kamu laporkan.
+Tanpa saran perbaikan yang jelas, tim *Developer* perusahaan akan kebingungan dan tidak tahu bagaimana cara menambal celah *SQL Injection* atau kerentanan lain yang kamu laporkan secara tepat dan aman.
 
 ### Solusi Praktis (Make it Actionable!)
 
-Banyak <i>Pentester</i> pemula menulis Remediasi seperti ini :
-- ❌ *"Tolong amankan database-nya."* (Sangat tidak berguna!).
-- ❌ *"Filter karakter kutip pada parameter ID."* (Buruk, <i>Attacker</i> masih bisa mengakali pakai <i>Double URL Encoding</i>).
+Banyak <i>Pentester</i> pemula menulis saran Remediasi yang terlalu dangkal dan tidak berguna, contohnya:
+- ❌ *"Tolong amankan database-nya."* (Terlalu umum, tidak jelas bagaimana cara mengamankannya!).
+- ❌ *"Filter karakter kutip pada parameter ID."* (Saran yang buruk, karena *Attacker* masih bisa mengakali filter (*Bypass*) dengan teknik <i>URL Encoding</i> ganda atau trik lainnya).
 
-Saran perbaikan (Remediasi) haruslah **Actionable** (Bisa langsung diprogram).
-- ✅ **Remediasi SQLi :** *"Hentikan merangkai Kueri SQL secara dinamis. Gunakan arsitektur **Prepared Statements (Parameterized Queries)** bawaan PDO di PHP atau ORM."*
-- ✅ **Remediasi XSS :** *"Terapkan arsitektur **Context-Aware Output Encoding** sebelum melempar data <i>Database</i> ke layar HTML Browser pengguna, serta aplikasikan tajuk pelindung **Content Security Policy (CSP)**."*
-- ✅ **Remediasi CSRF :** *"Tanamkan token **Anti-CSRF Token** acak pada setiap sesi formulir POST, dan sematkan atribut `SameSite=Lax` pada <i>Cookie</i> Login."*
+Saran perbaikan (Remediasi) haruslah **Actionable** (Bersifat spesifik, teknis, dan bisa langsung diimplementasikan).
+- ✅ **Remediasi SQLi:** *"Hindari penggabungan kueri SQL secara dinamis (String concatenation). Gunakan fitur **Prepared Statements (Parameterized Queries)** bawaan driver basis data, seperti PDO di PHP atau gunakan teknologi ORM (Object-Relational Mapping)."*
+- ✅ **Remediasi XSS:** *"Terapkan **Context-Aware Output Encoding** sebelum menampilkan data dari *Database* ke antarmuka HTML/Browser pengguna, serta aplikasikan *header* pelindung keamanan **Content Security Policy (CSP)** yang ketat."*
+- ✅ **Remediasi CSRF:** *"Terapkan token acak **Anti-CSRF Token** pada setiap sesi pengiriman formulir POST, dan konfigurasikan atribut `SameSite=Lax` atau `Strict` pada Cookie sesi otentikasi."*
 
 ### Menyandar pada Standar Industri (OWASP Cheat Sheets)
 
-Penganalisis tak perlu repot mengarang resep perbaikan sendiri. Di dunia keamanan siber telah tersedia referensi penyembuh segala kerentanan : **OWASP Cheat Sheet Series**.
-Dalam laporan, cukup cantumkan tautan URL referensi (Reference Links) dari OWASP agar <i>Developer</i> korporat merujuk langsung ke panduan koding mitigasinya!
+Seorang pentester tidak perlu menghafal seluruh cara menambal setiap bug atau mengarang instruksi sendiri. Di dunia keamanan siber, telah tersedia referensi panduan pengamanan lengkap dari OWASP: **OWASP Cheat Sheet Series**.
+Dalam laporanmu, cukup jelaskan mitigasi utamanya dan sertakan tautan URL referensi (*Reference Links*) dari dokumen panduan OWASP. Hal ini akan memudahkan *Developer* perusahaan merujuk langsung ke contoh-contoh koding yang aman sesuai bahasa pemrograman yang mereka gunakan!
 
 ---
 
@@ -47,35 +47,36 @@ Dalam laporan, cukup cantumkan tautan URL referensi (Reference Links) dari OWASP
 
 **Durasi**: ~10 menit
 
-Ayo rakit nalar penyembuh resep Remediasi!
+Ayo berlatih menyusun saran Remediasi yang spesifik dan *Actionable*!
 
-1. Siapkan lembar teks digital (Notepad).
-2. Bayangkan kamu menemukan kelalaian unggah berkas **File Upload to RCE** (di mana kamu menyusupkan cangkang `shell.php`).
-3. Tulis racikan resep <i>Remediation Advice</i> (Saran Perbaikan).
-4. **Contoh Resep Mutlak :**
- - *"1. Jangan mengandalkan validasi di <i>Frontend</i> (JavaScript)."*
- - *"2. Validasi jenis berkas di <i>Backend</i> bukan berpatokan nama ekstensi, melainkan mengevaluasi **MIME-Type & Magic Bytes** (File Signature) berkas gambar."*
- - *"3. Simpan hasil unggahan di server (Storage) yang **TERPISAH** dari rute eksekusi kode <i>Web Server</i>, atau lumpuhkan wewenang hak eksekusi (Execute Permissions) skrip di folder direktori `/uploads/`."*
-5. Resep perbaikan itu kelak menyelamatkan perusahaan dari insiden keamanan siber!
+1. Buka teks editor (Notepad, VS Code, dll).
+2. Bayangkan kamu baru saja menemukan celah kerentanan **File Upload to RCE** (di mana kamu berhasil mengunggah skrip jahat `shell.php` berkedok gambar pada fitur ganti foto profil).
+3. Tulis resep <i>Remediation Advice</i> (Saran Perbaikan) yang *Actionable*.
+4. **Contoh Solusi Teknis:**
+   - *"1. Jangan mengandalkan validasi ekstensi *file* di sisi klien (*Frontend*/JavaScript) karena mudah dimanipulasi (Bypass)."*
+   - *"2. Terapkan validasi tipe *file* di sisi *Backend*. Jangan hanya memvalidasi nama ekstensi (seperti `.jpg`), melainkan periksa **MIME-Type & Magic Bytes** (File Signature) dari konten file untuk memastikan itu benar-benar gambar."*
+   - *"3. Simpan *file* hasil unggahan di server (Storage) yang **TERPISAH** (misalnya di AWS S3 atau server CDN khusus) dari direktori kode aplikasi *Web Server*."*
+   - *"4. Jika harus menyimpan secara lokal, lumpuhkan wewenang hak eksekusi (Execute Permissions) pada folder direktori `/uploads/` di konfigurasi web server (seperti Apache/Nginx) agar tidak ada file `.php` yang bisa dieksekusi di folder tersebut."*
+5. Selamat! Resep perbaikan yang spesifik seperti ini akan sangat membantu tim IT perusahaan.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Mengurai tabir taktik perbaikan, mengapa saran Remediasi "Filter saja huruf kutip tunggal ('')" dinilai sebagai saran mitigasi untuk meredam celah <i>SQLi</i> yang amat buruk dan amatiran?</summary>
+<summary>❓ Mengapa saran remediasi "Cukup filter atau blokir karakter kutip tunggal (')" dianggap sebagai saran mitigasi SQLi yang buruk dan amatiran?</summary>
 
-**Jawaban:** Lantaran penyerang (<i>Attacker</i>) masih leluasa menelikung (Bypass) pelindung penyaring dangkal tersebut membalut kueri bermodalkan taktik manipulasi enkripsi (<i>URL Encoding</i>, <i>Hex Encoding</i>, dsb). Solusi penangkal <i>SQLi</i> di era modern bukanlah mem-filter input, melainkan menggunakan <i>Parameterized Queries</i> (Prepared Statements).
+**Jawaban:** Karena penyerang dapat menembus filter dasar tersebut (bypass) menggunakan teknik encoding (*URL Encoding*, *Hex Encoding*, dsb). Solusi modern untuk *SQLi* bukan memfilter *input*, melainkan mencegah injeksi logika dengan **Parameterized Queries (Prepared Statements)**.
 </details>
 
 <details>
-<summary>❓ Ketika meluncurkan saran perbaikan <i>XSS (Cross-Site Scripting)</i> bagi tim <i>Developer</i>, fitur pertahanan arsitektur peramban (berupa tajuk <i>Header HTTP</i>) apakah yang lazim diwajibkan <i>Pentester</i> agar disisipkan guna meredam eksekusi racun skrip gelap?</summary>
+<summary>❓ Saat memberikan saran mitigasi untuk mencegah kerentanan XSS (*Cross-Site Scripting*), header keamanan jaringan (*HTTP Header*) jenis apa yang selalu disarankan oleh profesional keamanan untuk diterapkan?</summary>
 
-**Jawaban:** <i>Content Security Policy</i> (CSP).
+**Jawaban:** Content Security Policy (CSP).
 </details>
 
 <details>
-<summary>❓ Ketika penganalisis menenggak kehabisan akal merajut merumuskan solusi koding bahasa teknis mitigasi (Remediation) suatu kerentanan (misal IDOR), kitab dunia (diterbitkan OWASP) apakah yang selalu dikutip <i>hacker</i> laksana buku panduan obat pengembang perangkat lunak?</summary>
+<summary>❓ Jika seorang pentester membutuhkan referensi teknis yang detail untuk memberikan saran perbaikan (*Remediation*) kepada *Developer*, panduan standar industri (yang diterbitkan oleh OWASP) apakah yang paling sering dikutip sebagai pedoman?</summary>
 
 **Jawaban:** OWASP Cheat Sheet Series.
 </details>
@@ -84,19 +85,23 @@ Ayo rakit nalar penyembuh resep Remediasi!
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap dominasi pentingnya *Actionable Mitigation* - [ ] Saya fasih membelah siasat resep penyembuh *SQLi* (Prepared Statements)
-- [ ] Saya menguasai titah peracikan obat penangkal *XSS (Encoding & CSP)* - [ ] Saya paham bahwasanya menyertakan *OWASP* sangatlah vital - [ ] Saya telah menjawab seluruh ulasan *quiz kilat* 
+- [ ] Saya memahami pentingnya memberikan saran perbaikan (*Actionable Mitigation*) dalam laporan.
+- [ ] Saya mengetahui solusi perbaikan teknis untuk kerentanan *SQLi* (Prepared Statements).
+- [ ] Saya mengetahui konsep dasar perbaikan mitigasi *XSS* (Encoding & CSP) dan *CSRF* (Token & SameSite).
+- [ ] Saya mengetahui pentingnya mencantumkan referensi dokumen dari standar industri seperti *OWASP*.
+- [ ] Saya telah menjawab seluruh *Quiz Kilat* dengan benar.
+
 ---
 
 ## 🔗 Resources
 
-- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/) — kitab suci referensi membedah mitigasi pencegahan lubang.
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/) — Panduan resmi terbaik bagi pengembang (*Developer*) untuk mencegah celah keamanan dan menyusun remediasi yang efektif.
 
 ---
 
 ## ➡️ Besok
 
-**Day 5: Lab & Mission: Create a Full Pentest Report** — Dirimu telah meraba *Executive Summary*, merajut angka insiden *CVSS v3.1*, membungkus tangkapan layar *PoC*, lantas menuangkan resep penyembuh *Remediation*. Esok harinya, altar pengujian (Penilaian Akhir Breach) menantangmu! Satukan keempat elemen itu menjadi satu dokumen Laporan *Penetration Testing* yang otentik dan sempurna. Buktikan dirimu layak menyandang predikat penguji keamanan korporat elit!
+**Day 5: Lab & Mission: Create a Full Pentest Report** — Kamu telah mempelajari *Executive Summary*, merajut angka kerentanan menggunakan *CVSS v3.1*, menyusun langkah reproduksi celah dalam *PoC*, dan merumuskan saran perbaikan teknis (*Remediation Advice*). Besok adalah ujian akhirmu di peringkat BREACH! Kamu ditantang untuk menyatukan keempat elemen tersebut menjadi satu dokumen Laporan *Penetration Testing* yang autentik, profesional, dan komprehensif. Buktikan bahwa dirimu layak menyandang status *Bug Hunter* elit!
 
 ---
 

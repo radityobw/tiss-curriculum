@@ -10,34 +10,34 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Menerjemahkan** hasil evaluasi pemrosesan teks instruksi SPL menjadi representasi pelaporan berwujud antarmuka grafis (Dashboards).
-2. **Menyusun** konfigurasi otomasi peringatan keamanan deteksi insiden (Alerts) berdasarkan penetapan parameter <i>Threshold</i> SIEM.
-3. **Memahami** nilai efisiensi eskalasi keamanan di atas prosedur inspeksi manual berkelanjutan.
+1. **Menerjemahkan** hasil pencarian teks SPL menjadi antarmuka visual grafis (*Dashboards*).
+2. **Menyusun** konfigurasi peringatan otomatis (*Alerts*) untuk mendeteksi insiden berdasarkan batasan (*Threshold*) tertentu.
+3. **Memahami** nilai efisiensi otomatisasi pengawasan keamanan dibandingkan dengan inspeksi log manual.
 
 ---
 
 ## 📖 Materi Inti
 
-### Pelaporan Eksekutif: Manajemen visualisasi Dashboards
+### Pelaporan Eksekutif: Manajemen Visualisasi Dashboards
 
-Dalam lingkungan kerja *Security Operations Center* (SOC) korporasi, tingkat direksi manajemen (seperti CIO atau CISO) umumnya tidak memerlukan pembacaan teknikal kueri teks mentah atas rentetan kejadian *Logon Failed* harian. Kebutuhan manajemen mensyaratkan pemantauan pelaporan yang terstruktur dan mudah dianalisis seketika.
+Dalam lingkungan kerja *Security Operations Center* (SOC) korporat, pihak manajemen (seperti CIO atau CISO) tidak perlu membaca ribuan baris teks kueri log mentah setiap harinya. Kebutuhan manajemen berfokus pada ringkasan pelaporan yang terstruktur, visual, dan mudah dianalisis secara instan.
 
-Tuntutan tersebut dipenuhi melalui pembentukan antarmuka analitik bernama **Dashboards (Dasbor)**.
-Dashboards berfungsi sebagai integrasi visual *(seperti grafik Diagram Lingkaran Pie Chart, diagram grafik batang konstan, pengukuran kecepatan meteran data)*, yang metrik nilainya ditarik dan dikomputasi berkesinambungan secara wajar (*Real-Time*) hasil data dari rumusan pencarian SPL di lingkungan SIEM Splunk.
+Tuntutan tersebut dipenuhi melalui pembuatan antarmuka analitik bernama **Dashboards (Dasbor)**.
+*Dashboards* adalah representasi visual (seperti grafik *Pie Chart*, diagram batang, atau indikator pengukur data) yang menyajikan hasil komputasi kueri SPL secara langsung (*Real-Time*). 
 
-Melalui fasilitasi visual SIEM, SOC Analyst mengimplementasikan penataan kueri seperti `index=web_logs status=401 | stats count by src_ip` ditransformasikan menjadi parameter panel tampilan berwujud grafis dengan taksonomi penamaan seperti *"Top 5 IP Indikasi Peretasan Terkini"*, yang kemudian dimonitor konstan di terminal stasiun pemantauan ruang kendali pusat.
+Dengan *Dashboards*, Analis SOC dapat menyematkan kueri seperti `index=web_logs status=401 | stats count by src_ip` ke dalam sebuah panel visual berlabel *"Top 5 IP Penyerang Terkini"*, yang kemudian dapat dipantau setiap saat di layar pusat ruang kendali SOC tanpa perlu mengetik ulang kuerinya.
 
 ### Automasi Pemantauan Insiden Siber: Splunk Alerts
 
-Selain representasi antarmuka pengawasan, utama platform sentral SIEM berkedudukan mengeksekusi mekanisme rutinitas notifikasi proaktif *(Alarm System)* tanpa memerlukan observasi pasif secara berkelanjutan di monitor. Otomasi proses pengawasan terpusat diselenggarakan melalui pengerahan arsitektur **Alerts (Peringatan Terotomatisasi)**.
+Selain visualisasi, fungsi utama platform SIEM adalah mengeksekusi mekanisme notifikasi proaktif, sehingga Analis tidak perlu menatap monitor 24 jam penuh. Otomatisasi pengawasan ini diselenggarakan melalui arsitektur **Alerts (Peringatan Otomatis)**.
 
-*Alert* adalah eksekusi modul parameter pemantauan berkala (penjadwalan latar belakang), di mana kueri fungsi pencarian (SPL) dievaluasi dalam ritme siklus konstan (misalnya verifikasi dilakukan 5 menit sekali). Apabila nilai pencarian mendeteksi pelaporan yang mengindikasikan lonjakan kalkulasi matematis melebihi kondisi standar prasyarat toleransi atau "Ambang Batas Wajar" *(Threshold)*, rutinitas akan merespons pelaporan eksploitasi notifikasi alarm kejadian insiden.
+*Alert* adalah tugas pemantauan berkala yang berjalan di latar belakang, di mana kueri pencarian (SPL) dievaluasi dalam interval waktu tertentu (misalnya, setiap 5 menit). Apabila hasil pencarian mendeteksi bahwa jumlah anomali melebihi "Ambang Batas Wajar" (*Threshold*), maka sistem akan secara otomatis memicu peringatan/alarm.
 
 **Komponen Konfigurasi Peringatan Taktis (Alert Architecture):**
-1. **Search Query (Parameter Dasar):** Instruksi berbasis teks (SPL) khusus yang menganalisis serta mengisolasi jenis anomali kejadian (Contoh: Parameter mendeteksi alamat peretas sukses autentikasi rute administrator peladen eksternal).
-2. **Schedule (Jadwal Evaluasi Intervensi):** Penetapan ritme parameter seberapa intens sistem *Splunk* mengkaji pencarian dan menganalisis log harian tersebut (Contoh: *Cron Schedule Evaluated Every 15 minutes*).
-3. **Trigger Condition (Logika Pemicu):** Menentukan standar limitasi batasan eskalasi alarm dieksekusi. (Contoh parameter : *If Result Count > (Lebih Besar) daripada 5 entri indikator serangan*).
-4. **Trigger Action (Tindakan Respons):** Pengaturan otomatis langkah tindakan eksekusi insiden. (Contoh: Menyiarkan peringatan pelaporan kepada alamat Surel/Email ke tingkat tim respon (*Incident Response Team*), mengirimkan modul skrip respon API (Webhook), hingga membentuk pelaporan sistem *Ticketing* mitigasi otomatis IT).
+1. **Search Query (Kueri Dasar):** Instruksi SPL yang digunakan untuk mencari insiden spesifik (Contoh: mencari alamat IP yang melakukan *Brute Force*).
+2. **Schedule (Jadwal Evaluasi):** Pengaturan interval waktu bagi *Splunk* untuk menjalankan kueri tersebut (Contoh: Dievaluasi setiap 15 menit).
+3. **Trigger Condition (Kondisi Pemicu / Threshold):** Menentukan batasan jumlah kejadian untuk membunyikan alarm. (Contoh: *JIKA jumlah hasil (Result Count) > 5 kejadian*).
+4. **Trigger Action (Tindakan Respons):** Pengaturan tindakan otomatis yang dilakukan Splunk jika kondisi pemicu terpenuhi. (Contoh: Mengirimkan peringatan via Email ke tim respons insiden (SOC Tier 2), mengirimkan notifikasi *Webhook* ke Slack/Teams, atau membuat tiket insiden di Jira).
 
 ---
 
@@ -45,62 +45,63 @@ Selain representasi antarmuka pengawasan, utama platform sentral SIEM berkeduduk
 
 **Durasi**: ~10 menit
 
-Mari melakukan rancang bangun simulasi penataan struktur peringatan (Alert Configuration)!
+Mari menyimulasikan konfigurasi pembuatan peringatan (*Alert Configuration*) di Splunk!
 
-1. Siapkan dokumentasi virtual Anda. Praktik menuntut operator untuk menyimulasikan konfigurasi pelaporan alarm bernama "Pendeteksi Data Exfiltration (Pengurasan Data)" pada arsitektur Splunk SIEM korporat.
-2. **Tahap 1 - Formasi Kueri Deteksi:**
- (SPL) `index=firewall action=allowed | stats sum(bytes_out) as total_out by src_ip`
-3. **Tahap 2 - Formasi Penjadwalan Waktu Pemantauan:**
- Konfigurasi rentang penelusuran (Misal: Kueri dievaluasi terus-menerus setiap durasi interval 1 Jam).
-4. **Tahap 3 - Formasi Pemicu Parameter Kondisi (Trigger Threshold):**
- Evaluasi anomali wajar (Threshold Limit). JIKA parameter pencapaian besaran agregat metrik *total_out* menunjukkan eskalasi > (Lebih besar) dari nilai `5000000000` (atau ekuivalen 5 Gigabyte pertukaran transfer jaringan).
-5. **Tahap 4 - Formasi Penindakan Darurat Otomatisasi (Trigger Action):**
- Terapkan pelaporan tanggap insiden (Emergency action). `Send Email to SOC_Tier2@company.local` disertai penamaan peringatan taksonomi pelaporan insiden: *"URGENT: Indikasi Pengurasan Traffic Outbound > 5GB!"*.
-6. Formasi lengkap dan aktif! Kini penjadwalan pemantauan pengurasan dapat dijaga konsisten oleh kecerdasan sistem *Splunk*.
+1. Anda bertugas membuat peringatan otomatis bernama "Pendeteksi Data Exfiltration (Pengurasan Data)" pada SIEM korporat.
+2. **Tahap 1 - Pembuatan Kueri Deteksi (SPL):**
+   `index=firewall action=allowed | stats sum(bytes_out) as total_out by src_ip`
+   *(Penjelasan: Menjumlahkan seluruh ukuran transfer data keluar berdasarkan IP asalnya).*
+3. **Tahap 2 - Penjadwalan Waktu Pemantauan (Schedule):**
+   Kueri ini akan dikonfigurasi agar dievaluasi terus-menerus dengan interval setiap 1 Jam.
+4. **Tahap 3 - Kondisi Pemicu (Trigger Threshold):**
+   Evaluasi anomali. JIKA metrik `total_out` menunjukkan nilai > `5000000000` (setara dengan 5 Gigabyte transfer jaringan), maka bunyikan alarm.
+5. **Tahap 4 - Penindakan Respons (Trigger Action):**
+   `Send Email to SOC_Tier2@company.local` dengan judul peringatan: *"URGENT: Indikasi Pengurasan Traffic Outbound > 5GB!"*.
+6. *Alert* telah aktif! Kini pemantauan pengurasan data dapat dijaga konsisten oleh sistem secara otomatis tanpa pemantauan manual.
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Mengurai otomasi visualisasi laporan pada SIEM, istilah terminologi apa yang digunakan untuk merujuk ke modul antarmuka yang membungkus kumpulan laporan data numerik (seperti Pie Chart, Bar Graph) yang diperbarui secara *Real-Time* mempresentasikan data hasil fungsi SPL Splunk?</summary>
+<summary>❓ Dalam terminologi SIEM, modul antarmuka apa yang berfungsi untuk merangkum dan menyajikan hasil pencarian data log ke dalam bentuk grafik visual yang diperbarui secara *Real-Time*?</summary>
 
 **Jawaban:** Dashboards (Dasbor UI).
 </details>
 
 <details>
-<summary>❓ Ketika mengaplikasikan manajemen SIEM cerdas, arsitektur Splunk apakah yang menyelenggarakan operasi pemeriksaan kueri secara terjadwal untuk mengamati sistem, dan mengaktifkan peringatan kepada pengguna apabila data masuk batas krisis insiden?</summary>
+<summary>❓ Fitur otomatisasi apa pada platform Splunk yang bertugas menjalankan kueri pencarian secara terjadwal, lalu mengirimkan notifikasi peringatan jika ada data yang melewati batas wajar keamanan?</summary>
 
 **Jawaban:** Alerts (Peringatan Otomatis/Alarm).
 </details>
 
 <details>
-<summary>❓ Di eksekusi modifikasi pengaturan deteksi <i>Alerts</i>, apabila seorang analis mengonfigurasi batas regulasi kondisi: "Bentuk peringatan notifikasi HANYA JIKA akumulasi jumlah (<i>result count</i>) melampaui batasan nilai LEBIH DARI 50 kejadian", terminologi apa yang merujuk kepada klasifikasi batasan "angka 50" (atau titik krisis pemantik insiden) tersebut?</summary>
+<summary>❓ Saat mengonfigurasi *Alerts*, jika seorang Analis menetapkan aturan: "Kirim peringatan HANYA JIKA akumulasi jumlah hasil (<i>result count</i>) LEBIH BESAR DARI 50", sebutan teknis apa yang merujuk pada nilai batasan angka "50" tersebut?</summary>
 
-**Jawaban:** Pemicu Kondisi Limitasi (Trigger Condition / Threshold).
+**Jawaban:** Kondisi Pemicu atau Ambang Batas (*Trigger Condition* / *Threshold*).
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami urgensi konversi presentasi kueri log menjadi interpretasi visual.
-- [ ] Saya menguasai pendefinisian elemen visualisasi pengawasan (*Dashboards*).
-- [ ] Saya mengetahui kapabilitas penyusunan mekanisme parameter peringatan taktis SIEM (*Alerts*).
-- [ ] Saya paham bahwasanya rutinitas pendeteksian dapat dialihkan pada kapabilitas jadwal *Alerts*.
+- [ ] Saya memahami pentingnya mengonversi teks log kueri menjadi representasi visual.
+- [ ] Saya menguasai konsep dan peran visualisasi pengawasan melalui *Dashboards*.
+- [ ] Saya mengetahui cara kerja peringatan ancaman otomatis menggunakan *Alerts*.
+- [ ] Saya memahami fungsi dari *Search Query, Schedule, Trigger Condition*, dan *Trigger Action*.
 - [ ] Saya sudah menjawab semua quiz kilat.
 
 ---
 
 ## 🔗 Resources
 
-- [Splunk: Alerting Manual](https://docs.splunk.com/Documentation/Splunk/latest/Alert/Aboutalerts) — Dokumentasi standar pengembangan integrasi otomasi sistem peringatan taktis dari pengembang perangkat lunak platform Splunk SIEM.
+- [Splunk: Alerting Manual](https://docs.splunk.com/Documentation/Splunk/latest/Alert/Aboutalerts) — Dokumentasi resmi dari Splunk mengenai standar pengembangan dan konfigurasi sistem peringatan (*Alerts*).
 
 ---
 
 ## ➡️ Besok
 
-**Day 4: IDS/IPS (Suricata & Snort)** — Mesin penganalisis seperti SIEM terfokus menangani peringatan visibilitas log korporasi yang terpusat. Untuk mencegah insiden secara simultan pada saat paket menyerang parameter halaman perusahaan, diperlukan infrastruktur inspeksi data real-time, yaitu teknologi detektor batas **IDS/IPS (Intrusion Detection/Prevention System)**. Mengetahui sensor inspeksi pertahanan terdepan **Suricata** dan alat **Snort** akan menjadi tujuan fokus esok hari. Anda akan difasilitasi instruksi teknik konstruksi arsitektur penulisan parameter deteksi ancaman taktis kueri aturan *(Rules)* yang berguna menolak penetrasi jaringan.
+**Day 4: IDS/IPS (Suricata & Snort)** — Platform SIEM (seperti Splunk) terfokus pada pengumpulan dan pemantauan log terpusat setelah data tercatat. Namun, untuk memblokir serangan secara langsung saat paket ancaman mencoba memasuki jaringan, perusahaan memerlukan teknologi sensor inspeksi garis depan, yaitu **IDS/IPS (Intrusion Detection/Prevention System)**. Besok kita akan membedah cara kerja alat populer di industri, yaitu **Suricata** dan **Snort**, serta belajar bagaimana menulis aturan deteksi ancaman (*Rules*) untuk melindungi jaringan dari serangan eksploitasi.
 
 ---
 

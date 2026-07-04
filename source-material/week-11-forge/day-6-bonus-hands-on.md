@@ -109,7 +109,7 @@ Kerjakan 3 tantangan ini di browser console. **Tulis sendiri tanpa melihat jawab
 
 ### Langkah 5: Eksplorasi The Odin Project
 1. Buka [The Odin Project — Foundations](https://www.theodinproject.com/paths/foundations/courses/foundations)
-2. ke bagian **JavaScript Basics**
+2. Buka bagian **JavaScript Basics**
 3. Baca artikel dan kerjakan latihan-latihan yang tersedia
 4. Bookmark halaman ini — ini akan menjadi referensi penting selama rank FORGE
 

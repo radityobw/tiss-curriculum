@@ -51,7 +51,7 @@ $ nano /etc/nginx.conf
 (Akan muncul error: Permission Denied!)
 
 $ sudo nano /etc/nginx.conf
-(Sistem akan memintamu mengetik password-MU SENDIRI. Jika kamu punya izin untuk meminjam kekuatan sudo, file akan terbuka secara).
+(Sistem akan memintamu mengetik password-MU SENDIRI. Jika kamu punya izin untuk meminjam kekuatan sudo, file akan terbuka dengan hak akses root).
 ```
 
 ### Apa itu Privilege Escalation? (PrivEsc)

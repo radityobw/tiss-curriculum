@@ -53,7 +53,7 @@ Di komunitas teknis internasional (StackOverflow, Reddit `r/netsec`, Discord hac
 1. **Jangan Tanya untuk Bertanya** ❌ ("*Bro, ada yang bisa bantu Linux nggak?*"). Langsung utarakan masalahnya! ✅ ("*Bagaimana cara memperbaiki error 'permission denied' saat menjalankan Apache di Ubuntu?*").
 2. **Sebutkan Apa yang Sudah Kamu Coba** ("*Saya sudah mencoba mengubah hak akses pakai chmod 777 tapi tetap gagal...*"). Ini menunjukkan kamu tidak malas.
 3. **Gunakan Judul yang Spesifik**, bukan sekadar "TOLONG BANTUAN".
-4. **Sertakan Log/Pesan Error Aslinya**, jangan di-screenshot jika be teks panjang. Gunakan *Pastebin* atau *code block*.
+4. **Sertakan Log/Pesan Error Aslinya**, jangan di-screenshot jika berupa teks panjang. Gunakan *Pastebin* atau *code block*.
 
 ---
 

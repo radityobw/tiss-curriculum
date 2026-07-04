@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Mengeksploitasi** secara manual berulang-ulang tanpa memuat rendering *Browser* (*Repeater*).
-2. **Merakit** otomatis penembak tebakan sandi (*Intruder*).
-3. **Mendemonstrasikan** pemasangan penetapan koordinat sasaran tebak (*Payload Positions*).
+1. **Mengeksploitasi** celah keamanan secara manual dan berulang tanpa perlu me-render halaman di *Browser* menggunakan *Repeater*.
+2. **Mengotomatisasi** pengujian *payload* secara massal menggunakan *Intruder*.
+3. **Mendemonstrasikan** cara menentukan titik serangan (*Payload Positions*) pada sebuah paket *HTTP*.
 
 ---
 
@@ -20,24 +20,24 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 ### Repeater: Eksekutor Manual
 
-Ketika Anda mencegat (*Intercept*) kueri formulir *Login* dan ingin mengetes 10 variasi kutip injeksi *SQL Injection*, apakah Anda harus mencegat -> forward -> reload browser -> ketik ulang form -> cegat lagi?
-Siklus tersebut membuang umur operasional!
+Ketika kamu mencegat (*Intercept*) kueri formulir *Login* dan ingin menguji 10 variasi *payload SQL Injection*, apakah kamu harus mencegat -> *forward* -> me-reload *browser* -> mengetik ulang form -> dan mencegatnya lagi?
+Tentu siklus tersebut sangat membuang waktu!
 
-Di arsitektur *Burp Suite*, Anda cukup mencegat kueri SATU KALI, lalu klik kanan lantas pilih **"Send to Repeater (Ctrl+R)"** .
-Di dalam tab **Repeater**, Anda bebas mengubah-ubah kueri sesuka hati, lalu mengeklik tombol *Send*, dan seketika Server membalas di layar sebelah kanan (*Response*) tanpa kamu perlu menyentuh antarmuka *Browser* sama sekali!
+Di dalam *Burp Suite*, kamu cukup mencegat kueri SATU KALI, lalu klik kanan pada data paket tersebut dan pilih **"Send to Repeater (Ctrl+R)"** .
+Di dalam tab **Repeater**, kamu bebas mengubah-ubah kueri (seperti mengganti parameter *username* atau *password*) sesuka hati, lalu mengeklik tombol *Send*. Seketika itu juga, Server akan membalas dan responnya langsung tampil di panel sebelah kanan (*Response*) tanpa kamu perlu membuka antarmuka *Browser* sama sekali!
 
-Repeater adalah surga bagi penganalisis peretas yang ingin mendelegasikan bereksperimen mencoba eksploitasi *XSS, IDOR, SQLi* baris demi baris secara meraba, lantas mengamati ralat respons dengan ketelitian presisi.
+*Repeater* adalah fitur esensial bagi pentester yang ingin mencoba eksperimen serangan seperti *XSS*, *IDOR*, atau *SQLi* secara bertahap, sambil mengamati respons *server* secara mendetail.
 
 ### Intruder: Otomasi Eksploitasi
 
-Bila *Repeater* adalah manual, maka **Burp Intruder** (Ctrl+I) adalah arsitektur alat otomatis *Brute Force* yang mendelegasikan pengiriman jutaan payload secara buta otomatis!
+Jika *Repeater* digunakan untuk pengujian manual, maka **Burp Intruder** (Ctrl+I) adalah alat otomatisasi untuk mengirimkan ribuan modifikasi *payload* dalam waktu singkat!
 
-Digunakan untuk : *Brute Force Sandi, Meraba iteratif IDOR (dari rentang ID 1 sampai 10.000), Pencarian iterasi Fuzzing URL *.
+Intruder sering digunakan untuk: *Brute Force Login, enumerasi parameter (seperti IDOR dari rentang ID 1 sampai 100), dan Fuzzing direktori/URL*.
 
-**Anatomi Arsitektural Intruder:**
-1. **Positions (Sasaran Koordinat Tembak):** Anda mencegat paket kueri `password=admin`. Anda memblok parameter kata "admin", lalu menandai *Add §*. Jadinya `password=§admin§`. Tanda `§` adalah penanda titik lokasi pengiriman kamus!
-2. **Payloads (Payload ):** Di sinilah Anda menuangkan seember daftar kata sandi bocor (*Wordlists*) semacam arsip *rockyou.txt*. 
-3. Tekan **Start Attack!** Burp akan mengirimkan kata pertama, mencatat respon, mengirimkan kata kedua, dst! pentester tinggal mendelegasikan pencarian serangan mana yang menghasilkan status *302 Redirect* atau memiliki ukuran panjang (*Length*) yang paling berbeda dari rincian lainnya .
+**Anatomi Penggunaan Intruder:**
+1. **Positions (Titik Sasaran):** Setelah mengirim *Request* ke Intruder, kamu akan melihat parameter yang ditandai. Misalnya kueri `password=admin`. Kamu bisa memblok kata "admin", lalu mengeklik tombol *Add §*. Hasilnya menjadi `password=§admin§`. Tanda `§` adalah penanda (marker) posisi di mana *Burp* akan menyuntikkan daftar *payload*-mu!
+2. **Payloads (Daftar Input):** Di tab inilah kamu memuat daftar kata/kamus (*Wordlists*) seperti `rockyou.txt` atau kumpulan *payload XSS*. 
+3. **Mulai Eksekusi:** Tekan tombol **Start Attack!** Burp akan mengirimkan permintaan dengan *payload* pertama, mencatat responnya, mengirimkan *payload* kedua, dan seterusnya. Pentester tinggal memilah hasil mana yang menunjukkan status *302 Redirect* atau memiliki ukuran balasan (*Length*) yang berbeda secara signifikan dari hasil lainnya.
 
 ---
 
@@ -45,58 +45,59 @@ Digunakan untuk : *Brute Force Sandi, Meraba iteratif IDOR (dari rentang ID 1 sa
 
 **Durasi**: ~15 menit
 
-Ayo rakit target serangan *Burp Intruder* !
+Ayo menyimulasikan serangan menggunakan *Burp Intruder*!
 
-1. Nyalakan tab *Proxy*, lantas *Intercept* sembarang formulir laman *Login* di mesin uji . (Atau *Login* TryHackMe).
-2. Temukan bodi `username=hacker&password=123`.
-3. Klik kanan -> **Send to Intruder**. Buka tab *Intruder*.
-4. Di tab *Positions*, bersihkan sasaran (tombol Clear §), lalu blok parameter angka `123`, dan klik **Add §**. targetmu terpusat di sandi!
-5. Pindah ke tab *Payloads*. Ketikkan manual 5 sandi `rahasia`, `qwerty`, `password`, `123`, `admin`.
-6. Klik tombol **Start Attack**. Layar jendela pengujian muncul mengirimkan 5 serangan beruntun.
-7. Tatap kolom *Length* (Ukuran Balasan). Amati apakah ada 1 payload yang ukurannya membesar atau statusnya melesat menjadi `302`? Jika iya, itu sandi yang valid sukses masuk !
+1. Aktifkan *Proxy Intercept*, lalu tangkap paket pengiriman dari sebuah formulir *Login* di mesin uji (misalnya di DVWA atau TryHackMe).
+2. Temukan baris parameter, contoh: `username=hacker&password=123`.
+3. Klik kanan pada paket tersebut -> **Send to Intruder**. Buka tab *Intruder*.
+4. Di tab *Positions*, bersihkan semua penanda otomatis (dengan tombol *Clear §*). Kemudian, blok hanya pada angka `123`, dan klik **Add §**. Target seranganmu sekarang terpusat pada kata sandi!
+5. Beralih ke tab *Payloads*. Masukkan 5 kata sandi secara manual pada daftar: `rahasia`, `qwerty`, `password`, `123`, `admin`.
+6. Klik tombol **Start Attack**. Sebuah jendela baru akan terbuka dan menampilkan pengiriman 5 *request* tersebut secara otomatis.
+7. Perhatikan kolom *Length* (Ukuran Respons). Amati apakah ada 1 *payload* yang ukuran responsnya berbeda jauh dari yang lain, atau apakah kolom *Status* berubah menjadi `302`? Jika iya, itu menandakan *payload* tersebut valid dan berhasil *login*!
 
 ---
 
 ## 💡 Quiz Kilat
 
 <details>
-<summary>❓ Membuka pemicu manual , apakah julukan tab di Burp Suite yang memampukan pentester memanipulasi seraya mengirimkan satu <i>Request</i> berulang-ulang tanpa henti (tanpa butuh pemanggilan <i>Browser</i>)?</summary>
+<summary>❓ Tab manakah di Burp Suite yang memungkinkan pentester memodifikasi dan mengirimkan sebuah paket <i>Request</i> berulang kali secara manual tanpa menggunakan browser?</summary>
 
-**Jawaban:** Tab *Repeater* .
+**Jawaban:** Tab *Repeater*.
 </details>
 
 <details>
-<summary>❓ Ketika meluncurkan serangan eksploitasi otomasi <i>Burp Intruder</i>, sepasang simbol apakah (`§...§`) yang digunakan sensor demi menandai menetapkan letak titik sasaran Payload?</summary>
+<summary>❓ Saat menggunakan <i>Burp Intruder</i>, simbol apa yang digunakan untuk menentukan posisi titik suntikan payload di dalam sebuah paket <i>Request</i>?</summary>
 
-**Jawaban:** Simbol penanda (Section Sign) `§` (digunakan membalut parameter `§target§`).
+**Jawaban:** Simbol penanda seksi atau *Section Sign* (`§`), contohnya `password=§target§`.
 </details>
 
 <details>
-<summary>❓ Ketika penganalisis mengirimkan serangan ribuan kamus <i>Intruder</i> ke halaman *Login*, indikator visual parameter apakah (di tabel hasil *Intruder*) yang lumrah dilirik peretas demi meraba percobaan mana yang terbukti valid/berhasil masuk?</summary>
+<summary>❓ Setelah Burp Intruder selesai mengirimkan ribuan serangan, indikator utama apa pada tabel hasil yang digunakan pentester untuk mengidentifikasi keberhasilan serangan?</summary>
 
-**Jawaban:** Memilah dan menatap perbedaan angka pada kolom *Length* (panjang response) atau kolom *Status* (misal serangan kode status HTTP dari 200 berubah menjadi 302). yang berhasil lumrahnya mencetak *Length* yang jauh berbeda wujudnya.
+**Jawaban:** Kolom *Length* (ukuran *Response*) atau kolom *Status* (misalnya perbedaan status HTTP 200 vs 302/301). *Payload* yang berhasil dieksekusi biasanya menghasilkan angka *Length* atau *Status* yang berbeda dari tebakan yang gagal.
 </details>
 
 ---
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya menyerap dominasi serangan presisi manual *Repeater*
-- [ ] Saya fasih merangkai letak target `§` di fitur *Intruder*
-- [ ] Saya cakap menuangkan payload payload daftar *Payloads*
-- [ ] Saya paham memilah rentetan serangan hasil *Brute Force*
-- [ ] Saya telah menjawab seluruh ulasan *quiz kilat* 
+- [ ] Saya memahami cara kerja pengujian manual pada *Repeater*.
+- [ ] Saya bisa menentukan posisi *payload* menggunakan simbol `§` di tab *Intruder* -> *Positions*.
+- [ ] Saya dapat memuat daftar tebakan di tab *Intruder* -> *Payloads*.
+- [ ] Saya tahu cara mengidentifikasi serangan yang berhasil dari tabel hasil *Intruder*.
+- [ ] Saya telah menjawab seluruh *Quiz Kilat* dengan benar.
+
 ---
 
 ## 🔗 Resources
 
-- [PortSwigger Burp Intruder Docs](https://portswigger.net/burp/documentation/desktop/tools/intruder) — Kumpulan referensi taktik menyasar IP payload sandi *Intruder* .
+- [PortSwigger Burp Intruder Docs](https://portswigger.net/burp/documentation/desktop/tools/intruder) — Dokumentasi resmi panduan lengkap penggunaan *Burp Intruder*.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: Burp Suite Scanner & Extensions** — Lelah menatap layar *Repeater* menembak eksploitasi *XSS* manual? Esok harinya, rasakan kemewahan versi korporat! Kenalkan pelacak otomatis **Burp Scanner**, yang mampu membabat seluruh kerentanan situs sambil kamu tidur! Serta pelajari pemasangan *Extensions / BApp Store* (Plugin) untuk mengubah Burp-mu menjadi pisau Swiss Army insiden sejati !
+**Day 3: Burp Suite Scanner & Extensions** — Lelah mencoba *payload* satu per satu? Besok, kita akan membahas alat pelacak otomatis, **Burp Scanner**, yang mampu mendeteksi kerentanan situs secara otomatis (Tersedia di versi Pro). Serta pelajari cara memasang plugin pihak ketiga melalui *BApp Store / Extensions* untuk menambah kesaktian *Burp Suite*-mu!
 
 ---
 

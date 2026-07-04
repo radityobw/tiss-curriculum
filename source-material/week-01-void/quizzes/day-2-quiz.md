@@ -26,7 +26,7 @@ total_questions: 5
 
 ### Q4
 **Type:** Short Answer
-**Question:** Apa warna tim () yang merepresentasikan fungsi pertahanan (Defense), bertugas memantau dan melindungi sistem dari serangan?
+**Question:** Apa warna tim (pilar) yang merepresentasikan fungsi pertahanan (Defense), bertugas memantau dan melindungi sistem dari serangan?
 **Answer:** Blue Team.
 
 ### Q5

@@ -21,7 +21,7 @@ total_questions: 5
 
 ### Q3
 **Type:** Short Answer
-**Question:** Kombinasi tombol *shortcut* (jalan pintas) sakti apa di keyboard peramban web yang sangat membantu kita mempraktikkan proses *Scanning* digital secara instan?
+**Question:** Kombinasi tombol *shortcut* (jalan pintas) apa di keyboard peramban web yang sangat membantu kita mempraktikkan proses *Scanning* digital secara instan?
 **Answer:** Ctrl+F (atau Cmd+F di Mac).
 
 ### Q4

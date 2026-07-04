@@ -194,7 +194,7 @@ Ikuti format ini (Isi dengan idemu sendiri berdasarkan skenario di atas):
 
 **Minggu 4: Listening & Communication (CIPHER Rank Finale)**
 
-Minggu depan adalah minggu terakhir di rank **CIPHER**. Kita akan menutup sesi "Bahasa Inggris Teknis" ini dengan melatih pendengaran (Listening) melalui seminar internasional legendaris seperti DEF CON, plus kita akan mengukur kemampuan akhirmu secara resmi. Bersiaplah untuk masuk batasan bahasamu!
+Minggu depan adalah minggu terakhir di rank **CIPHER**. Kita akan menutup sesi "Bahasa Inggris Teknis" ini dengan melatih pendengaran (Listening) melalui seminar internasional legendaris seperti DEF CON, plus kita akan mengukur kemampuan akhirmu secara resmi. Bersiaplah untuk memperluas kemampuan bahasamu!
 
 > 🚀 *"The art of communication is the language of leadership."* — James Humes
 

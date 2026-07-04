@@ -19,7 +19,7 @@ Wargame berbasis SSH yang mengajarkan konsep Linux dan keamanan melalui tantanga
 Setelah menyelesaikan hands-on ini, kamu akan mampu:
 1. Menggunakan SSH untuk koneksi ke server remote
 2. Menyelesaikan minimal 5 level Bandit menggunakan perintah Linux yang dipelajari minggu ini
-3. Menerapkan konsep file permissions,, dan pencarian file dalam skenario nyata
+3. Menerapkan konsep file permissions, dan pencarian file dalam skenario nyata
 
 ---
 

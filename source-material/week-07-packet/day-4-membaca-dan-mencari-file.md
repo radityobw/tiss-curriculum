@@ -10,7 +10,7 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membaca** file berukuran dengan aman menggunakan `less`, `head`, dan `tail`
+1. **Membaca** file berukuran besar dengan aman menggunakan `less`, `head`, dan `tail`
 2. **Mencari** letak lokasi file yang hilang dengan `find`
 3. **Mengekstrak** kata/informasi spesifik dari tumpukan teks menggunakan CLI: `grep`
 
@@ -104,7 +104,7 @@ $ ls -la /etc | grep "network"
 </details>
 
 <details>
-<summary>❓ Kamu mengetik perintah `grep "Admin" users.txt` tapi tidak ada hasil yang muncul. Padahal kamu yakin ada tu "admin" (dengan a kecil) di dalam file tersebut. Apa solusi perintahnya?</summary>
+<summary>❓ Kamu mengetik perintah `grep "Admin" users.txt` tapi tidak ada hasil yang muncul. Padahal kamu yakin ada kata "admin" (dengan a kecil) di dalam file tersebut. Apa solusi perintahnya?</summary>
 
 **Jawaban:** Gunakan flag `-i` (Case Insensitive) agar pencarian tidak memperdulikan huruf besar/kecil. Perintah yang benar adalah: `grep -i "Admin" users.txt`
 

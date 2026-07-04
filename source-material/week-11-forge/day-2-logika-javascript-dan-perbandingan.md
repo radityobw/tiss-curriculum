@@ -11,7 +11,7 @@
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
 1. **Memahami** konsep Functions sebagai blok kode yang dapat digunakan kembali (*reusable*).
-2. **Membedakan** berbagai jenis penu fungsi (Declaration vs Arrow Function).
+2. **Membedakan** berbagai jenis penulisan fungsi (Declaration vs Arrow Function).
 3. **Menganalisis** aturan wilayah kekuasaan variabel (*Scope*) dalam JavaScript.
 
 ---
@@ -39,7 +39,7 @@ console.log(gajiBudi); // Menghasilkan: 90000
 
 ### Arrow Function (Cara Modern)
 
-Di era modern (ES6), cara penu fungsi disingkat sedemikian agar lebih ramping menggunakan "Panah" (`=>`). *Arrow Function* adalah gaya penu paling populer saat ini di React.js maupun Node.js.
+Di era modern (ES6), cara penulisan fungsi disingkat sedemikian rupa agar lebih ramping menggunakan "Panah" (`=>`). *Arrow Function* adalah gaya penulisan paling populer saat ini di React.js maupun Node.js.
 
 ```javascript
 // Gaya Klasik
@@ -120,9 +120,9 @@ console.log(scanPort("10.0.0.5", 443));
 </details>
 
 <details>
-<summary>❓ Apa keunggulan penu Arrow Function (`=>`) ketimbang penu Function konvensional?</summary>
+<summary>❓ Apa keunggulan penulisan Arrow Function (`=>`) ketimbang penulisan Function konvensional?</summary>
 
-**Jawaban:** Arrow function menyuguhkan sintaks penu yang jauh lebih ringkas (bahkan bisa satu baris hilangkan kata `return` dan kurung kurawal) dan sangat praktis, menjadikannya rapi untuk program modern.
+**Jawaban:** Arrow function menyuguhkan sintaks penulisan yang jauh lebih ringkas (bahkan bisa satu baris, hilangkan kata `return` dan kurung kurawal) dan sangat praktis, menjadikannya lebih rapi untuk program modern.
 </details>
 
 ---
@@ -146,7 +146,7 @@ console.log(scanPort("10.0.0.5", 443));
 
 ## ➡️ Besok
 
-**Day 3: DOM Manipulation** — Dua hari ini kita hanya bermain JavaScript di terminal (Console) hitam legam. Besok, kita akan menggabungkan JS dengan halaman HTML agar JS bisa mengendalikan tu, kotak, dan warna layaknya sihir di perambanmu!
+**Day 3: DOM Manipulation** — Dua hari ini kita hanya bermain JavaScript di terminal (Console) hitam legam. Besok, kita akan menggabungkan JS dengan halaman HTML agar JS bisa mengendalikan teks, kotak, dan warna layaknya sihir di perambanmu!
 
 ---
 

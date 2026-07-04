@@ -32,4 +32,4 @@ total_questions: 5
 ### Q5
 **Type:** Short Answer
 **Question:** Mengapa penyusunan dokumen laporan (Cyber Incident Report) disyaratkan secara ketat pada industri keamanan siber setelah krisis selesai ditangani?
-**Answer:** Karena tanpa adanya dokumen laporan resmi, sebuah insiden siber secara manajerial akan dinilai berstatus tidak pernah diselesaikan atau tidak direspons dengan benar secara pertanggungjawaban profesional.
+**Answer:** Karena tanpa adanya dokumen laporan resmi, secara manajerial insiden tersebut dianggap belum selesai atau tidak dipertanggungjawabkan secara profesional.

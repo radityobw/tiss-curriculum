@@ -53,7 +53,7 @@ Hari ini kita bahas 4 layer paling bawah (Fokus pada pengiriman fisik).
 ```
 
 #### Layer 1: Physical Layer (Fisik)
-- **Tugas:** Mentransfer data mentah be angka 0 dan 1 (*Bits*) melalui media fisik (kabel tembaga, fiber optik, atau gelombang radio/Wi-Fi).
+- **Tugas:** Mentransfer data mentah berupa angka 0 dan 1 (*Bits*) melalui media fisik (kabel tembaga, fiber optik, atau gelombang radio/Wi-Fi).
 - **Analogi:** Jalan aspal, truk kurir, atau rel kereta.
 - **Perangkat:** Kabel UTP, Hub, Repeater.
 

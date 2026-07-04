@@ -105,7 +105,7 @@ Mari hubungkan repositori lokal yang kamu buat kemarin ke GitHub!
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya memahami perbedaan Git () dan GitHub (daring)
+- [ ] Saya memahami perbedaan Git (lokal) dan GitHub (daring)
 - [ ] Saya mengetahui fungsi `git remote`, `push`, `pull`, dan `clone`
 - [ ] Saya memahami alur kontribusi Open Source (Fork & Pull Request)
 - [ ] Saya berhasil mem-push repositori lokal saya ke GitHub di Mini Lab

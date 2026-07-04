@@ -38,9 +38,8 @@ Minggu ini kamu telah mempelajari dasar-dasar pemrograman logika interaksi JavaS
 
 ### Misi Hari Ini: "Sistem Manajemen To-Do List Sederhana"
 
-Hari ini, kamu tidak hanya memanipulasi rentetan logik kecil. Kita akan menyatukan konsep-konsep tersebut untuk menelurkan struktur *Web App* pertamamu: **To-Do List**. 
-
-Program ini akan dirancang agar mampu menampung penambahan teks input daftar tugas harian dan menampilkan daftar item (elemen *list*) tersebut pada tampilan HTML secara dinamis. Untuk menjadikan perangkat ini lebih canggih, kita juga akan menyenggol penerapan pelestarian berkas berbasis `localStorage`—semacam *database* internal penyedia memori pada *browser*—sehingga rekaman berkasmu tidak musnah lenyap begitu saja kendatipun perangkat peramban *web* sempat ditutup penuh atau menekan perintah muat ulang halaman.
+Hari ini, kita akan menyatukan konsep-konsep yang telah dipelajari untuk membuat *Web App* pertamamu: **To-Do List**. 
+Program ini akan dirancang agar pengguna dapat menambahkan teks daftar tugas dan menampilkannya di halaman HTML secara dinamis. Kita juga akan menggunakan `localStorage` (memori penyimpanan bawaan *browser*), sehingga daftar tugasmu tidak hilang meskipun *browser* ditutup atau halaman dimuat ulang (*refresh*).
 
 ### Step 1: Merakit Kerangka Visual (HTML & CSS)
 
@@ -123,7 +122,7 @@ formTugas.addEventListener('submit', (e) => {
 
 ### Step 3: Fitur Menghapus Catatan (Event Delegation)
 
-Lantas bagaimana skema algoritma kita bekerja menghapus (mematikan/menghilangkan baris item elemen target) apabila tombol dengan logo silang 'X' terpancing sinyal klik? Karena komponen 'X' peretas elemen (`.btn-hapus`) tidak mendiami ekosistem statis peramban laman *HTML* pada prosesi pramuat sistem pemunculan perdana (ia dibangun di rentang *runtime* melalui JavaScript), kita harus menggunakan metode *Event Delegation*. Metode ini berarti, kita membebankan delegasi penyisipan fungsi *Event Listener* penyimak sinyal langsung ke entitas panggung abadi wadah induknya (`daftarTugas`).
+Bagaimana cara kita menghapus daftar tugas saat tombol 'X' diklik? Karena tombol 'X' (`.btn-hapus`) tidak ada di HTML sejak awal (dibuat secara dinamis oleh JavaScript), kita tidak bisa langsung memasang `addEventListener` padanya. Kita harus menggunakan metode **Event Delegation**. Artinya, kita memasang *Event Listener* pada elemen induk yang sudah ada sejak awal (`daftarTugas`), lalu mendeteksi apakah yang diklik di dalamnya adalah tombol 'X'.
 
 4. Lengkapi kerangka instruksi *app.js* dengan koding deteksi penghapusan berbasis perantara *delegasi* di bawah:
 
@@ -152,11 +151,10 @@ daftarTugas.addEventListener('click', (e) => {
 
 ### Misi: "Penyimpanan Lokal Persisten (LocalStorage)"
 
-**Deskripsi:** Aplikasi menakjubkan sistem penulisan *To-Do List* interaktif JavaScript (JS) hasil usahamu menyisakan sebuah kekurangan desain arsitektur konvensional: Apabila pengguna iseng menekan opsi memuat ulang laman (*F5 / Refresh*), memori variabel penyimpanan dinamis JS mereset dirinya ke setelan usang (*default* awal) dan data pencatatan lenyap sepenuhnya!
+**Deskripsi:** Aplikasi To-Do List yang kamu buat saat ini memiliki satu kekurangan: Jika pengguna memuat ulang halaman (*Refresh*), semua daftar tugas yang sudah ditambahkan akan hilang!
+JavaScript menyediakan fitur bernama `localStorage` untuk menyimpan data secara permanen di *browser*.
 
-Sistem mesin *JavaScript* menyediakan fitur (*offline API memory state*) di kompartemen kapasitas *disk browser client-side* dengan nama `localStorage`.
-
-**Tugas Mandiri:** Jelajahi ekosistem dokumentasi tentang integrasi basis lokal di situs web edukasi sekelas referensi *MDN* (Mozilla Developer Network). Temukan implementasi modul bagaimana menyalin parameter ketikan *array* data daftar log ke brankas fungsi penugasan statis eksternal (`localStorage.setItem()`) sewaktu komponen berhasil dirender masuk daftar target (*input*). Serta merancang eksekusi rutin inisialisasi pada langkah sinkronisasi ekstraksi (*rendering* awal *refresh*) guna memerintahkan mencetak ulang segala rekaman tumpukan penahanan data *history* (`localStorage.getItem()`).
+**Tugas Mandiri:** Pelajari dokumentasi tentang `localStorage` di MDN (Mozilla Developer Network). Cobalah modifikasi kode JS-mu untuk menyimpan daftar tugas menggunakan `localStorage.setItem()` saat tugas ditambahkan, dan memanggil `localStorage.getItem()` saat halaman pertama kali dimuat agar daftar tugas yang tersimpan bisa ditampilkan kembali.
 
 **Deliverables:**
 1. Tambahan alur baris skrip *logic storage local* pelengkap (`localStorage`) pada file `app.js`.
@@ -169,33 +167,33 @@ Sistem mesin *JavaScript* menyediakan fitur (*offline API memory state*) di komp
 ## 💡 Knowledge Check
 
 <details>
-<summary>❓ [MUDAH] Variabel penganut sintaks tipe spesifikasi pembuka (deklarasi) `const` bermakna bahwasanya?</summary>
+<summary>❓ [MUDAH] Apa sifat dari variabel yang dideklarasikan menggunakan `const`?</summary>
 
-**Jawaban:** Variabel tersebut menampung referensi nilai pengikatan yang konsisten statis pasca pendefinisian mulanya; tidak akan dan terblokir secara permanen oleh sistem (*error*) bila di kemudian rute eksekusi coba dikenakan penetapan pengubahan perombakan atau modifikasi operasional referensi tipe *re-assignment*.
+**Jawaban:** Variabel tersebut nilainya bersifat konstan (tetap) dan tidak dapat diubah (di-*reassign*) setelah deklarasi awal. Mencoba mengubah nilainya akan menghasilkan *error*.
 </details>
 
 <details>
-<summary>❓ [MUDAH] Sebutkan peranti fungsi bawaan penelusur interaksi objek global (`console`) yang umum didesikasikan sebagai alat bantu inspeksi log data atau variabel keluaran hasil program di lingkungan tatapan panel hitam pengujian khusus pengembang (F12 *Browser Developer Tools*)?</summary>
+<summary>❓ [MUDAH] Fungsi bawaan apa yang sering digunakan untuk mencetak informasi atau nilai variabel ke dalam tab *Console* di *Developer Tools* (F12)?</summary>
 
-**Jawaban:** Pemanggilan metode spesifik inspektur penelusuran `console.log()`.
+**Jawaban:** `console.log()`.
 </details>
 
 <details>
-<summary>❓ [SEDANG] Rantai properti eksekusi pembentuk formasi sintaks *DOM Manipulation* manakah yang diproses buat merangkai dan membangun konstruksi sebuah penciptaan elemen *HTML* secara murni maya dinamis di RAM lokal (namun sebelum komponen tersebut dicangkok merapat melampir ke hierarki sejati DOM penampil halaman)?</summary>
+<summary>❓ [SEDANG] Fungsi *DOM Manipulation* apa yang digunakan untuk membuat elemen HTML baru di dalam memori JavaScript, sebelum elemen tersebut disisipkan ke halaman web?</summary>
 
-**Jawaban:** Metode kreasi perangkaian `document.createElement('namaTagHTML')` (misal implementasi *scripting* kita merakit objek embrio struktur daftar blok fungsi parameter `li`).
+**Jawaban:** `document.createElement('namaTag')` (misalnya `document.createElement('li')`).
 </details>
 
 <details>
-<summary>❓ [SEDANG] Saat memerintahkan pendeteksi pemindai bidikan pelacak atribut target `document.querySelector`, tanda pelengkap notasi operasional prasyarat spesifik apa yang harus mencakup huruf paling awal teks target jika atribut penentu *HTML*-nya direferensikan dalam format klasifikasi selektor kustom berafiliasi `id` (contoh pada kode HTML: `id="sandi"`)?</summary>
+<summary>❓ [SEDANG] Saat menggunakan `document.querySelector`, simbol awalan apa yang digunakan untuk mencari elemen berdasarkan ID (misal `id="sandi"`)?</summary>
 
-**Jawaban:** Harus dibubuhi pelengkap identifikasi awal menggunakan karakter pembuka tag pagar/simbol *hash* `#` (Sehingga sintaks penulisannya utuh laksana `#sandi`).
+**Jawaban:** Simbol pagar/hash `#` (ditulis menjadi `#sandi`).
 </details>
 
 <details>
-<summary>❓ [SULIT] Dalam terminologi privasi manajemen batasan lingkup pengikatan referensi (*Scope*), jabarkan klasifikasi fundamental dan jurang spesifikasi pembeda utama fungsi letak antara format variabel *Global Scope* versus pendefinisian hierarki alokasi spesifik ruang pengikat tipe *Local Scope*?</summary>
+<summary>❓ [SULIT] Apa perbedaan mendasar antara *Global Scope* dan *Local Scope* dalam JavaScript?</summary>
 
-**Jawaban:** Mengacu klasifikasi pada pembatas parameter eksistensi wilayah deklarasi; klasifikasi area alokasi *Local Scope* mengacu pada rentang variabel yang penataannya diapit statis merinci di dalam isolasi ruang penjara blok kurung kurawal pembatasan suatu spesifik (*Function* atau blok *loop* dsb.). Status pelacakan ini menjadikannya tidak terekspos serta ditolak operasional pemanggilannya oleh *script* di batas luar kurungan fungsi. Berbanding drastis dengan variabel beraliran *Global Scope* (kategori penataan bebas operasional lepas rute di tingkat lapis terluar *Script* akar skrip dasar HTML tanpa terikat penjara blok apa pun) yang leluasa secara universal dikelola dan diintervensi penanggilannya dari blok kompartemen eksekusi program di belahan bagian file manapun tanpa restriksi pembatasan wilayah.
+**Jawaban:** *Local Scope* adalah variabel yang dideklarasikan di dalam blok kurung kurawal `{ }` (seperti di dalam *function*), sehingga hanya bisa diakses dari dalam blok tersebut. Sedangkan *Global Scope* adalah variabel yang dideklarasikan di luar fungsi mana pun, sehingga dapat diakses dan digunakan secara bebas dari bagian kode mana saja.
 </details>
 
 ---
@@ -212,8 +210,8 @@ Sistem mesin *JavaScript* menyediakan fitur (*offline API memory state*) di komp
 
 ## 💬 Diskusi Minggu Ini
 
-1. Sesudah mengarungi peliknya konsep implementasi bahasa skrip eksekusi *JavaScript* (*Logic Tier*), bagaimana penilaian tantangan kurva pembelajarannya jika dikomparasikan ketika sekadar menyusun lapisan kaku deklaratif *HTML* (*Structure Tier*) sepekan yang silam?
-2. Andaikan sistem eksekutor JS mutlak dapat didelegasikan bebas via ketikan konsol (tanpa perantara otorisasi *server* asal), menurut pertimbangan analisis *Security*-mu, mungkinkah properti rentan peretasan struktur skrip dinamis *DOM* dimanfaatkan penyerang (peretas ) untuk menduplikasi serta membajak data lalu lintas atau token sandi sesi *session user* ketika pelaku mampu menyuntikkannya menyelinap pada barisan kodingan peramban pengunjung yang dirugikan?
+1. Setelah mempelajari logika JavaScript (*Logic Tier*), bagaimana penilaianmu terhadap tantangan belajarnya dibandingkan saat hanya menyusun struktur HTML (*Structure Tier*) minggu lalu?
+2. Jika peretas berhasil menyuntikkan kode skrip berbahaya ke *browser* pengunjung (melalui celah XSS), menurutmu, mungkinkah mereka menggunakan manipulasi DOM untuk mencuri data sesi (*session*) atau kata sandi milik pengguna tersebut?
 
 ---
 
@@ -235,7 +233,7 @@ Sistem mesin *JavaScript* menyediakan fitur (*offline API memory state*) di komp
 
 **Minggu 12: Backend Basics — Node.js & Express**
 
-Selama sekian minggu peluncuran kurikulum ini, kamu telah intens berkutat menggarap spesifikasi *antarmuka* di sisi *Client* (*Frontend*). Skrip dan aplikasi kecil laman web-mu hidup, namun tidak menyimpan integrasi pertukaran otentik (interaksi *Database*/pemrosesan API terpusat). Minggu depan, kita akan berekspansi! Mengusut celah arsitektur operasional struktur lapis dimensi di belakang layar (*Backend*). Kamu bakal mempraktikkan bagaimana peladen *Node.js* memungkinkan bahasamu dieksekusi memfasilitasi pembangunan aplikasi terpusat untuk mendirikan kerajaan inti operasi di lapis singgasana penyaji utama (*Server-Side Architecture*)!
+Selama ini, kita berfokus pada tampilan antarmuka (*Frontend*) yang berjalan di *browser* pengguna. Aplikasi yang kamu buat sudah interaktif, tetapi belum memiliki pusat penyimpanan data sejati atau fungsi *Database*. Minggu depan, kita akan beralih ke belakang layar (*Backend*)! Kita akan mempelajari **Node.js** dan **Express** untuk membuat *server* kita sendiri, memungkinkan aplikasi web menjadi terpusat (*Server-Side Architecture*).
 
 > 🚀 *"The client asks. The server dictates."*
 

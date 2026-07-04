@@ -10,9 +10,9 @@
 
 Setelah menyelesaikan materi hari ini, kamu akan mampu:
 
-1. **Membedakan** 3 utama cybersecurity: Red Team, Blue Team, Yellow Team
-2. **Mengenali** berbagai peran karier di masing-masing
-3. **Mengidentifikasi** mana yang paling menarik sebagai arah spesialisasi
+1. **Membedakan** 3 pilar utama cybersecurity: Red Team, Blue Team, Yellow Team.
+2. **Mengenali** berbagai peran karier di masing-masing pilar.
+3. **Mengidentifikasi** pilar mana yang paling menarik sebagai arah spesialisasi.
 
 ---
 
@@ -23,50 +23,50 @@ Setelah menyelesaikan materi hari ini, kamu akan mampu:
 Dalam dunia keamanan siber, ada tiga peran utama yang saling melengkapi — dan ketiganya ada di TISS:
 
 ```
- 🔺 CYBER SECURITY
- ╱ │ ╲
- ╱ │ ╲
- ╱ │ ╲
- 🔴 OFFENSE 🔵 DEFENSE 🟡 BUILD
- Red Team Blue Team Yellow Team
- "Break it" "Protect it" "Build it"
+          🔺 CYBER SECURITY
+         ╱        │        ╲
+       ╱          │          ╲
+     ╱            │            ╲
+   🔴 OFFENSE   🔵 DEFENSE   🟡 BUILD
+   Red Team     Blue Team    Yellow Team
+  "Break it"   "Protect it"  "Build it"
 ```
 
-> 💡 **Analogi**: Bayangkan sebuah kastil. **Red Team** adalah tim yang mencoba masuk pertahanan kastil (untuk menguji keamanannya). **Blue Team** adalah penjaga yang mengawasi setiap pintu dan jendela. **Yellow Team** adalah arsitek yang merancang kastil agar susah ditembus sejak awal.
+> 💡 **Analogi**: Bayangkan sebuah kastil. **Red Team** adalah tim penyerang yang mencoba mencari celah untuk masuk (menguji keamanan). **Blue Team** adalah penjaga yang memantau setiap pintu dan jendela. **Yellow Team** adalah arsitek yang merancang kastil agar kokoh dan sulit ditembus sejak awal.
 
 ### Detail Setiap Pilar
 
-| Pilar | Warna TISS | Apa yang dilakukan? | Contoh Pekerjaan | Sifat yang Cocok |
-|-------|------------|--------------------|--------------------|-------------------|
-| **Offensive Security** | 🔴 Red Team | Menemukan kelemahan dengan menyerang sistem | Penetration Tester, Bug Bounty Hunter, Red Team Operator | Kreatif, suka puzzle, penasaran |
+| Pilar | Warna TISS | Fokus Pekerjaan | Contoh Pekerjaan | Sifat yang Cocok |
+|-------|------------|-----------------|------------------|------------------|
+| **Offensive Security** | 🔴 Red Team | Menemukan kelemahan dengan menyerang sistem | Penetration Tester, Bug Bounty Hunter, Red Team Operator | Kreatif, suka teka-teki, rasa ingin tahu tinggi |
 | **Defensive Security** | 🔵 Blue Team | Memantau dan melindungi sistem dari serangan | SOC Analyst, Incident Responder, Threat Hunter | Teliti, analitis, sabar |
-| **Security Engineering** | 🟡 Yellow Team | Membangun sistem yang aman dari awal | Security Engineer, DevSecOps, Secure Developer | Logis, pembangun, detail |
+| **Security Engineering** | 🟡 Yellow Team | Membangun sistem yang aman dari awal | Security Engineer, DevSecOps, Secure Developer | Logis, terstruktur, berorientasi detail |
 
 ### Bagaimana Ketiganya Bekerja Bersama?
 
 ```
  🟡 Yellow Team MEMBANGUN aplikasi web
- │
- ▼
+          │
+          ▼
  🔴 Red Team MENGUJI keamanannya
- │
- ▼
+          │
+          ▼
  🔴 Red Team MELAPORKAN kelemahan yang ditemukan
- │
- ▼
+          │
+          ▼
  🟡 Yellow Team MEMPERBAIKI kelemahan
- │
- ▼
+          │
+          ▼
  🔵 Blue Team MEMANTAU sistem 24/7
- │
- ▼
+          │
+          ▼
  🔵 Blue Team MENDETEKSI serangan nyata
- │
- ▼
+          │
+          ▼
  🔄 Siklus berulang terus-menerus
 ```
 
-Ketiga ini **saling membutuhkan**. Tanpa Red Team, kita tidak tahu kelemahannya. Tanpa Blue Team, tidak ada yang menjaga. Tanpa Yellow Team, tidak ada yang dibangun.
+Ketiga pilar ini **saling membutuhkan**. Tanpa Red Team, kita tidak akan tahu letak kelemahannya. Tanpa Blue Team, tidak ada yang menjaga sistem dari serangan aktif. Tanpa Yellow Team, tidak ada sistem yang dibangun dengan fondasi yang aman.
 
 ---
 
@@ -74,17 +74,17 @@ Ketiga ini **saling membutuhkan**. Tanpa Red Team, kita tidak tahu kelemahannya.
 
 **Durasi**: ~10 menit
 
-Coba kunjungi platform-platform ini dan lihat perbedaan fokusnya:
+Coba kunjungi platform-platform ini dan lihat perbedaan fokus pembelajarannya:
 
-1. Buka [TryHackMe](https://tryhackme.com) → lihat path **"Jr Penetration Tester"** (Red Team)
-2. Buka [TryHackMe](https://tryhackme.com) → lihat path **"SOC Level 1"** (Blue Team)
-3. Buka [The Odin Project](https://www.theodinproject.com) → lihat curriculum **"Full Stack JavaScript"** (Yellow Team)
+1. Buka [TryHackMe](https://tryhackme.com) → lihat path **"Jr Penetration Tester"** (Red Team).
+2. Buka [TryHackMe](https://tryhackme.com) → lihat path **"SOC Level 1"** (Blue Team).
+3. Buka [The Odin Project](https://www.theodinproject.com) → lihat curriculum **"Full Stack JavaScript"** (Yellow Team).
 
-**Pertanyaan refleksi**: Dari ketiga path tersebut, mana yang paling menarik perhatianmu? Tulis jawabannya di catatan pribadi.
+**Pertanyaan refleksi**: Dari ketiga path tersebut, pilar mana yang paling menarik perhatianmu? Tulis jawabannya di catatan pribadi.
 
 ```
-✅ Expected: Kamu bisa merasakan perbedaan fokus tiap
- meskipun belum mendalami materinya.
+✅ Expected Output: Kamu bisa merasakan perbedaan fokus tiap pilar, 
+meskipun belum mendalami materinya secara teknis.
 ```
 
 ---
@@ -95,24 +95,24 @@ Coba kunjungi platform-platform ini dan lihat perbedaan fokusnya:
 <summary>❓ Apa perbedaan utama antara Red Team dan Blue Team?</summary>
 
 **Jawaban:**
-- **Red Team** = **Offense** → mencari dan mengeksploitasi kelemahan sistem (menyerang)
-- **Blue Team** = **Defense** → memantau, mendeteksi, dan merespons serangan (bertahan)
+- **Red Team** = **Offense** → Bertugas mencari dan mengeksploitasi kelemahan sistem (menyerang).
+- **Blue Team** = **Defense** → Bertugas memantau, mendeteksi, dan merespons serangan (bertahan).
 
-Keduanya saling melengkapi — Red Team menguji pertahanan yang dibangun Blue Team.
+Keduanya saling melengkapi — Red Team menguji efektivitas pertahanan yang diawasi oleh Blue Team.
 
 </details>
 
 <details>
-<summary>❓ Seorang SOC Analyst masuk ke yang mana?</summary>
+<summary>❓ Seorang SOC Analyst masuk ke pilar yang mana?</summary>
 
-**Jawaban:** **Blue Team (Defensive Security)**. SOC Analyst bekerja di Security Operations Center, bertugas memantau alert keamanan, menganalisis log, dan merespons insiden keamanan siber secara real-time.
+**Jawaban:** **Blue Team (Defensive Security)**. SOC Analyst bekerja di Security Operations Center, bertugas memantau peringatan (*alerts*) keamanan, menganalisis log, dan merespons insiden secara *real-time*.
 
 </details>
 
 <details>
 <summary>❓ Mengapa Yellow Team (builder) juga penting untuk keamanan, padahal mereka "hanya" membuat aplikasi?</summary>
 
-**Jawaban:** Karena keamanan yang paling efektif dimulai dari **desain dan kode yang aman sejak awal** (*secure by design*). Jika aplikasi dibangun dengan kerentanan, Red Team akan selalu menemukan celah dan Blue Team akan kewalahan memantau. Yellow Team yang menerapkan *secure coding* mengurangi serangan dari sumbernya.
+**Jawaban:** Karena pertahanan keamanan yang paling efektif dimulai dari **desain dan kode yang aman sejak awal** (*secure by design*). Jika aplikasi dibangun dengan kerentanan (*vulnerability*), Red Team akan selalu menemukan celah dan Blue Team akan kewalahan menahan serangan. Yellow Team yang menerapkan *secure coding* dapat mencegah kerentanan dari sumber asalnya.
 
 </details>
 
@@ -120,23 +120,23 @@ Keduanya saling melengkapi — Red Team menguji pertahanan yang dibangun Blue Te
 
 ## 📋 Checklist Hari Ini
 
-- [ ] Saya bisa menjelaskan 3 cybersecurity (Red, Blue, Yellow) ke orang lain
-- [ ] Saya tahu minimal 2 contoh pekerjaan di setiap
-- [ ] Saya sudah melihat perbedaan path di TryHackMe dan The Odin Project
-- [ ] Saya sudah punya gambaran awal mana yang menarik untuk saya
+- [ ] Saya bisa menjelaskan 3 pilar cybersecurity (Red, Blue, Yellow) ke orang lain.
+- [ ] Saya tahu minimal 2 contoh pekerjaan di setiap pilar.
+- [ ] Saya sudah melihat perbedaan *learning path* di TryHackMe dan The Odin Project.
+- [ ] Saya sudah punya gambaran awal pilar mana yang menarik untuk saya.
 
 ---
 
 ## 🔗 Resources
 
-- [TryHackMe Career Paths](https://tryhackme.com/paths) — Lihat berbagai learning path per
-- [Cybersecurity Roles Explained (YouTube)](https://www.youtube.com/results?search_query=cybersecurity+roles+explained) — Video penjelasan peran cybersecurity
+- [TryHackMe Career Paths](https://tryhackme.com/paths) — Lihat berbagai *learning path* untuk masing-masing pilar.
+- [Cybersecurity Roles Explained (YouTube)](https://www.youtube.com/results?search_query=cybersecurity+roles+explained) — Video penjelasan peran karier cybersecurity.
 
 ---
 
 ## ➡️ Besok
 
-**Day 3: CIA Triad & Etika Hacking** — Pelajari 3 prinsip fundamental yang mendasari SELURUH bidang keamanan siber, plus batasan penting yang harus kamu pahami sebelum belajar teknis lebih jauh. ⚖️
+**Day 3: CIA Triad & Etika Hacking** — Pelajari 3 prinsip fundamental yang mendasari SELURUH bidang keamanan siber, ditambah dengan batasan etika penting yang wajib dipahami sebelum mempraktikkan teknik serangan. ⚖️
 
 ---
 

@@ -8,28 +8,28 @@ total_questions: 5
 
 ### Q1
 **Type:** Multiple Choice
-**Question:** Terkait metodologi kompetensi manajemen krisis (Peran *Incident Commander*) dalam siklus respons insiden siber *PICERL*, manakah formulasi pernyataan berikut yang menjabarkan rentetan eksekusi tersebut dengan komprehensif dari awal menuju tahapan mitigasi pelaporan?
-- [x] A. Di tahap awal fungsi, analis menvalidasi serta batasan luasan insiden (*Scope/Identification*), dilanjutkan isolasi rute insiden siber (*Containment*). Di transisi selanjutnya, pelacakan memfokuskan ekstraksi bukti (*IOCs*) forensik untuk pemetaan Akar Kelemahan (*Root Cause*). Di penutupan operasi, spesialis *SOC* melakukan penghapusan malware arsitektur operasi beserta penyetelan instalasi parameter fungsi pemblokiran IP jaringan (*Eradication*), melaksanakan arsitektur *Patching* peladen (*Recovery*), dan merumuskan temuan mitigasi tersebut menjadi naskah eksekutif bisnis instansi arsitektur korporat (*Lessons Learned/Report Writing*).
-- [ ] B. Sebab rutinitas parameter instruksional klasifikasi *PICERL* semata-mata bergantung instalasi pada sintaks baris skrip *SPL*.
-- [ ] C. Mengingat prosedur *PICERL* terfokus arsitektur sebatas untuk fungsi kasta pelatihan fungsi awal *Void*.
-- [ ] D. Siklus klasifikasi operasi peladen *PICERL* difungsikan mutlak eksklusif operasi penetrasi peretas (*Red Team*).
+**Question:** Mengacu pada peran *Incident Commander* dalam siklus PICERL, manakah pernyataan berikut yang paling tepat merangkum alur penanganan insiden dari awal hingga pelaporan akhir?
+- [x] A. Tahap awal, analis memvalidasi dan menentukan batasan insiden (*Identification/Scope*), dilanjutkan dengan mengisolasi jaringan (*Containment*). Kemudian, mengekstrak bukti (*IOCs*) untuk mencari celah awal (*Root Cause*). Setelah itu, analis menghapus malware dan memblokir IP penyerang (*Eradication*), lalu menambal celah aplikasi (*Recovery/Remediation*), dan terakhir menyusun seluruh kejadian tersebut ke dalam Laporan Insiden resmi (*Lessons Learned/Report Writing*).
+- [ ] B. Siklus PICERL semata-mata bergantung pada penggunaan *SIEM Splunk* untuk menghapus *malware* secara otomatis tanpa perlu pelaporan.
+- [ ] C. Prosedur PICERL hanya ditujukan untuk simulasi pelatihan dasar dan tidak diterapkan di dunia industri nyata.
+- [ ] D. Siklus PICERL secara eksklusif digunakan oleh tim peretas (*Red Team*) untuk menyusup ke dalam server.
 
 ### Q2
 **Type:** True/False
-**Question:** Dalam perumusan sertifikasi ujian kelulusan *(Capstone)* instalasi kurikulum TISS Null Teaming, penyetoran dokumentasi instalasi Laporan Insiden *(Cyber Incident Report)* arsitektur yang melampirkan parameter penyajian klasifikasi pelacakan (memuat parameter struktur fungsi *Executive Summary, Timeline operasi insiden, TTPs MITRE ATT&CK, serta rekomendasi Lessons Learned*) diklasifikasikan sebagai validasi mutlak pencapaian kapasitas manajerial teknis hierarki kasta *SENTINEL*.
+**Question:** Dalam penyelesaian *Capstone* pelatihan TISS Null Teaming, kemampuan menyusun *Cyber Incident Report* yang mencakup *Executive Summary, Incident Timeline, TTPs MITRE ATT&CK, dan Lessons Learned* merupakan bukti kelayakan kompetensi tingkat akhir.
 **Answer:** True
 
 ### Q3
 **Type:** Short Answer
-**Question:** Berkaitan dengan standardisasi hirarki keahlian keamanan siber, klasifikasi jenjang operasi tertinggi (di atas level infiltrasi kasta fungsi *Breach*) pada struktur kompetensi kurikulum operasi TISS Null Teaming dinamakan level tingkatan arsitektur apa?
-**Answer:** Kasta tingkat ahli keamanan *SENTINEL* (atau *Rank Sentinel*).
+**Question:** Berdasarkan hierarki kurikulum TISS Null Teaming, apa nama *Rank* (Pangkat) tertinggi yang menjadi gelar kelulusan di minggu terakhir ini?
+**Answer:** SENTINEL (atau Rank Sentinel).
 
 ### Q4
 **Type:** Short Answer
-**Question:** Agar dokumentasi teknis instalasi laporan dan modul instruksi peladen *Threat Hunting Playbook* bisa diverifikasi sebagai portofolio profesional, platform kontrol versi instalasi apakah arsitektur pelaporan instruksinya diwajibkan pengunggahannya?
-**Answer:** Ke arsitektur fungsi repositori kontrol peladen publik operasi instalasi *GitHub* (Atau pelacakan korporasi *Repository GitHub*).
+**Question:** Agar Laporan Insiden dan dokumen taktis (seperti *Threat Hunting Playbook*) dapat digunakan sebagai bukti portofolio profesional saat melamar pekerjaan, ke platform repositori manakah dokumen tersebut direkomendasikan untuk diunggah?
+**Answer:** GitHub.
 
 ### Q5
 **Type:** Short Answer
-**Question:** Pada konklusi penyelesaian arsitektur modul pelatihan 120 Hari (24 Minggu), pesan penutup yang menggarisbawahi komitmen kelanjutan karier spesialis lulusan Sentinel menyatakan terminologi fungsi operasi apa? (Berawalan arsitektur instalasi *"This is not..."*)
-**Answer:** *"This is not the end. This is Day Zero of your real war. Welcome to TISS, Sentinel."*
+**Question:** Pada penutup kurikulum 24 Minggu ini, pesan utama yang ditekankan kepada para spesialis yang baru lulus adalah bahwa perjalanan belajar belum selesai. Bagaimana kalimat penutup yang mengingatkan bahwa keamanan siber adalah proses pembelajaran yang tiada henti? (Berawalan kata "Keamanan")
+**Answer:** "Keamanan siber adalah proses berkelanjutan. Selamat berkarya dan teruslah belajar, Sentinel."

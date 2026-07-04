@@ -68,7 +68,7 @@ Kamu masuk ke website `toko-buku.com`. Kamu membuat akun biasa. Lalu kamu sadar,
 *Tips: Gunakan numbering (1, 2, 3...).*
 
 <details>
-<summary>🔑 Klik untuk melihat contoh penu Steps to Reproduce yang baik</summary>
+<summary>🔑 Klik untuk melihat contoh penulisan Steps to Reproduce yang baik</summary>
 
 **Steps to Reproduce:**
 1. Navigate to `https://toko-buku.com/login` and log in with a standard user account.
@@ -109,7 +109,7 @@ Kamu masuk ke website `toko-buku.com`. Kamu membuat akun biasa. Lalu kamu sadar,
 ## 📋 Checklist Hari Ini
 
 - [ ] Saya tahu format 5 komponen penting Bug Report (Title, Desc, Steps, Impact, Mitigation)
-- [ ] Saya memahami pola penu judul yang deskriptif
+- [ ] Saya memahami pola penulisan judul yang deskriptif
 - [ ] Saya tahu cara menulis *Steps to Reproduce* yang detail seperti resep masakan
 - [ ] Saya memahami perbedaan keparahan (Low, Medium, High, Critical)
 - [ ] Saya sudah menjawab semua quiz kilat
