@@ -70,18 +70,18 @@ Mari kita main dengan Command Line dan melihat fungsi DNS secara langsung!
 1. Buka **Command Prompt (cmd)** di Windows atau **Terminal** di Mac/Linux.
 2. Kita akan meminta komputer kita melempar sebuah sinyal "Halo" (Ping) ke website dan melihat DNS menerjemahkannya.
 3. Ketik perintah ini:
- `ping unpad.ac.id`
+ `ping untirta.ac.id`
  lalu tekan Enter.
 
 **Expected Output:**
 ```
-Pinging unpad.ac.id [103.111.90.103] with 32 bytes of data:
-Reply from 103.111.90.103: bytes=32 time=23ms TTL=54
+Pinging untirta.ac.id [103.15.226.2] with 32 bytes of data:
+Reply from 103.15.226.2: bytes=32 time=23ms TTL=54
 ...
 ```
 
-Perhatikan baris pertama: `Pinging unpad.ac.id [103.111.90.103]`.
-Komputermu diam-diam melakukan *query* (pertanyaan) ke DNS, dan DNS memberi tahu bahwa nama itu memiliki IP Public `103.111.90.103`!
+Perhatikan baris pertama: `Pinging untirta.ac.id [103.15.226.2]`.
+Komputermu diam-diam melakukan *query* (pertanyaan) ke DNS, dan DNS memberi tahu bahwa nama itu memiliki IP Public `103.15.226.2`!
 
 Coba ulangi dengan target `youtube.com` atau website favoritmu!
 

@@ -57,7 +57,7 @@ Mari mempraktikkan teknik pencarian *Google Dorking*!
    `site:tiss.or.id filetype:pdf`
    *(Catatan: Jika hasilnya kosong, kamu bisa mencoba dengan domain universitas atau instansi publik lainnya).*
 3. Coba cari halaman *login* yang mungkin disembunyikan menggunakan kueri kombinasi:
-   `site:target-kampusmu.ac.id inurl:login OR inurl:admin`
+   `site:untirta.ac.id inurl:login OR inurl:admin`
 4. Selanjutnya, buka [shodan.io](https://www.shodan.io/). Di kotak pencarian, masukkan nama kotamu, misalnya `city:"Jakarta"`. Kamu akan melihat berbagai perangkat, server, dan *port* terbuka yang terindeks secara bebas di internet!
 
 ---

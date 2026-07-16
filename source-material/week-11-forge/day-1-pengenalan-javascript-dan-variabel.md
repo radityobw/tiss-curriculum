@@ -33,10 +33,10 @@ Di JavaScript modern, kita menggunakan `let` dan `const` untuk membuat kotak:
 - `const` : Kotaknya digembok permanen (*Constant*). Isinya tidak boleh diganti.
 
 ```javascript
-let namaHacker = "ZeroCool"; // Isinya boleh diganti nanti
+let namaHacker = "ryocantsleep"; // Isinya boleh diganti nanti
 const tahunKelahiran = 1995; // Tidak bisa diubah, karena sudah masa lalu
 
-namaHacker = "CrashOverride"; // Boleh!
+namaHacker = "ryocantsleep_v2"; // Boleh!
 tahunKelahiran = 2000; // ERROR! Const tidak bisa diubah.
 ```
 

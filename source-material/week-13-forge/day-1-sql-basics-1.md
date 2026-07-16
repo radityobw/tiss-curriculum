@@ -42,7 +42,7 @@ CREATE TABLE pengguna (
 #### 2. Menyisipkan Data (INSERT)
 ```sql
 INSERT INTO pengguna (username, umur) 
-VALUES ('ZeroCool', 25), ('CrashOverride', 22);
+VALUES ('ryocantsleep', 25), ('ryocantsleep_v2', 22);
 ```
 
 #### 3. Membaca dan Mengekstrak (SELECT)

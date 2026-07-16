@@ -75,7 +75,7 @@ app.get('/api/transaksi/:id', (req, res) => {
 Mari mensimulasikan mekanisme *IDOR* sederhana!
 
 1. Bayangkan kamu sedang menggunakan portal kampus, mengklik menu "Unduh Raport", dan browser mengunduh dokumen dari URL:
-   `https://kampus.ac.id/download/raport?mahasiswa_id=901`
+   `https://untirta.ac.id/download/raport?mahasiswa_id=901`
 2. Apa hal pertama yang akan dicoba oleh seorang *Bug Hunter*?
    **MENGGANTI ANGKA 901 MENJADI 902!**
    (Ubah parameter di URL dan tekan Enter).

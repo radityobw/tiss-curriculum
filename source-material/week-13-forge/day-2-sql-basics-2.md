@@ -26,14 +26,14 @@ Melengkapi siklus *CRUD* dari materi sebelumnya, kini saatnya kita mendalami car
 ```sql
 UPDATE pengguna 
 SET umur = 26 
-WHERE username = 'ZeroCool';
+WHERE username = 'ryocantsleep';
 ```
 > ⚠️ **IMPORTANT:** Jika kamu lupa menyematkan kondisi `WHERE`, instruksi `UPDATE pengguna SET umur = 26;` akan dieksekusi ke **SELURUH PENGGUNA**. Akibatnya, umur semua pengguna di tabel tersebut akan berubah menjadi `26`. Ini adalah kesalahan fatal yang sering disebut *tragedy of missing where clause*.
 
 **2. Menghapus Data (DELETE)**
 ```sql
 DELETE FROM pengguna 
-WHERE username = 'CrashOverride';
+WHERE username = 'ryocantsleep_v2';
 ```
 *(Sama seperti operasi Update, jika kamu tidak menyertakan klausa `WHERE`, maka seluruh data di dalam tabel akan terhapus bersih!)*
 
